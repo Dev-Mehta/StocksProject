@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+{% block content %}
+<h2>Log In</h2>
+<form method="post">
+	{% csrf_token %}
+	<div class="ui form">
+		{{form.as_p}}
+		<button class="ui secondary button" type="submit">Log In</button>
+		<div class="ui horizontal divider">Or</div>
+		<div class="ui center aligned basic segment">
+			<p>Don't have an account ? &nbsp; <a class="ui secondary basic button" href="/accounts/register/">Register</a>
+			</p>
+		</div>
+	</div>
+</form>
+{% if form.errors %}
+	{% for error in form.non_field_errors %}
+	<div class="ui message error">
+		{{error}}
+	</div>
+	{% endfor %}
+{% endif %}
+{% endblock %}

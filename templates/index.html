@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<style>
+	.ui.search .prompt{
+		border-radius: 0.28571429rem !important;
+	}
+</style>
+<div class="ui search">
+	<div class="ui fluid action input">
+		<input class="prompt" id="searchStock" type="text" placeholder="Search for stocks">
+		<div class="ui secondary button" id="search">Search</div>
+	</div>
+	<div class="results"></div>
+</div>
+{% if watchlist %}
+{% else %}
+<div class="ui message">
+	<div class="header">You have no stocks in your watchlist.</div>
+</div>
+{% endif %}
+{% endblock %}
+{% block footerjs %}
+<script>
+	var content = [
+		{ title: 'AARTIDRUGS' },
+		{ title: 'ACC' },
+		{ title: 'ADANIPORTS' },
+		{ title: 'AMBUJACEM' },
+		{ title: 'ASIANPAINT' },
+		{ title: 'AXISBANK' },
+		{ title: 'BAJFINANCE' },
+		{ title: 'BHARTIARTL' },
+		{ title: 'BHEL' },
+		{ title: 'BPCL' },
+		{ title: 'CIPLA' },
+		{ title: 'DRREDDY' },
+		{ title: 'EICHERMOT' },
+		{ title: 'GAIL' },
+		{ title: 'GMRINFRA' },
+		{ title: 'GODREJCP' },
+		{ title: 'GRASIM' },
+		{ title: 'HDFC' },
+		{ title: 'HDFCBANK' },
+		{ title: 'HEROMOTOCO' },
+		{ title: 'HINDALCO' },
+		{ title: 'HINDPETOR' },
+		{ title: 'HINDUNILVR' },
+		{ title: 'IBULHSGFIN' },
+		{ title: 'INFY' },
+		{ title: 'ITC' },
+		{ title: 'KOTAKBANK' },
+		{ title: 'L&TFH' },
+		{ title: 'LT' },
+		{ title: 'MARUTI' },
+		{ title: 'NTPC' },
+		{ title: 'ONGC' },
+		{ title: 'POWERGRID' },
+		{ title: 'RELIANCE' },
+		{ title: 'SBIN' },
+		{ title: 'SUNPHARMA' },
+		{ title: 'TATAMOTORS' },
+		{ title: 'TATASTEEL' },
+		{ title: 'TCS' },
+		{ title: 'TECHM' },
+		{ title: 'TITAN' }
+		// etc
+	];
+	$('.ui.search')
+		.search({
+			source: content
+		});
+	const searchStock = document.querySelector("#searchStock");
+	const search = document.querySelector("#search");
+	search.addEventListener('click', function(e) {
+		if(searchStock.value !== '') {
+			window.location.href = '/stock/' + searchStock.value;
+		}
+	});
+	console.log(searchStock.value);
+</script>
+{% endblock %}

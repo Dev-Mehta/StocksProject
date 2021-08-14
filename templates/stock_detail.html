@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %} Search Results for "{{stock_data.name}}" {% endblock %}
+{% block content %}
+{% if stock_data %}
+<h2>{{stock_data.name}}</h2>
+<p>Sector - {{stock_data.sector}}</p>
+<p>Summary - {{stock_data.summary}}</p>
+<div class="ui segments">
+	<div class="ui segment">
+		<p>Current Price - <b>{{stock_data.currentPrice}}</b></p>
+	</div>
+	<div class="ui segment">
+		<p>Day High - <b>{{stock_data.high}}</b></p>
+	</div>
+	<div class="ui segment">
+		<p>Day Low - <b>{{stock_data.low}}</b></p>
+	</div>
+	<div class="ui segment">
+		<p>Book Value - <b>{{stock_data.bookValue}}</b></p>
+	</div>
+</div>
+{% else %}
+<div class="ui placeholder segment">
+	<div class="ui icon header">
+		<i class="ban icon"></i>
+		No data is found for {{stock_name}}.
+	</div>
+	<a href="/" class="ui secondary button">Search For Other Stocks</a>
+</div>
+{% endif %}
+{% endblock %}
