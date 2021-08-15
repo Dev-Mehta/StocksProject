@@ -2,30 +2,85 @@
 {% block title %} Search Results for "{{stock_data.name}}" {% endblock %}
 {% block content %}
 {% if stock_data %}
+<style>
+	.ui.styled.accordion{
+		width: auto !important;
+	}
+</style>
 <h2>{{stock_data.name}}</h2>
 <p>Sector - {{stock_data.sector}}</p>
-<p>Summary - {{stock_data.summary}}</p>
+<div class="ui styled accordion">
+	<div class="title">
+	  <i class="dropdown icon"></i>
+	  Summary
+	</div>
+	<div class="content">
+	  <p class="transition hidden">{{ stock_data.summary }}</p>
+	</div>
+</div>
 <div class="ui segments">
 	<div class="ui segment">
 		<p>Current Price - <b>{{stock_data.currentPrice}}</b></p>
 	</div>
 	<div class="ui segment">
-		<p>Day High - <b>{{stock_data.high}}</b></p>
-	</div>
-	<div class="ui segment">
-		<p>Day Low - <b>{{stock_data.low}}</b></p>
-	</div>
-	<div class="ui segment">
-		<p>Book Value - <b>{{stock_data.bookValue}}</b></p>
+		<div class="ui styled accordion">
+			<div class="title">
+				<i class="dropdown icon"></i>
+				Balance Sheet
+			</div>
+			<div class="content" style="overflow-x: scroll;">
+				<table class="ui unstackable celled structured table">
+				<thead>
+					<tr>
+						<th rowspan="1">Financial Year</th>
+						<th colspan="3">Assets</th>
+						<th colspan="3">Liabilities</th>
+						<th>Total Equity</th>
+					</tr>
+					<tr>
+						<th></th>
+						<th>Current Assets</th>
+						<th>Non Current Assets</th>
+						<th>Total Assets</th>
+						<th>Liabilities</th>
+						<th>Other Liabilities</th>
+						<th>Total Liabilities</th>
+						<th></th>
+					</tr>
+				</thead>	
+				{% for bs in balance_sheet %}
+				<tbody>
+					<tr>
+						<td>{{bs.date.year}}</td>
+						<td>{{bs.currentAssets}}</td>
+						<td>{{bs.nonCurrentAssets}}</td>
+						<td>{{bs.totalAssets}}</td>
+						<td>{{bs.totalLongTermDebt}}</td>
+						<td>{{bs.otherLiabilities}}</td>
+						<td>{{bs.totalLiabilities}}</td>
+						<td>{{bs.totalEquity}}</td>
+					</tr>
+				</tbody>
+				{% empty %}
+				<p>Sorry we don't have balance sheet of this stock yet</p>
+				{% endfor %}	
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 {% else %}
 <div class="ui placeholder segment">
-	<div class="ui icon header">
+	<div class="ui icon fluid header">
 		<i class="ban icon"></i>
 		No data is found for {{stock_name}}.
 	</div>
 	<a href="/" class="ui secondary button">Search For Other Stocks</a>
 </div>
 {% endif %}
+{% endblock %}
+{% block footerjs %}
+<script>
+	$('.ui.styled.accordion').accordion();
+</script>
 {% endblock %}
