@@ -36,7 +36,7 @@ class StockDetail(View):
 				sb.otherCurrentAssets = financial_year_data['Other Current Assets'] / 10000000
 				sb.otherLiabilities = financial_year_data['Other Liab'] / 10000000
 				sb.otherCurrentLiabilites = financial_year_data['Other Current Liab'] / 10000000
-				sb.shortTermInvestments = financial_year_data['Short Term Investments'] / 10000000 or 0.0
+				sb.shortTermInvestments = financial_year_data['Short Term Investments'] / 10000000
 				sb.totalAssets = financial_year_data['Total Assets'] / 10000000
 				sb.totalEquity = financial_year_data['Total Stockholder Equity'] / 10000000
 				sb.totalInventory = financial_year_data['Inventory'] / 10000000
