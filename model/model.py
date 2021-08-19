@@ -55,9 +55,8 @@ class StockClassifier:
 		for ticker in self.tickers:
 			ticker = ticker.upper()
 			ticker_result = {}
-			if not Path(f"data/{ticker}.NS.csv").exists():
-				df = yf.download(ticker + '.NS', self.start_date, self.end_date)
-				df.to_csv(f"data/{ticker}.NS.csv")
+			df = yf.download(ticker + '.NS', self.start_date, self.end_date)
+			df.to_csv(f"data/{ticker}.NS.csv")
 			data = pd.read_csv(f"data/{ticker}.NS.csv")
 			data.Date = pd.to_datetime(data.Date)
 			data.index = data.Date
