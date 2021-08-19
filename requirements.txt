@@ -3,4 +3,3 @@ numpy==1.20.3
 pandas==1.2.4
 requests==2.25.1
 yfinance==0.1.63
-wheel==47.1.0
