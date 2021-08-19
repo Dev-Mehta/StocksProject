@@ -10,7 +10,7 @@ class Stock(models.Model):
 	name = models.CharField(max_length=200)
 	sector = models.CharField(max_length=200)
 	summary = models.TextField()
-	currentPrice = models.FloatField(blank=True,null=True,default=None)
+	currentPrice = models.FloatField()
 
 	def __str__(self) -> str:
 		return self.name
@@ -20,30 +20,30 @@ class StockBalanceSheet(models.Model):
 	# timestamp
 	date = models.DateField()
 	# current assets
-	currentAssets = models.FloatField(blank=True,null=True,default=None)
+	currentAssets = models.FloatField()
 	# under current assets
-	cash = models.FloatField(blank=True,null=True,default=None)
-	shortTermInvestments = models.FloatField(blank=True,null=True,default=None)
-	totalReceivables = models.FloatField(blank=True,null=True,default=None)
-	totalInventory = models.FloatField(blank=True,null=True,default=None)
+	cash = models.FloatField()
+	shortTermInvestments = models.FloatField()
+	totalReceivables = models.FloatField()
+	totalInventory = models.FloatField()
 	# other assets
-	otherCurrentAssets = models.FloatField(blank=True,null=True,default=None)
-	nonCurrentAssets = models.FloatField(blank=True,null=True,default=None)
-	longTermInvestments = models.FloatField(blank=True,null=True,default=None)
+	otherCurrentAssets = models.FloatField()
+	nonCurrentAssets = models.FloatField()
+	longTermInvestments = models.FloatField()
 	# total assets
-	totalAssets = models.FloatField(blank=True,null=True,default=None)
+	totalAssets = models.FloatField()
 	# liabilities
-	accountsPayable = models.FloatField(blank=True,null=True,default=None)
+	accountsPayable = models.FloatField()
 	# other liabilities
-	otherCurrentLiabilities = models.FloatField(blank=True,null=True,default=None)
-	totalLongTermDebt = models.FloatField(blank=True,null=True,default=None)
-	otherLiabilities = models.FloatField(blank=True,null=True,default=None)
+	otherCurrentLiabilities = models.FloatField()
+	totalLongTermDebt = models.FloatField()
+	otherLiabilities = models.FloatField()
 	# total liabilites
-	totalLiabilities = models.FloatField(blank=True,null=True,default=None)
-	commonStock = models.FloatField(blank=True,null=True,default=None)
-	capitalSurplus = models.FloatField(blank=True,null=True,default=None)
-	minorityInterest = models.FloatField(blank=True,null=True,default=None)
-	totalEquity = models.FloatField(blank=True,null=True,default=None)
+	totalLiabilities = models.FloatField()
+	commonStock = models.FloatField()
+	capitalSurplus = models.FloatField()
+	minorityInterest = models.FloatField()
+	totalEquity = models.FloatField()
 
 	def __str__(self) -> str:
 		return str(self.stock) + str(self.date)
