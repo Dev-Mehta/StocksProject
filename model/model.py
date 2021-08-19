@@ -56,6 +56,8 @@ class StockClassifier:
 			ticker = ticker.upper()
 			ticker_result = {}
 			data = yf.download(ticker + '.NS', self.start_date, self.end_date)
+			data.to_csv(Path.cwd() / 'data' / (ticker + '.csv'))
+			data = pd.read_csv(Path.cwd() / 'data' / (ticker + '.csv'))
 			data.Date = pd.to_datetime(data.Date)
 			data.index = data.Date
 			high_low = data['High'] - data['Low']
