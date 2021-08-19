@@ -24,9 +24,7 @@ def requestSearch(request):
 	result = {}
 	res = []
 	for i in resp:
-		print(i)
 		name = i['ticker']
 		res.append({'ticker':i['name'] + ' - ' + i['ticker'], 'name':i['name'] + ' - ' + i['ticker'], 'url': f'/stock/{name}'})
 	result['results'] = res
-	print(result)
 	return JsonResponse(result, safe=False)
