@@ -15,11 +15,11 @@ class StockDetail(View):
 		stock_data = stock_data['data']
 		sid = stock_data['sid']
 		stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
-		stock_price = stock_price['data']
-		# model = StockClassifier(tickers=[stock])
-		# result = model.train()
-		# print(result)
-		return render(self.request,"stock_detail.html", {"stock_name":stock, "stock_data":stock_data, "stock_price":stock_price})
+		stock_price = stock_price['data'][0]
+		model = StockClassifier(tickers=[stock])
+		result = model.train()
+		print(result)
+		return render(self.request,"stock_detail.html", {"stock_name":stock, "stock_data":stock_data, "stock_price":stock_price, "result":result})
 
 def requestSearch(request):
 	ticker = request.GET.get('query')
@@ -44,3 +44,9 @@ def getStockPrice(request):
 	stock_price = stock_price['data'][0]
 	stock_price['percentageChange'] = (stock_price['change'] / stock_price['c']) * 100 
 	return JsonResponse(stock_price, safe=False)
+
+class PlaceOrder(View):
+	def get(self, request, *args, **kwargs):
+		stock = kwargs['stock_name']
+		stock = stock.upper()
+		return render(self.request,"stock_place_order.html", {"stock_name":stock})	

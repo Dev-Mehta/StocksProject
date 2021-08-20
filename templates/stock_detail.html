@@ -3,6 +3,11 @@
 {% block title %} Search Results for "{{stock_name}}" {% endblock %}
 {% block extraCss %}
 <link rel="stylesheet" href="{% static 'stockDetail.css' %}">
+<style>
+	.ui.search .action:hover{
+		background: transparent !important;
+	}
+</style>
 {% endblock %}
 {% block content %}
 {% if stock_name %}
@@ -38,7 +43,7 @@
 											class="icon-caret_down text-14 icon-caret"></i><span
 											id="currentPriceChange">{{stock_price.change}}</span></span><span
 										class="label font-medium text-red">&nbsp;(<span
-											id="currentPriceChangePercent">-0.71%</span>)</span></h2>
+											id="currentPriceChangePercent">-0.71</span>%)</span></h2>
 							</div>
 						</div>
 						<div class="ratio-wrap">
@@ -86,10 +91,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="widget-footer flex-apart">
-						<div class="left-side"></div>
-						<div class="cta-div"><button class="cta-buy font-medium"><span>Buy</span></button><button
-								class="cta-sell font-medium"><span>Sell</span></button></div>
+					<div class="widget-footer flex-apart" style="justify-content: center;">
+						<a href="/place-order/{{stock_name}}/" class="ui fluid secondary button">Place Order</a>
 					</div>
 				</div>
 			</li>
@@ -183,6 +186,7 @@
 {% endif %}
 {% endblock %}
 {% block footerjs %}
+<script async src="https://www.gateway-tt.in/assets/embed.js"></script> 
 <script>
 	$('.ui.styled.accordion').accordion();
 	function updatePrice() {
@@ -198,12 +202,17 @@
 			}
 			xmlHttp.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
-					var obj = JSON.parse(this.responseText)[0];
+					var obj = JSON.parse(this.responseText);
 					document.querySelector("#currentPrice").innerHTML = obj.price;
 					document.querySelector("#currentPriceChange").innerHTML = obj.change;
-					document.querySelector("#currentPriceChangePercent").innerHTML = obj.percentageChange;
+					document.querySelector("#currentPriceChangePercent").innerHTML = obj.percentageChange.toFixed(2);
 					if (obj.change > 0) {
 						var elements = document.querySelectorAll(".text-red");
+						let down = document.querySelector(".icon-caret_down");
+						if (down !== null) {
+							down.classList.remove("icon-caret_down");
+							down.classList.add('icon-caret_up');
+						}
 						for (let i = 0; i < elements.length; i++) {
 							let element = elements[i];
 							element.classList.remove("text-red");
@@ -212,6 +221,11 @@
 					}
 					else {
 						var elements = document.querySelectorAll(".text-green");
+						let down = document.querySelector(".icon-caret_up");
+						if (down !== null) {
+							down.classList.remove("icon-caret_up");
+							down.classList.add('icon-caret_down');
+						}
 						for (let i = 0; i < elements.length; i++) {
 							let element = elements[i];
 							element.classList.remove("text-green");
@@ -225,6 +239,8 @@
 			xmlHttp.send();
 		};
 	}
-	updatePrice();
+	$(document).ready(() => {
+		updatePrice();
+	})
 </script>
 {% endblock %}
