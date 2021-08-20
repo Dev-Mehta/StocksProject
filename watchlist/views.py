@@ -11,10 +11,15 @@ class StockDetail(View):
 	def get(self, request, *args, **kwargs):
 		stock = kwargs['stock_name']
 		stock = stock.upper()
-		model = StockClassifier(tickers=[stock])
-		result = model.train()
-		print(result)
-		return render(self.request,"stock_detail.html", {"stock_name":stock, "result":result[stock]})
+		stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
+		stock_data = stock_data['data']
+		sid = stock_data['sid']
+		stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
+		stock_price = stock_price['data']
+		# model = StockClassifier(tickers=[stock])
+		# result = model.train()
+		# print(result)
+		return render(self.request,"stock_detail.html", {"stock_name":stock, "stock_data":stock_data, "stock_price":stock_price})
 
 def requestSearch(request):
 	ticker = request.GET.get('query')
@@ -28,3 +33,14 @@ def requestSearch(request):
 		res.append({'ticker':i['name'] + ' - ' + i['ticker'], 'name':i['name'] + ' - ' + i['ticker'], 'url': f'/stock/{name}'})
 	result['results'] = res
 	return JsonResponse(result, safe=False)
+
+def getStockPrice(request):
+	ticker = request.GET.get('query')
+	ticker = ticker.upper()
+	stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{ticker}").json()
+	stock_data = stock_data['data']
+	sid = stock_data['sid']
+	stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
+	stock_price = stock_price['data'][0]
+	stock_price['percentageChange'] = (stock_price['change'] / stock_price['c']) * 100 
+	return JsonResponse(stock_price, safe=False)

@@ -1,90 +1,174 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %} Search Results for "{{stock_name}}" {% endblock %}
+{% block extraCss %}
+<link rel="stylesheet" href="{% static 'stockDetail.css' %}">
+{% endblock %}
 {% block content %}
 {% if stock_name %}
-<style>
-	.ui.styled.accordion {
-		width: auto !important;
-	}
-</style>
-<h2>{{stock_name}}</h2>
+<h2>{{stock_data.info.name}}</h2>
 <div class="ui center aligned">
-	<p class="sc-embed" data-width=""
-		data-orders="%5B%7B%22quantity%22%3A10%2C%22ticker%22%3A%22{{stock_name}}%22%7D%5D" data-cardsize="small"
-		data-withtt="false" data-withsearch="false"
-		style="min-width:300px;min-height:auto;display:flex;align-items:center;justify-content:center">
-		<strong>loading widget to trade {{stock_name}}</strong>
-	</p>
+	<div class="trade-container stock-trade-container  standalone">
+		<ul>
+			<li>
+				<div class="stockview-wrap-big">
+					<div class="widget-header">
+						<div class="widget-header-left">
+							<div class="stock-name">
+								<div class="name font-medium ellipsis" title="Reliance Industries Ltd">
+									{{stock_data.info.name}}</div>
+								<div class="market-cap font-medium" style="text-transform: uppercase;">
+									{{stock_data.labels.marketCap.title}}</div>
+							</div>
+							<p class="sector-info"><i class="em em-zap"></i> <span
+									class="font-regular">{{stock_data.labels.sector.title}}</span><span
+									class="font-regular">&nbsp; → {{stock_data.labels.sector.description}}</span></p>
+						</div>
+						<div class="widget-header-right"></div>
+					</div>
+					<div class="widget-content">
+						<div class="price-wrap">
+							<p
+								style="font-size: 11px; color: rgb(89, 91, 98); line-height: 1.45; margin-bottom: 6px; white-space: normal; font-family: &quot;Graphik Web Regular&quot;, sans-serif;">
+								{{stock_data.info.description}}</p>
+							<div class="price">
+								<h2 class="mb4"><span class="font-medium text-red">₹&nbsp;<span
+											id="currentPrice">{{stock_price.price}}</span></span><span
+										class="price-change font-medium text-red"><i
+											class="icon-caret_down text-14 icon-caret"></i><span
+											id="currentPriceChange">{{stock_price.change}}</span></span><span
+										class="label font-medium text-red">&nbsp;(<span
+											id="currentPriceChangePercent">-0.71%</span>)</span></h2>
+							</div>
+						</div>
+						<div class="ratio-wrap">
+							<div class="returns-wrap">
+								<div class="text-top">
+									<p class="label mb4 font-regular">1M Return</p>
+									<h5 class="font-medium text-green">{{stock_data.ratios.4wpct|floatformat:2}}%</h5>
+								</div>
+								<div class="text-mid">
+									<p class="label mb4 font-regular">1Y Return</p>
+									<h5 class="font-medium text-green">{{stock_data.ratios.52wpct|floatformat:2}}%</h5>
+								</div>
+								<div class="text-bot">
+									<p class="label mb4 font-regular">PE</p>
+									<h5 class="font-medium">{{stock_data.ratios.pe|floatformat:2}}</h5>
+								</div>
+							</div>
+							<div class="returns-wrap">
+								<div class="text-top">
+									<p class="label mb4 font-regular">52W High</p>
+									<h5 class="font-medium">{{stock_data.ratios.52wHigh|floatformat:2}}</h5>
+								</div>
+								<div class="text-mid">
+									<p class="label mb4 font-regular">52W Low</p>
+									<h5 class="font-medium">{{stock_data.ratios.52wLow|floatformat:2}}</h5>
+								</div>
+								<div class="text-bot">
+									<p class="label mb4 font-regular">PB</p>
+									<h5 class="font-medium">{{stock_data.ratios.pb|floatformat:2}}</h5>
+								</div>
+							</div>
+							<div class="returns-wrap">
+								<div class="text-top">
+									<p class="label mb4 font-regular">Mkt. Cap (Cr)</p>
+									<h5 class="font-medium">{{stock_data.ratios.marketCap|floatformat:2}}</h5>
+								</div>
+								<div class="text-mid">
+									<p class="label mb4 font-regular">Beta</p>
+									<h5 class="font-medium">{{stock_data.ratios.beta|floatformat:2}}</h5>
+								</div>
+								<div class="text-bot">
+									<p class="label mb4 font-regular">Div. Yield</p>
+									<h5 class="font-medium">{{stock_data.ratios.divYield|floatformat:2}}</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="widget-footer flex-apart">
+						<div class="left-side"></div>
+						<div class="cta-div"><button class="cta-buy font-medium"><span>Buy</span></button><button
+								class="cta-sell font-medium"><span>Sell</span></button></div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
 </div>
 <div class="container">
 	<h2>TradingView's Take on {{stock_name}}</h2>
 	<!-- TradingView Widget BEGIN -->
 	<div class="tradingview-widget-container">
 		<div class="tradingview-widget-container__widget"></div>
-		<div class="tradingview-widget-copyright"><a href="https://in.tradingview.com/symbols/NSE-{{stock_name}}/technicals/"
-				rel="noopener" target="_blank"><span class="blue-text">Technical Analysis for {{stock_name}}</span></a> by
+		<div class="tradingview-widget-copyright"><a
+				href="https://in.tradingview.com/symbols/NSE-{{stock_name}}/technicals/" rel="noopener"
+				target="_blank"><span class="blue-text">Technical Analysis for {{stock_name}}</span></a> by
 			TradingView</div>
 		<script type="text/javascript"
 			src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
 				{
-				"interval":"1D",
-				"width":"100%",
-				"isTransparent":false,
-				"height":"480",
-				"symbol":"NSE:{{stock_name}}",
-				"showIntervalTabs":true,
-				"locale":"in",
-				"colorTheme":"light"
+					"interval": "1D",
+						"width": "100%",
+							"isTransparent": false,
+								"height": "480",
+									"symbol": "NSE:{{stock_name}}",
+										"showIntervalTabs": true,
+											"locale": "in",
+												"colorTheme": "light"
 				}
 			</script>
 	</div>
 	<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-	<div class="tradingview-widget-container__widget"></div>
-	<div class="tradingview-widget-copyright"><a href="https://in.tradingview.com/symbols/NSE-INFY/financials-overview/" rel="noopener" target="_blank"><span class="blue-text">INFY Fundamental Data</span></a> by TradingView</div>
-	<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
-	{
-	"symbol": "NSE:{{stock_name}}",
-	"colorTheme": "light",
-	"isTransparent": true,
-	"largeChartUrl": "",
-	"displayMode": "adaptive",
-	"width": "100%",
-	"height": "500",
-	"locale": "in"
-  }
-	</script>
-  </div>
-  <!-- TradingView Widget END -->
+	<div class="tradingview-widget-container">
+		<div class="tradingview-widget-container__widget"></div>
+		<div class="tradingview-widget-copyright"><a
+				href="https://in.tradingview.com/symbols/NSE-INFY/financials-overview/" rel="noopener"
+				target="_blank"><span class="blue-text">INFY Fundamental Data</span></a> by TradingView</div>
+		<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js"
+			async>
+				{
+					"symbol": "NSE:{{stock_name}}",
+						"colorTheme": "light",
+							"isTransparent": true,
+								"largeChartUrl": "",
+									"displayMode": "adaptive",
+										"width": "100%",
+											"height": "500",
+												"locale": "in"
+				}
+			</script>
+	</div>
+	<!-- TradingView Widget END -->
 	<!-- TradingView Widget END -->
 	<h2>Our take on {{stock_name}}</h2>
 	<div class="ui very relaxed list">
 		<div class="item">
-		  <div class="content">
-			<span class="header">RSI</span>
-			<div class="description">{{result.rsi}}</div>
-		  </div>
+			<div class="content">
+				<span class="header">RSI</span>
+				<div class="description">{{result.rsi}}</div>
+			</div>
 		</div>
-		<div class="item">
-		  <div class="content">
-			<span class="header">MACD</span>
-			<div class="description">{{result.macd}}</div>
-		  </div>
-		</div>
-		<div class="item">
-		  <div class="content">
-			<span class="header">5 EMA Crossover 26 EMA</span>
-			<div class="description">{{result.5demacutting26dema}}</div>
-		  </div>
-		</div>
-		
 		<div class="item">
 			<div class="content">
-			  <span class="header">Volume</span>
-			  <div class="description">{{result.volume}}</div>
+				<span class="header">MACD</span>
+				<div class="description">{{result.macd}}</div>
 			</div>
-		  </div>
-	  </div>
+		</div>
+		<div class="item">
+			<div class="content">
+				<span class="header">5 EMA Crossover 26 EMA</span>
+				<div class="description">{{result.5demacutting26dema}}</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div class="content">
+				<span class="header">Volume</span>
+				<div class="description">{{result.volume}}</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script async src="https://www.gateway-tt.in/assets/embed.js">
 </script>
@@ -101,5 +185,46 @@
 {% block footerjs %}
 <script>
 	$('.ui.styled.accordion').accordion();
+	function updatePrice() {
+		let currentTime = new Date();
+		if (currentTime.getHours() >= 9 && currentTime.getHours() <= 16) {
+			var xmlHttp = new XMLHttpRequest();
+			if (window.XMLHttpRequest) {
+				// code for modern browsers
+				xmlhttp = new XMLHttpRequest();
+			} else {
+				// code for old IE browsers
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlHttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var obj = JSON.parse(this.responseText)[0];
+					document.querySelector("#currentPrice").innerHTML = obj.price;
+					document.querySelector("#currentPriceChange").innerHTML = obj.change;
+					document.querySelector("#currentPriceChangePercent").innerHTML = obj.percentageChange;
+					if (obj.change > 0) {
+						var elements = document.querySelectorAll(".text-red");
+						for (let i = 0; i < elements.length; i++) {
+							let element = elements[i];
+							element.classList.remove("text-red");
+							element.classList.add("text-green");
+						}
+					}
+					else {
+						var elements = document.querySelectorAll(".text-green");
+						for (let i = 0; i < elements.length; i++) {
+							let element = elements[i];
+							element.classList.remove("text-green");
+							element.classList.add("text-red");
+						}
+					}
+					setTimeout(updatePrice, 3000);
+				}
+			}
+			xmlHttp.open("GET", "/quote/?query={{stock_name}}", true);
+			xmlHttp.send();
+		};
+	}
+	updatePrice();
 </script>
 {% endblock %}

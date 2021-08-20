@@ -8,13 +8,15 @@
 	<link rel="stylesheet" href="{% static 'semantic/components/accordion.min.css' %}">
 	<style>
 		* {
-			font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+			font-family: 'Graphic Web Medium','Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif !important;
 		}
 
 		.ui.search .prompt {
 			border-radius: 0.28571429rem !important;
 		}
 	</style>
+	{% block extraCss %}
+	{% endblock %}
 </head>
 
 <body>
