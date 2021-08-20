@@ -17,7 +17,7 @@ class StockDetail(View):
 		stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
 		stock_price = stock_price['data'][0]
 		model = StockClassifier(tickers=[stock])
-		result = model.train()["stock"]
+		result = model.train()[stock]
 		print(result)
 		return render(self.request,"stock_detail.html", {"stock_name":stock, "stock_data":stock_data, "stock_price":stock_price, "result":result})
 
