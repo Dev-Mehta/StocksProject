@@ -11,7 +11,16 @@
 {% endblock %}
 {% block content %}
 {% if stock_name %}
-<h2>{{stock_data.info.name}}</h2>
+<div class="ui fluid action input" style="display: flex; flex-direction: revert;align-items: flex-end;justify-content: space-between;">
+	<h2 class="prompt" style="width: 80% !important;">{{stock_data.info.name}}</h2>
+	<button id="addToWatchlist" style="flex: 0 !important;" class="ui icon button">
+		{% if stockAdded %}
+		<i class='icon bx bxs-bookmark' ></i>
+		{% else %}
+		<i class="icon bx bx-bookmark"></i>
+		{% endif %}
+	</button>
+</div>
 <div class="ui center aligned">
 	<div class="trade-container stock-trade-container  standalone">
 		<ul>
@@ -126,8 +135,8 @@
 	<div class="tradingview-widget-container">
 		<div class="tradingview-widget-container__widget"></div>
 		<div class="tradingview-widget-copyright"><a
-				href="https://in.tradingview.com/symbols/NSE-INFY/financials-overview/" rel="noopener"
-				target="_blank"><span class="blue-text">INFY Fundamental Data</span></a> by TradingView</div>
+				href="https://in.tradingview.com/symbols/NSE-{{stock_name}}/financials-overview/" rel="noopener"
+				target="_blank"><span class="blue-text">{{stock_name}} Fundamental Data</span></a> by TradingView</div>
 		<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js"
 			async>
 				{
@@ -189,9 +198,40 @@
 <script async src="https://www.gateway-tt.in/assets/embed.js"></script> 
 <script>
 	$('.ui.styled.accordion').accordion();
+	const addToWatchlist = document.querySelector('#addToWatchlist');
+	addToWatchlist.onclick = () => {
+		addToWatchlist.disabled = true;
+		var xmlHttp = new XMLHttpRequest();
+			if (window.XMLHttpRequest) {
+				// code for modern browsers
+				xmlhttp = new XMLHttpRequest();
+			} else {
+				// code for old IE browsers
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlHttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var obj = JSON.parse(this.responseText);
+					if(obj.success){
+						if(obj.message === "Added"){
+							addToWatchlist.innerHTML = `<i class="icon bx bxs-bookmark"></i>`
+						}
+						else{
+							addToWatchlist.innerHTML = `<i class="icon bx bx-bookmark"></i>`
+						}
+						addToWatchlist.disabled = false;
+					}
+				}
+			}
+			xmlHttp.open("POST", "/api/add-to-watchlist/");
+			xmlHttp.setRequestHeader("Accept", "application/json");
+			xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+			var data = "stock={{stock_name}}";
+			xmlHttp.send(data);
+	}
 	function updatePrice() {
 		let currentTime = new Date();
-		if (currentTime.getHours() >= 9 && currentTime.getHours() <= 16) {
+		if (currentTime.getHours() >= 9 && currentTime.getHours() <= 16 && (currentTime.getDay() !== 6 && currentTime.getDay() !== 7)) {
 			var xmlHttp = new XMLHttpRequest();
 			if (window.XMLHttpRequest) {
 				// code for modern browsers

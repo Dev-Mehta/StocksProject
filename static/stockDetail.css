@@ -3883,8 +3883,8 @@ input {
 
 @font-face {
 	font-family: 'icomoon';
-	src: url("./icomoon.eot");
-	src: url("./icomoon.eot?#iefix") format("embedded-opentype"), url("./icomoon.woff2") format("woff2"), url("./icomoon.woff") format("woff");
+	src: url("./semantic/themes/default/assets/fonts/icons.eot");
+	src: url("./semantic/themes/default/assets/fonts/icons.eot") format("embedded-opentype"), url("./icomoon.woff2") format("woff2"), url("./icomoon.woff") format("woff");
 	font-style: normal
 }
 
