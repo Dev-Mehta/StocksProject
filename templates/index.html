@@ -56,19 +56,19 @@
 	<div class="stockName"><b>{{key.stock.name}}</b></div>
 	<div class="price">
 		{% if key.price.percentageChange < 0 %} <h3 class="mb4"><span class="font-medium text-red">₹&nbsp;<span
-					id="currentPrice">{{key.price.price}}</span></span><span
+					id="currentPrice">{{key.price.price|floatformat:2}}</span></span><span
 				class="price-change font-medium text-red">&#9660;<span
-					id="currentPriceChange">{{key.price.change}}</span></span><span
+					id="currentPriceChange">{{key.price.change|floatformat:2}}</span></span><span
 				class="label font-medium text-red">&nbsp;(<span
-					id="currentPriceChangePercent">{{key.price.percentageChange}}</span>%)</span>
+					id="currentPriceChangePercent">{{key.price.percentageChange|floatformat:2}}</span>%)</span>
 			</h3>
 			{% else %}
 			<h3 class="mb4"><span class="font-medium text-green">₹&nbsp;<span
-						id="currentPrice">{{key.price.price}}</span></span><span
+						id="currentPrice">{{key.price.price|floatformat:2}}</span></span><span
 					class="price-change font-medium text-green">&#9650;<span
-						id="currentPriceChange">{{key.price.change}}</span></span><span
+						id="currentPriceChange">{{key.price.change|floatformat:2}}</span></span><span
 					class="label font-medium text-green">&nbsp;(<span
-						id="currentPriceChangePercent">{{key.price.percentageChange}}</span>%)</span>
+						id="currentPriceChangePercent">{{key.price.percentageChange|floatformat:2}}</span>%)</span>
 			</h3>
 			{% endif %}
 	</div>

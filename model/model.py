@@ -56,10 +56,7 @@ class StockClassifier:
 			ticker = ticker.upper()
 			ticker_result = {}
 			data = yf.download(ticker + '.NS', self.start_date, self.end_date)
-			data.to_csv(Path.cwd() / 'data' / (ticker + '.csv'))
-			data = pd.read_csv(Path.cwd() / 'data' / (ticker + '.csv'))
-			data.Date = pd.to_datetime(data.Date)
-			data.index = data.Date
+			data.reset_index()
 			high_low = data['High'] - data['Low']
 			high_close = np.abs(data['High'] - data['Close'].shift())
 			low_close = np.abs(data['Low'] - data['Close'].shift())
@@ -231,8 +228,3 @@ class StockClassifier:
 			return self.trainedResult[ticker]
 		else:
 			return {"error":"Invalid ticker - The company might be delisted or the data is not trained yet."}
-
-
-s = StockClassifier(tickers=['RELIANCE'])
-a = s.train()
-print(s.filterBuy(3))
