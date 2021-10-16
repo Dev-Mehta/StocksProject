@@ -231,3 +231,8 @@ class StockClassifier:
 			return self.trainedResult[ticker]
 		else:
 			return {"error":"Invalid ticker - The company might be delisted or the data is not trained yet."}
+
+
+s = StockClassifier(tickers=['RELIANCE'])
+a = s.train()
+print(s.filterBuy(3))
