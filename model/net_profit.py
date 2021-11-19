@@ -25,7 +25,5 @@ for ticker in tickers:
 	data = pd.read_csv(f'results/{ticker}.csv')
 	net_profit += data.profit.sum()
 	detailed[ticker] = data.profit.sum()
-	# print(ticker)
-	# print(data.profit.su)
 print(net_profit)
 print(detailed)
