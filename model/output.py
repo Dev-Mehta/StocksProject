@@ -1,24 +1,9 @@
 from datetime import timedelta, datetime
 import pandas as pd
 tickers = [
-	'SBILIFE',
-	'MARUTI',
-	'TATAMOTORS',
-	'ITC',
-	'ASIANPAINT',
-	'POWERGRID',
-	'NTPC',
-	'INDUSINDBK',
-	'TECHM',
-	'BAJFINANCE',
-	'SBIN',
-	'TATACONSUM',
-	'BAJAJFINSV',
-	'LT',
-	'INFY',
-	'HDFCBANK',
-	'WIPRO',
-	'UPL'
+	'RELIANCE',
+	'TATASTEEL',
+	'TATAPOWER'
 ]
 tick_accuracy = []
 avg_accuracy = 0

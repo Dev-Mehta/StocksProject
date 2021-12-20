@@ -5015,7 +5015,7 @@ input {
 
 .stockview-wrap-big {
 	width: 500px;
-	min-height: 300px
+	min-height: 378px
 }
 
 .stockview-wrap-big .loading-container {
@@ -5074,7 +5074,6 @@ input {
 
 .stockview-wrap-big .widget-content .price-wrap {
 	display: block;
-	width: 40%;
 	margin-bottom: 0;
 	margin-top: -2px
 }
@@ -5095,7 +5094,6 @@ input {
 
 .stockview-wrap-big .widget-content .ratio-wrap {
 	display: flex;
-	width: 60%
 }
 
 .stockview-wrap-big .widget-content .returns-wrap {

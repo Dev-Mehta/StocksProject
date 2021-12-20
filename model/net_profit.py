@@ -1,23 +1,8 @@
 import pandas as pd
 tickers = [
-	'SBILIFE',
-	'MARUTI',
-	'TATAMOTORS',
-	'ITC',
-	'ASIANPAINT',
-	'POWERGRID',
-	'NTPC',
-	'INDUSINDBK',
-	'TECHM',
-	'BAJFINANCE',
-	'SBIN',
-	'TATACONSUM',
-	'BAJAJFINSV',
-	'LT',
-	'INFY',
-	'HDFCBANK',
-	'WIPRO',
-	'UPL'
+	'RELIANCE',
+	'TATASTEEL',
+	'TATAPOWER'
 ]
 net_profit = 0
 detailed = {}

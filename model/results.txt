@@ -1,90 +1,54 @@
-SBILIFE accuracy: 55.55555555555556
-SBILIFE avg. loss: -251.17
-SBILIFE avg. profit: 699.84
-SBILIFE max. loss: -684.06
-SBILIFE max. profit: 2112.50
-MARUTI accuracy: 63.63636363636363
-MARUTI avg. loss: -2720.51
-MARUTI avg. profit: 3930.90
-MARUTI max. loss: -5448.28
-MARUTI max. profit: 10851.71
-TATAMOTORS accuracy: 44.44444444444444
-TATAMOTORS avg. loss: -175.50
-TATAMOTORS avg. profit: 350.50
-TATAMOTORS max. loss: -291.50
-TATAMOTORS max. profit: 1728.00
-ITC accuracy: 38.095238095238095
-ITC avg. loss: -75.73
-ITC avg. profit: 61.40
-ITC max. loss: -192.54
-ITC max. profit: 237.70
-ASIANPAINT accuracy: 57.14285714285714
-ASIANPAINT avg. loss: -530.05
-ASIANPAINT avg. profit: 776.74
-ASIANPAINT max. loss: -2475.79
-ASIANPAINT max. profit: 7755.03
-POWERGRID accuracy: 31.57894736842105
-POWERGRID avg. loss: -38.40
-POWERGRID avg. profit: 57.33
-POWERGRID max. loss: -82.78
-POWERGRID max. profit: 151.61
-NTPC accuracy: 64.0
-NTPC avg. loss: -46.24
-NTPC avg. profit: 45.87
-NTPC max. loss: -89.28
-NTPC max. profit: 141.54
-INDUSINDBK accuracy: 44.18604651162791
-INDUSINDBK avg. loss: -607.46
-INDUSINDBK avg. profit: 1047.54
-INDUSINDBK max. loss: -2004.62
-INDUSINDBK max. profit: 3026.58
-TECHM accuracy: 69.23076923076923
-TECHM avg. loss: -301.45
-TECHM avg. profit: 1067.88
-TECHM max. loss: -569.98
-TECHM max. profit: 3454.12
-BAJFINANCE accuracy: 66.66666666666666
-BAJFINANCE avg. loss: -1421.25
-BAJFINANCE avg. profit: 3625.65
-BAJFINANCE max. loss: -4813.09
-BAJFINANCE max. profit: 16290.67
-SBIN accuracy: 38.88888888888889
-SBIN avg. loss: -230.21
-SBIN avg. profit: 471.95
-SBIN max. loss: -745.62
-SBIN max. profit: 1862.31
-TATACONSUM accuracy: 50.0
-TATACONSUM avg. loss: -152.53
-TATACONSUM avg. profit: 624.56
-TATACONSUM max. loss: -376.04
-TATACONSUM max. profit: 1540.07
-BAJAJFINSV accuracy: 50.0
-BAJAJFINSV avg. loss: -1402.15
-BAJAJFINSV avg. profit: 6297.21
-BAJAJFINSV max. loss: -4188.29
-BAJAJFINSV max. profit: 18135.43
-LT accuracy: 50.0
-LT avg. loss: -625.75
-LT avg. profit: 787.97
-LT max. loss: -1114.59
-LT max. profit: 3391.61
-INFY accuracy: 64.70588235294117
-INFY avg. loss: -360.84
-INFY avg. profit: 979.47
-INFY max. loss: -926.07
-INFY max. profit: 2752.83
-HDFCBANK accuracy: 66.66666666666666
-HDFCBANK avg. loss: -346.35
-HDFCBANK avg. profit: 748.15
-HDFCBANK max. loss: -651.68
-HDFCBANK max. profit: 1962.01
-WIPRO accuracy: 50.0
-WIPRO avg. loss: -89.24
-WIPRO avg. profit: 949.29
-WIPRO max. loss: -173.91
-WIPRO max. profit: 1301.00
-UPL accuracy: 42.857142857142854
-UPL avg. loss: -185.06
-UPL avg. profit: 447.17
-UPL max. loss: -698.91
-UPL max. profit: 874.54
+Stock Name: INFY
+Predicted Price: 1726.9315173339844
+Actual Price: 1820.85
+Error: 93.9184826660155
+Percentage Error: 5.157947259028229
+
+Stock Name: RELIANCE
+Predicted Price: 2434.9519677734374
+Actual Price: 2340.45
+Error: 94.50196777343763
+Percentage Error: 4.0377691372786275
+
+Stock Name: INFY
+Predicted Price: 1726.9315173339844
+Actual Price: 1820.85
+Error: 93.9184826660155
+Percentage Error: 5.157947259028229
+
+Stock Name: RELIANCE
+Predicted Price: 2536.641953125
+Actual Price: 2340.45
+Error: 196.19195312500005
+Percentage Error: 8.382659451173922
+
+Stock Name: INFY
+Predicted Price: 1706.9093298339844
+Actual Price: 1820.85
+Error: 113.94067016601548
+Percentage Error: 6.257553898784386
+
+Stock Name: RELIANCE
+Predicted Price: 2536.641953125
+Actual Price: 2340.45
+Error: 196.19195312500005
+Percentage Error: 8.382659451173922
+
+Stock Name: INFY
+Predicted Price: 1706.9093298339844
+Actual Price: 1820.85
+Error: 113.94067016601548
+Percentage Error: 6.257553898784386
+
+Stock Name: RELIANCE
+Predicted Price: [2536.64195312]
+Actual Price: 2340.45
+Error: [196.19195313]
+Percentage Error: [8.38265945]
+
+Stock Name: INFY
+Predicted Price: [1706.90932983]
+Actual Price: 1820.85
+Error: [113.94067017]
+Percentage Error: [6.2575539]
+

@@ -22,7 +22,7 @@ class TestStrategy(bt.Strategy):
 		self.buycomm = None
 		self.scores = self.datas[0].scores
 		self.trades = None
-		
+		self.size = 10
 	def notify_order(self, order):
 		if order.status in [order.Submitted, order.Accepted]:
 			# Buy/Sell order submitted/accepted to/by broker - Nothing to do
@@ -80,14 +80,14 @@ class TestStrategy(bt.Strategy):
 cerebro = bt.Cerebro()
 cerebro.addstrategy(TestStrategy)
 modpath = os.path.dirname(os.path.abspath(sys.argv[0]))
-datapath = os.path.join(modpath, 'output\MARUTI.csv')
+datapath = os.path.join(modpath, 'output\RELIANCE.csv')
 data = pd.read_csv(datapath)
 data.index = pd.to_datetime(data.Date)
 data = TestFeed(dataname=data)
 cerebro.adddata(data)
 cerebro.broker.setcash(100000.0)
 cerebro.broker.setcommission(commission=0.002)
-cerebro.addsizer(bt.sizers.SizerFix, stake=20)
+cerebro.addsizer(bt.sizers.SizerFix, stake=100)
 cerebro.addanalyzer(bt.analyzers.PyFolio, _name='pyfolio')
 print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
 strats = cerebro.run()
@@ -95,4 +95,5 @@ strat = strats[0]
 print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 pyfoliozer = strat.analyzers.getbyname('pyfolio')
 returns, positions, transactions, gross_lev = pyfoliozer.get_pf_items()
-print("Returns: ", returns.sum()*100)
+ret = returns.sum() * 100
+print("Returns: %.2f" % ret)

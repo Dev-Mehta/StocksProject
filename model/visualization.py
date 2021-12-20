@@ -5,24 +5,9 @@ django.setup()
 import mplfinance as mpf
 import pandas as pd
 tickers = [
-	'SBILIFE',
-	'MARUTI',
-	'TATAMOTORS',
-	'ITC',
-	'ASIANPAINT',
-	'POWERGRID',
-	'NTPC',
-	'INDUSINDBK',
-	'TECHM',
-	'BAJFINANCE',
-	'SBIN',
-	'TATACONSUM',
-	'BAJAJFINSV',
-	'LT',
-	'INFY',
-	'HDFCBANK',
-	'WIPRO',
-	'UPL'
+	'RELIANCE',
+	'TATASTEEL',
+	'TATAPOWER'
 ]
 for ticker in tickers:
 	data = pd.read_csv(f'output/{ticker}.csv')
