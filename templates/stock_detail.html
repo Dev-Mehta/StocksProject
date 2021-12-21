@@ -2107,6 +2107,9 @@
 			max-width: 109px
 		}
 	}
+	strong{
+		font-weight: bolder !important;
+	}
 </style>
 {% endblock %}
 {% block content %}
@@ -2387,6 +2390,14 @@
 </div>
 <div class="ui container">
 	<p>&nbsp;</p>
+	<h2>Predicted Price for {{stock_name}}</h2>
+	<div class="ui very relaxed list">
+		<div class="content">
+			<div class="header">
+				Price Prediction for <strong>{{stock_name}}</strong>: <strong>{{price|floatformat:2}}</strong>
+			</div>
+		</div>
+	</div>
 	<h2>Quick Overview on {{stock_name}}</h2>
 	<div class="ui very relaxed list">
 		<div class="item">

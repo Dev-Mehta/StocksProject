@@ -72,7 +72,8 @@ class StockDetail(View):
 		"sell_count":sell_count,
 		"neutral_count":neutral_count,
 		"buying_factors":buying_factors,
-		"selling_factors":selling_factors
+		"selling_factors":selling_factors,
+		"price":result['price'],
 		}
 		watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 		if watchlist.exists():
