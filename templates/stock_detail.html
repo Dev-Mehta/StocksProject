@@ -1229,9 +1229,7 @@
 		width: calc(400px)
 	}
 
-	.adaptive .sizeWrapper {
-		
-	}
+	.adaptive .sizeWrapper {}
 
 	.adaptive .circleWrapper {
 		background-size: cover;
@@ -2107,13 +2105,14 @@
 			max-width: 109px
 		}
 	}
-	strong{
+
+	strong {
 		font-weight: bolder !important;
 	}
 </style>
 {% endblock %}
 {% block content %}
-{% if stock_name %}
+{% if stock_exists %}
 <div class="ui fluid action input"
 	style="display: flex; flex-direction: revert;align-items: flex-end;justify-content: space-between;">
 	<h2 class="prompt" style="width: 80% !important;">{{stock_data.info.name}}</h2>
@@ -2472,11 +2471,43 @@
 {% else %}
 <div class="ui placeholder segment">
 	<div class="ui icon fluid header">
-		<i class="ban icon"></i>
-		No data is found for {{stock_name}}.
+		<i class='icon bx bx-error-circle'></i>
+		No stock is found named {{stock_name}}.	
 	</div>
-	<a href="/" class="ui secondary button">Search For Other Stocks</a>
+	<button id="searchOther" class="ui secondary button">Search For Other Stocks</button>
 </div>
+<div class="ui container">
+	<div id="suggestions">
+		<h2>Searching Stocks related to query {{stock_name}}</h2>
+	</div>
+</div>
+<script>
+	function showSuggestions(){
+		const suggestions = document.querySelector("#suggestions");
+		const searchUrl = `/search/?query={{stock_name}}`
+		const stock_name = "{{stock_name}}";
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				const resp = JSON.parse(this.responseText);
+				var inserthtml = `<h2>Maybe you were searching for</h2>`;
+				if(resp.results.length == 0){
+					inserthtml = `<h2>Stock Named ${stock_name} does not exist</h2>`;
+				}
+				for(var i=0;i<resp.results.length; i++){
+					var url = resp.results[i].url;
+					var name = resp.results[i].name;
+					var string = `<p><a href="${url}/">${name}</a></p>`;
+					inserthtml += string;
+				}
+				suggestions.innerHTML = inserthtml;
+			}
+		};
+		xhttp.open("GET", searchUrl, true);
+		xhttp.send();
+	}
+	setTimeout(showSuggestions, 3000);
+</script>
 {% endif %}
 {% endblock %}
 {% block footerjs %}

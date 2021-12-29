@@ -52,3 +52,503 @@ Actual Price: 1820.85
 Error: [113.94067017]
 Percentage Error: [6.2575539]
 
+ACC accuracy: nan
+ACC avg. loss: nan
+ACC avg. profit: nan
+ACC max. loss: nan
+ACC max. profit: nan
+ADANIENT accuracy: nan
+ADANIENT avg. loss: nan
+ADANIENT avg. profit: nan
+ADANIENT max. loss: nan
+ADANIENT max. profit: nan
+ADANIGREEN accuracy: nan
+ADANIGREEN avg. loss: nan
+ADANIGREEN avg. profit: nan
+ADANIGREEN max. loss: nan
+ADANIGREEN max. profit: nan
+ADANIPORTS accuracy: nan
+ADANIPORTS avg. loss: nan
+ADANIPORTS avg. profit: nan
+ADANIPORTS max. loss: nan
+ADANIPORTS max. profit: nan
+ADANITRANS accuracy: nan
+ADANITRANS avg. loss: nan
+ADANITRANS avg. profit: nan
+ADANITRANS max. loss: nan
+ADANITRANS max. profit: nan
+AMBUJACEM accuracy: nan
+AMBUJACEM avg. loss: nan
+AMBUJACEM avg. profit: nan
+AMBUJACEM max. loss: nan
+AMBUJACEM max. profit: nan
+APOLLOHOSP accuracy: nan
+APOLLOHOSP avg. loss: nan
+APOLLOHOSP avg. profit: nan
+APOLLOHOSP max. loss: nan
+APOLLOHOSP max. profit: nan
+ASIANPAINT accuracy: 0.0
+ASIANPAINT avg. loss: -404.00
+ASIANPAINT avg. profit: nan
+ASIANPAINT max. loss: -404.00
+ASIANPAINT max. profit: nan
+AUROPHARMA accuracy: nan
+AUROPHARMA avg. loss: nan
+AUROPHARMA avg. profit: nan
+AUROPHARMA max. loss: nan
+AUROPHARMA max. profit: nan
+DMART accuracy: nan
+DMART avg. loss: nan
+DMART avg. profit: nan
+DMART max. loss: nan
+DMART max. profit: nan
+AXISBANK accuracy: nan
+AXISBANK avg. loss: nan
+AXISBANK avg. profit: nan
+AXISBANK max. loss: nan
+AXISBANK max. profit: nan
+BAJAJ-AUTO accuracy: nan
+BAJAJ-AUTO avg. loss: nan
+BAJAJ-AUTO avg. profit: nan
+BAJAJ-AUTO max. loss: nan
+BAJAJ-AUTO max. profit: nan
+BAJFINANCE accuracy: 0.0
+BAJFINANCE avg. loss: -1899.00
+BAJFINANCE avg. profit: nan
+BAJFINANCE max. loss: -1899.00
+BAJFINANCE max. profit: nan
+BAJAJFINSV accuracy: nan
+BAJAJFINSV avg. loss: nan
+BAJAJFINSV avg. profit: nan
+BAJAJFINSV max. loss: nan
+BAJAJFINSV max. profit: nan
+BAJAJHLDNG accuracy: nan
+BAJAJHLDNG avg. loss: nan
+BAJAJHLDNG avg. profit: nan
+BAJAJHLDNG max. loss: nan
+BAJAJHLDNG max. profit: nan
+BANDHANBNK accuracy: nan
+BANDHANBNK avg. loss: nan
+BANDHANBNK avg. profit: nan
+BANDHANBNK max. loss: nan
+BANDHANBNK max. profit: nan
+BANKBARODA accuracy: nan
+BANKBARODA avg. loss: nan
+BANKBARODA avg. profit: nan
+BANKBARODA max. loss: nan
+BANKBARODA max. profit: nan
+BERGEPAINT accuracy: 0.0
+BERGEPAINT avg. loss: -138.00
+BERGEPAINT avg. profit: nan
+BERGEPAINT max. loss: -138.00
+BERGEPAINT max. profit: nan
+BPCL accuracy: nan
+BPCL avg. loss: nan
+BPCL avg. profit: nan
+BPCL max. loss: nan
+BPCL max. profit: nan
+BHARTIARTL accuracy: nan
+BHARTIARTL avg. loss: nan
+BHARTIARTL avg. profit: nan
+BHARTIARTL max. loss: nan
+BHARTIARTL max. profit: nan
+BIOCON accuracy: nan
+BIOCON avg. loss: nan
+BIOCON avg. profit: nan
+BIOCON max. loss: nan
+BIOCON max. profit: nan
+BOSCHLTD accuracy: nan
+BOSCHLTD avg. loss: nan
+BOSCHLTD avg. profit: nan
+BOSCHLTD max. loss: nan
+BOSCHLTD max. profit: nan
+BRITANNIA accuracy: nan
+BRITANNIA avg. loss: nan
+BRITANNIA avg. profit: nan
+BRITANNIA max. loss: nan
+BRITANNIA max. profit: nan
+CADILAHC accuracy: nan
+CADILAHC avg. loss: nan
+CADILAHC avg. profit: nan
+CADILAHC max. loss: nan
+CADILAHC max. profit: nan
+CHOLAFIN accuracy: nan
+CHOLAFIN avg. loss: nan
+CHOLAFIN avg. profit: nan
+CHOLAFIN max. loss: nan
+CHOLAFIN max. profit: nan
+CIPLA accuracy: nan
+CIPLA avg. loss: nan
+CIPLA avg. profit: nan
+CIPLA max. loss: nan
+CIPLA max. profit: nan
+COALINDIA accuracy: nan
+COALINDIA avg. loss: nan
+COALINDIA avg. profit: nan
+COALINDIA max. loss: nan
+COALINDIA max. profit: nan
+COLPAL accuracy: nan
+COLPAL avg. loss: nan
+COLPAL avg. profit: nan
+COLPAL max. loss: nan
+COLPAL max. profit: nan
+DLF accuracy: 0.0
+DLF avg. loss: -475.00
+DLF avg. profit: nan
+DLF max. loss: -475.00
+DLF max. profit: nan
+DABUR accuracy: nan
+DABUR avg. loss: nan
+DABUR avg. profit: nan
+DABUR max. loss: nan
+DABUR max. profit: nan
+DIVISLAB accuracy: nan
+DIVISLAB avg. loss: nan
+DIVISLAB avg. profit: nan
+DIVISLAB max. loss: nan
+DIVISLAB max. profit: nan
+DRREDDY accuracy: nan
+DRREDDY avg. loss: nan
+DRREDDY avg. profit: nan
+DRREDDY max. loss: nan
+DRREDDY max. profit: nan
+EICHERMOT accuracy: nan
+EICHERMOT avg. loss: nan
+EICHERMOT avg. profit: nan
+EICHERMOT max. loss: nan
+EICHERMOT max. profit: nan
+GAIL accuracy: nan
+GAIL avg. loss: nan
+GAIL avg. profit: nan
+GAIL max. loss: nan
+GAIL max. profit: nan
+GLAND accuracy: nan
+GLAND avg. loss: nan
+GLAND avg. profit: nan
+GLAND max. loss: nan
+GLAND max. profit: nan
+GODREJCP accuracy: nan
+GODREJCP avg. loss: nan
+GODREJCP avg. profit: nan
+GODREJCP max. loss: nan
+GODREJCP max. profit: nan
+GRASIM accuracy: nan
+GRASIM avg. loss: nan
+GRASIM avg. profit: nan
+GRASIM max. loss: nan
+GRASIM max. profit: nan
+HCLTECH accuracy: nan
+HCLTECH avg. loss: nan
+HCLTECH avg. profit: nan
+HCLTECH max. loss: nan
+HCLTECH max. profit: nan
+HDFCAMC accuracy: nan
+HDFCAMC avg. loss: nan
+HDFCAMC avg. profit: nan
+HDFCAMC max. loss: nan
+HDFCAMC max. profit: nan
+HDFCBANK accuracy: nan
+HDFCBANK avg. loss: nan
+HDFCBANK avg. profit: nan
+HDFCBANK max. loss: nan
+HDFCBANK max. profit: nan
+HDFCLIFE accuracy: nan
+HDFCLIFE avg. loss: nan
+HDFCLIFE avg. profit: nan
+HDFCLIFE max. loss: nan
+HDFCLIFE max. profit: nan
+HAVELLS accuracy: nan
+HAVELLS avg. loss: nan
+HAVELLS avg. profit: nan
+HAVELLS max. loss: nan
+HAVELLS max. profit: nan
+HEROMOTOCO accuracy: nan
+HEROMOTOCO avg. loss: nan
+HEROMOTOCO avg. profit: nan
+HEROMOTOCO max. loss: nan
+HEROMOTOCO max. profit: nan
+HINDALCO accuracy: nan
+HINDALCO avg. loss: nan
+HINDALCO avg. profit: nan
+HINDALCO max. loss: nan
+HINDALCO max. profit: nan
+HINDPETRO accuracy: nan
+HINDPETRO avg. loss: nan
+HINDPETRO avg. profit: nan
+HINDPETRO max. loss: nan
+HINDPETRO max. profit: nan
+HINDUNILVR accuracy: nan
+HINDUNILVR avg. loss: nan
+HINDUNILVR avg. profit: nan
+HINDUNILVR max. loss: nan
+HINDUNILVR max. profit: nan
+HDFC accuracy: nan
+HDFC avg. loss: nan
+HDFC avg. profit: nan
+HDFC max. loss: nan
+HDFC max. profit: nan
+ICICIBANK accuracy: 0.0
+ICICIBANK avg. loss: -303.50
+ICICIBANK avg. profit: nan
+ICICIBANK max. loss: -303.50
+ICICIBANK max. profit: nan
+ICICIGI accuracy: nan
+ICICIGI avg. loss: nan
+ICICIGI avg. profit: nan
+ICICIGI max. loss: nan
+ICICIGI max. profit: nan
+ICICIPRULI accuracy: nan
+ICICIPRULI avg. loss: nan
+ICICIPRULI avg. profit: nan
+ICICIPRULI max. loss: nan
+ICICIPRULI max. profit: nan
+ITC accuracy: 0.0
+ITC avg. loss: -222.00
+ITC avg. profit: nan
+ITC max. loss: -222.00
+ITC max. profit: nan
+IOC accuracy: nan
+IOC avg. loss: nan
+IOC avg. profit: nan
+IOC max. loss: nan
+IOC max. profit: nan
+IGL accuracy: 0.0
+IGL avg. loss: -34.00
+IGL avg. profit: nan
+IGL max. loss: -34.00
+IGL max. profit: nan
+INDUSTOWER accuracy: nan
+INDUSTOWER avg. loss: nan
+INDUSTOWER avg. profit: nan
+INDUSTOWER max. loss: nan
+INDUSTOWER max. profit: nan
+INDUSINDBK accuracy: nan
+INDUSINDBK avg. loss: nan
+INDUSINDBK avg. profit: nan
+INDUSINDBK max. loss: nan
+INDUSINDBK max. profit: nan
+NAUKRI accuracy: nan
+NAUKRI avg. loss: nan
+NAUKRI avg. profit: nan
+NAUKRI max. loss: nan
+NAUKRI max. profit: nan
+INFY accuracy: 100.0
+INFY avg. loss: nan
+INFY avg. profit: 866.50
+INFY max. loss: nan
+INFY max. profit: 866.50
+INDIGO accuracy: nan
+INDIGO avg. loss: nan
+INDIGO avg. profit: nan
+INDIGO max. loss: nan
+INDIGO max. profit: nan
+JSWSTEEL accuracy: 0.0
+JSWSTEEL avg. loss: -193.00
+JSWSTEEL avg. profit: nan
+JSWSTEEL max. loss: -193.00
+JSWSTEEL max. profit: nan
+JINDALSTEL accuracy: 0.0
+JINDALSTEL avg. loss: -8.50
+JINDALSTEL avg. profit: nan
+JINDALSTEL max. loss: -8.50
+JINDALSTEL max. profit: nan
+JUBLFOOD accuracy: nan
+JUBLFOOD avg. loss: nan
+JUBLFOOD avg. profit: nan
+JUBLFOOD max. loss: nan
+JUBLFOOD max. profit: nan
+KOTAKBANK accuracy: nan
+KOTAKBANK avg. loss: nan
+KOTAKBANK avg. profit: nan
+KOTAKBANK max. loss: nan
+KOTAKBANK max. profit: nan
+LTI accuracy: 100.0
+LTI avg. loss: nan
+LTI avg. profit: 552.50
+LTI max. loss: nan
+LTI max. profit: 552.50
+LT accuracy: 0.0
+LT avg. loss: -381.50
+LT avg. profit: nan
+LT max. loss: -381.50
+LT max. profit: nan
+LUPIN accuracy: 0.0
+LUPIN avg. loss: -165.00
+LUPIN avg. profit: nan
+LUPIN max. loss: -165.00
+LUPIN max. profit: nan
+M&M accuracy: nan
+M&M avg. loss: nan
+M&M avg. profit: nan
+M&M max. loss: nan
+M&M max. profit: nan
+MARICO accuracy: nan
+MARICO avg. loss: nan
+MARICO avg. profit: nan
+MARICO max. loss: nan
+MARICO max. profit: nan
+MARUTI accuracy: 0.0
+MARUTI avg. loss: -1356.50
+MARUTI avg. profit: nan
+MARUTI max. loss: -1356.50
+MARUTI max. profit: nan
+MUTHOOTFIN accuracy: nan
+MUTHOOTFIN avg. loss: nan
+MUTHOOTFIN avg. profit: nan
+MUTHOOTFIN max. loss: nan
+MUTHOOTFIN max. profit: nan
+NMDC accuracy: 100.0
+NMDC avg. loss: nan
+NMDC avg. profit: 42.72
+NMDC max. loss: nan
+NMDC max. profit: 42.72
+NTPC accuracy: nan
+NTPC avg. loss: nan
+NTPC avg. profit: nan
+NTPC max. loss: nan
+NTPC max. profit: nan
+NESTLEIND accuracy: nan
+NESTLEIND avg. loss: nan
+NESTLEIND avg. profit: nan
+NESTLEIND max. loss: nan
+NESTLEIND max. profit: nan
+ONGC accuracy: nan
+ONGC avg. loss: nan
+ONGC avg. profit: nan
+ONGC max. loss: nan
+ONGC max. profit: nan
+PIIND accuracy: nan
+PIIND avg. loss: nan
+PIIND avg. profit: nan
+PIIND max. loss: nan
+PIIND max. profit: nan
+PIDILITIND accuracy: 100.0
+PIDILITIND avg. loss: nan
+PIDILITIND avg. profit: 267.50
+PIDILITIND max. loss: nan
+PIDILITIND max. profit: 267.50
+PEL accuracy: 0.0
+PEL avg. loss: -1338.50
+PEL avg. profit: nan
+PEL max. loss: -1338.50
+PEL max. profit: nan
+POWERGRID accuracy: nan
+POWERGRID avg. loss: nan
+POWERGRID avg. profit: nan
+POWERGRID max. loss: nan
+POWERGRID max. profit: nan
+PGHH accuracy: nan
+PGHH avg. loss: nan
+PGHH avg. profit: nan
+PGHH max. loss: nan
+PGHH max. profit: nan
+PNB accuracy: nan
+PNB avg. loss: nan
+PNB avg. profit: nan
+PNB max. loss: nan
+PNB max. profit: nan
+RELIANCE accuracy: nan
+RELIANCE avg. loss: nan
+RELIANCE avg. profit: nan
+RELIANCE max. loss: nan
+RELIANCE max. profit: nan
+SBICARD accuracy: nan
+SBICARD avg. loss: nan
+SBICARD avg. profit: nan
+SBICARD max. loss: nan
+SBICARD max. profit: nan
+SBILIFE accuracy: 100.0
+SBILIFE avg. loss: nan
+SBILIFE avg. profit: 96.50
+SBILIFE max. loss: nan
+SBILIFE max. profit: 96.50
+SHREECEM accuracy: nan
+SHREECEM avg. loss: nan
+SHREECEM avg. profit: nan
+SHREECEM max. loss: nan
+SHREECEM max. profit: nan
+SIEMENS accuracy: 0.0
+SIEMENS avg. loss: -1519.50
+SIEMENS avg. profit: nan
+SIEMENS max. loss: -1519.50
+SIEMENS max. profit: nan
+SBIN accuracy: nan
+SBIN avg. loss: nan
+SBIN avg. profit: nan
+SBIN max. loss: nan
+SBIN max. profit: nan
+SAIL accuracy: 0.0
+SAIL avg. loss: -65.00
+SAIL avg. profit: nan
+SAIL max. loss: -65.00
+SAIL max. profit: nan
+SUNPHARMA accuracy: nan
+SUNPHARMA avg. loss: nan
+SUNPHARMA avg. profit: nan
+SUNPHARMA max. loss: nan
+SUNPHARMA max. profit: nan
+TCS accuracy: nan
+TCS avg. loss: nan
+TCS avg. profit: nan
+TCS max. loss: nan
+TCS max. profit: nan
+TATACONSUM accuracy: nan
+TATACONSUM avg. loss: nan
+TATACONSUM avg. profit: nan
+TATACONSUM max. loss: nan
+TATACONSUM max. profit: nan
+TATAMOTORS accuracy: 0.0
+TATAMOTORS avg. loss: -423.50
+TATAMOTORS avg. profit: nan
+TATAMOTORS max. loss: -423.50
+TATAMOTORS max. profit: nan
+TATASTEEL accuracy: nan
+TATASTEEL avg. loss: nan
+TATASTEEL avg. profit: nan
+TATASTEEL max. loss: nan
+TATASTEEL max. profit: nan
+TECHM accuracy: nan
+TECHM avg. loss: nan
+TECHM avg. profit: nan
+TECHM max. loss: nan
+TECHM max. profit: nan
+TITAN accuracy: nan
+TITAN avg. loss: nan
+TITAN avg. profit: nan
+TITAN max. loss: nan
+TITAN max. profit: nan
+TORNTPHARM accuracy: nan
+TORNTPHARM avg. loss: nan
+TORNTPHARM avg. profit: nan
+TORNTPHARM max. loss: nan
+TORNTPHARM max. profit: nan
+UPL accuracy: 0.0
+UPL avg. loss: -218.50
+UPL avg. profit: nan
+UPL max. loss: -218.50
+UPL max. profit: nan
+ULTRACEMCO accuracy: nan
+ULTRACEMCO avg. loss: nan
+ULTRACEMCO avg. profit: nan
+ULTRACEMCO max. loss: nan
+ULTRACEMCO max. profit: nan
+MCDOWELL-N accuracy: nan
+MCDOWELL-N avg. loss: nan
+MCDOWELL-N avg. profit: nan
+MCDOWELL-N max. loss: nan
+MCDOWELL-N max. profit: nan
+VEDL accuracy: nan
+VEDL avg. loss: nan
+VEDL avg. profit: nan
+VEDL max. loss: nan
+VEDL max. profit: nan
+WIPRO accuracy: nan
+WIPRO avg. loss: nan
+WIPRO avg. profit: nan
+WIPRO max. loss: nan
+WIPRO max. profit: nan
+YESBANK accuracy: 0.0
+YESBANK avg. loss: -6.00
+YESBANK avg. profit: nan
+YESBANK max. loss: -6.00
+YESBANK max. profit: nan

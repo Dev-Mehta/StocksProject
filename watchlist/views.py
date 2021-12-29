@@ -32,57 +32,61 @@ class StockDetail(View):
 	def get(self, request, *args, **kwargs):
 		stock = kwargs['stock_name']
 		stock = stock.upper()
-			
-		stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
-		stock_data = stock_data['data']
-		sid = stock_data['sid']
-		stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
-		stock_price = stock_price['data'][0]
-		model = StockClassifier(ticker=stock)
-		result = model.train()
-		buying_factors = result['buying_factors']
-		selling_factors = result['selling_factors']
-		print(buying_factors)
-		print(selling_factors)
-		buy_count, sell_count = sum(buying_factors.values()), sum(selling_factors.values())
-		neutral_count = 4 - buy_count - sell_count
-		strong_buy = buy_count == 4
-		good_buy = buy_count >= 2 
-		neutral_buy = buy_count < 2 and sell_count < 2
-		strong_sell = sell_count == 4
-		good_sell = sell_count >= 2
-		message = ""
-		if strong_buy:
-			message = "Strong Buy"
-		if good_buy:
-			message = "Buy"
-		if neutral_buy:
-			message = "Neutral"
-		if good_sell:
-			message = "Sell"
-		if strong_sell:
-			message = "Strong Sell"
-		print(message)
-		context = {"stock_name":stock,
-		"stock_data":stock_data,
-		"stock_price":stock_price,
-		"result":result,
-		"message":message,
-		"buy_count":buy_count,
-		"sell_count":sell_count,
-		"neutral_count":neutral_count,
-		"buying_factors":buying_factors,
-		"selling_factors":selling_factors,
-		"price":result['price'],
-		}
-		watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
-		if watchlist.exists():
-			watchlist = watchlist[0]
-			if watchlist.stocks.filter(name=stock).exists():
-				context['stockAdded'] = True
-			else:
-				context['stockAdded'] = False
-		return render(self.request,"stock_detail.html", context)
+		try:
+			stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
+			stock_data = stock_data['data']
+			sid = stock_data['sid']
+			stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
+			stock_price = stock_price['data'][0]
+			model = StockClassifier(ticker=stock)
+			result = model.train()
+			buying_factors = result['buying_factors']
+			selling_factors = result['selling_factors']
+			buy_count, sell_count = sum(buying_factors.values()), sum(selling_factors.values())
+			neutral_count = 4 - buy_count - sell_count
+			print(buy_count, sell_count, neutral_count)
+			strong_buy = buy_count == 4
+			good_buy = buy_count >= 2 
+			neutral_buy = buy_count < 2 and sell_count < 2
+			strong_sell = sell_count == 4
+			good_sell = sell_count >= 2
+			message = ""
+			if good_buy:
+				message = "Buy"
+			if strong_buy:
+				message = "Strong Buy"
+			if neutral_buy:
+				message = "Neutral"
+			if good_sell:
+				message = "Sell"
+			if strong_sell:
+				message = "Strong Sell"
+			print(message)
+			context = {"stock_name":stock,
+			"stock_data":stock_data,
+			"stock_price":stock_price,
+			"result":result,
+			"message":message,
+			"buy_count":buy_count,
+			"sell_count":sell_count,
+			"neutral_count":neutral_count,
+			"buying_factors":buying_factors,
+			"selling_factors":selling_factors,
+			"price":result['price'],
+			"stock_exists":True
+			}
+			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
+			if watchlist.exists():
+				watchlist = watchlist[0]
+				if watchlist.stocks.filter(name=stock).exists():
+					context['stockAdded'] = True
+				else:
+					context['stockAdded'] = False
+			return render(self.request,"stock_detail.html", context)
+		except TypeError:
+			stock_name = kwargs['stock_name']
+			return render(self.request, "stock_detail.html", {"stock_name":stock_name})
+		
 
 def requestSearch(request):
 	ticker = request.GET.get('query')

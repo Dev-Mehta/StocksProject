@@ -121,6 +121,29 @@ class StockClassifier:
 				return 0
 			except IndexError:
 				return 0
+		if indicator == 'MACD_BUY' and entry_type == 'long':
+			macd = df.macd_buy
+			try:
+				date = macd.iloc[list(np.where(df["macd_buy"] == 1)[0])].index.values[0]
+				date = pd.to_datetime(date)
+				dates = df.index.values
+				for i in range(0,len(dates)):
+					if pd.to_datetime(dates[i]).date() == date:
+						return 5 - i
+				return 0
+			except IndexError:
+				return 0
+		if indicator == 'EMA_BUY' and entry_type == 'long':
+			try:
+				date = df.ema_buy.iloc[list(np.where(df["ema_buy"] == 1)[0])].index.values[0]
+				date = pd.to_datetime(date)
+				dates = df.index.values
+				for i in range(0,len(dates)):
+					if pd.to_datetime(dates[i]).date() == date:
+						return 5 - i
+				return 0
+			except IndexError:
+				return 0
 		if indicator == 'EMA' and entry_type == 'long':
 			try:
 				date = df.ema_crossover.iloc[list(np.where(df["ema_crossover"] == 1)[0])].index.values[0]
@@ -170,13 +193,16 @@ class StockClassifier:
 			data['macd_crossunder'] = np.where(((data.macd < data.macdSignal) & (data.macd.shift(1) > data.macdSignal.shift(1))), 1, 0)
 			data['ema_crossover'] = np.where(((data['5EMA'].shift(1) <= data['26EMA'].shift(1)) & (data['5EMA'] > data['26EMA'] )), 1, 0)
 			data['ema_crossunder'] = np.where(((data['5EMA'].shift(1) >= data['26EMA'].shift(1)) & (data['5EMA'] < data['26EMA'] )), 1, 0)
-
+			data['macd_buy'] = np.where((data.macd > data.macdSignal), 1, 0)
+			data['macd_sell'] = np.where((data.macd < data.macdSignal), 1, 0)
+			data['ema_buy'] = np.where((data['5EMA'] > data['26EMA']), 1, 0)
+			data['ema_sell'] = np.where((data['5EMA'] < data['26EMA']), 1, 0)
 			data['rsi_buy'] = np.where(data.rsi >= 60, 1, 0)
 			data['rsi_sell'] = np.where(data.rsi <= 40, 1, 0)
 
 			data['volume_buy'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close > data.Close.shift(1)), 1, 0)
 			data['volume_sell'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close < data.Close.shift(1)), 1, 0)
-
+			
 			totalScoreL = [0,0,0,0,0]
 			for i in range(len(data.index.values)-5):
 				df = data[i:i+5]
@@ -184,7 +210,9 @@ class StockClassifier:
 				macdScore = self.get_score(df, indicator='macd')
 				emaScore = self.get_score(df, indicator='ema')
 				volumeScore = self.get_score(df, indicator='volume')
-				totalScore = rsiScore + macdScore + emaScore + volumeScore
+				macdBuyScore = self.get_score(df, indicator='macd_buy', entry_type='long')
+				emaBuyScore = self.get_score(df, indicator='ema_buy', entry_type='long')
+				totalScore = rsiScore + macdScore + emaScore + volumeScore + macdBuyScore + emaBuyScore
 				totalScoreL.append(totalScore)
 			data = data.iloc[-span:,:]
 			data['totalScore'] = totalScoreL[-span:]
@@ -202,8 +230,8 @@ class StockClassifier:
 			result['price'] = self.regressor.predict(yhat)[0]
 			last_row = data.iloc[-1,:]
 			rsi_buy = last_row['rsi_buy']
-			macd_buy = last_row['macd_crossover']
-			ema_buy = last_row['ema_crossover']
+			macd_buy = 1 if last_row['macd'] > last_row['macdSignal']  else 0
+			ema_buy = 1 if last_row['5EMA'] > last_row['26EMA'] else 0
 			volume_buy = last_row['volume_buy']
 			rsi_sell = last_row['rsi_sell']
 			macd_sell = last_row['macd_crossunder']

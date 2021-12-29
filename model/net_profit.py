@@ -1,9 +1,6 @@
 import pandas as pd
-tickers = [
-	'RELIANCE',
-	'TATASTEEL',
-	'TATAPOWER'
-]
+df = pd.read_csv('nifty100.csv')
+tickers = df.Symbol.values.tolist()
 net_profit = 0
 detailed = {}
 for ticker in tickers:

@@ -1,10 +1,7 @@
 from datetime import timedelta, datetime
 import pandas as pd
-tickers = [
-	'RELIANCE',
-	'TATASTEEL',
-	'TATAPOWER'
-]
+df = pd.read_csv('nifty100.csv')
+tickers = df.Symbol.values.tolist()
 tick_accuracy = []
 avg_accuracy = 0
 for ticker in tickers:
@@ -16,7 +13,8 @@ for ticker in tickers:
 	exits = []
 	for i in data.iterrows():
 		item = i[1]
-		if item['scores'] >= 11:
+		print(item)
+		if item['totalScore'] >= 11:
 			if len(entry) == len(exits):
 				if not len(entry) > 0:
 					entry.append(item['Date'])
@@ -24,7 +22,7 @@ for ticker in tickers:
 				elif not datetime.strptime(item.Date, "%Y-%m-%d") - datetime.strptime(entry[-1], "%Y-%m-%d") <= timedelta(days=5):
 					entry.append(item['Date'])
 					buys += 1
-		if item['scores'] <= 7:
+		if item['totalScore'] <= 7:
 			if buys > 0:
 				if not sells + 1 > buys:
 					date_buy = entry[-1]
