@@ -7,6 +7,9 @@ class WatchList(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	stocks = models.ManyToManyField('Stock')
 
+	def __str__(self) -> str:
+		return self.user.username
+
 class Stock(models.Model):
 	name = models.CharField(max_length=200)
 

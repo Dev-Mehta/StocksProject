@@ -178,11 +178,7 @@ class StockClassifier:
 			result['selling_factors'] = selling_factors
 			return result
 		if self.ticker != None:
-			start = (datetime.now() - timedelta(days=100)).date()
-			end = datetime.now().date()
-			data = yf.Ticker(self.ticker+'.NS').history(start=start, end=end, actions=False)
-			span = 50
-			data = data.tail(span+5)
+			data = yf.Ticker(self.ticker+'.NS').history(period='max',actions=False)
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -203,7 +199,7 @@ class StockClassifier:
 			data['volume_buy'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close > data.Close.shift(1)), 1, 0)
 			data['volume_sell'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close < data.Close.shift(1)), 1, 0)
 			
-			totalScoreL = [0,0,0,0,0]
+			scoresL = [0,0,0,0,0]
 			for i in range(len(data.index.values)-5):
 				df = data[i:i+5]
 				rsiScore = self.get_score(df, indicator='rsi')
@@ -212,20 +208,23 @@ class StockClassifier:
 				volumeScore = self.get_score(df, indicator='volume')
 				macdBuyScore = self.get_score(df, indicator='macd_buy', entry_type='long')
 				emaBuyScore = self.get_score(df, indicator='ema_buy', entry_type='long')
-				totalScore = rsiScore + macdScore + emaScore + volumeScore + macdBuyScore + emaBuyScore
-				totalScoreL.append(totalScore)
-			data = data.iloc[-span:,:]
-			data['totalScore'] = totalScoreL[-span:]
-			data['totalScoreEma'] = data.totalScore.ewm(span=5).mean()
+				scores = rsiScore + macdScore + emaScore + volumeScore + macdBuyScore + emaBuyScore
+				scoresL.append(scores)
+			data['scores'] = scoresL
+			data['scores'] = data.scores.ewm(span=5).mean()
+			df = data
+			df.drop
+			df.to_csv(f'output/{self.ticker}.csv')
+			print(f"Trained {self.ticker}")
 			data['dates'] = data.index.values
 			data['dates'] = data['dates'].apply(lambda x: str(x.date()).split('-')[2])
-			totalScoreX = data.iloc[:,-2:-1]
+			scoresX = data.iloc[:,-2:-1]
 			datesY = data["dates"]
 			datesY = datesY.astype(int)
-			self.model.fit(np.array(datesY).reshape(-1, 1), totalScoreX)
+			self.model.fit(np.array(datesY).reshape(-1, 1), scoresX)
 			yhat = self.model.predict([[(timedelta(days=1)+datetime.now()).day]]) #predict score for next day
 			data.iloc[:,-2:]
-			self.regressor.fit(np.asarray(data['totalScoreEma']).reshape(-1, 1),data['Close'])
+			self.regressor.fit(np.asarray(data['scores']).reshape(-1, 1),data['Close'])
 			result = {}
 			result['price'] = self.regressor.predict(yhat)[0]
 			last_row = data.iloc[-1,:]
@@ -242,3 +241,6 @@ class StockClassifier:
 			result['buying_factors'] = buying_factors
 			result['selling_factors'] = selling_factors
 			return result
+
+s = StockClassifier('TECHM')
+s.train()
