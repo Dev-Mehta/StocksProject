@@ -64,7 +64,7 @@ class TestStrategy(bt.Strategy):
 		else:
 			# Already in the market ... we might sell
 			if len(self) >= (self.bar_executed + 7):
-				if self.scores[0] <= 7 and self.scores >= 4:
+				if self.scores[0] <= 10 and self.scores >= 4:
 					self.order = self.sell()
 				
 class trade_list(bt.Analyzer):
