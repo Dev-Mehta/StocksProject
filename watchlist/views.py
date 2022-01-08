@@ -5,7 +5,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-import requests
+import requests, json
+import pandas as pd
 from model.model import StockClassifier
 class HomePage(TemplateView):
 	template_name = 'index.html'
@@ -40,11 +41,14 @@ class StockDetail(View):
 			stock_price = stock_price['data'][0]
 			model = StockClassifier(ticker=stock)
 			result = model.train()
+			backtest_result = pd.DataFrame(result['backtest_results'])
+			pnl = backtest_result['pnl']
+			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
+			records = result['backtest_results']
 			buying_factors = result['buying_factors']
 			selling_factors = result['selling_factors']
 			buy_count, sell_count = sum(buying_factors.values()), sum(selling_factors.values())
 			neutral_count = 4 - buy_count - sell_count
-			print(buy_count, sell_count, neutral_count)
 			strong_buy = buy_count == 4
 			good_buy = buy_count >= 2 
 			neutral_buy = buy_count < 2 and sell_count < 2
@@ -61,7 +65,6 @@ class StockDetail(View):
 				message = "Sell"
 			if strong_sell:
 				message = "Strong Sell"
-			print(message)
 			context = {"stock_name":stock,
 			"stock_data":stock_data,
 			"stock_price":stock_price,
@@ -73,7 +76,12 @@ class StockDetail(View):
 			"buying_factors":buying_factors,
 			"selling_factors":selling_factors,
 			"price":result['price'],
-			"stock_exists":True
+			"stock_exists":True,
+			"backtest_start":result['backtest_start'],
+			"backtest_end":result['backtest_end'],
+			"backtest_result":backtest_result,
+			"backtest_accuracy":accuracy,
+			"trade_list":records,
 			}
 			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 			if watchlist.exists():

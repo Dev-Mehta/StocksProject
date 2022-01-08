@@ -2465,6 +2465,68 @@
 			</div>
 		</div>
 	</div>
+	<p>&nbsp;</p>
+	<div class="ui container">
+		<div id="score-accuracy" style="
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center; font-family: Graphik, Arial, Helvetica,Roboto, sans-serif !important;">
+			<h2 
+			style="margin: 0px auto 4px;
+			font-size: 34px;
+			letter-spacing: -0.86px;
+			line-height: 1.2;
+			max-width: 530px;
+			font-family: Graphik, sans-serif !important;
+			font-weight: 600;
+			"
+			>We have rigorously tested our score strategy and
+				it is {{backtest_accuracy}}% accurate on {{stock_name}}</h2>
+			<p style="max-width: 650px;">Historical
+				observation says that when the score reaches&nbsp;
+				<span
+					class="text-green" style="font-weight: 500;">
+					15, you can look for a buying opportunity&nbsp;
+					<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
+						class="jsx-2716488132">
+				</span>&nbsp;&amp; when the score reaches&nbsp;<span
+					class="text-red" style="font-weight: 500;">7, you can look for exiting the current trade taken with strategy&nbsp;
+					<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out" class="jsx-2716488132">
+				</span>
+			</p>
+			<button style="width: fit-content;
+			padding: 9px 12px;
+			" class="ui button secondary">Download History</button>
+			<table class="ui tablet stackable table">
+				<thead>
+				  <tr>
+					<th>ID</th>
+					<th>Buy Date</th>
+					<th>Buy Price</th>
+					<th>Sell Date</th>
+					<th>Sell Price</th>
+					<th>P&L</th>
+					<th>Quantity</th>
+				  </tr>
+				</thead>
+				<tbody>
+					{% for data in trade_list %}
+					<tr>
+						<td>{{forloop.counter}}</td>
+						<td>{{data.buy_date}}</td>
+						<td>{{data.buy_price|floatformat:2}}</td>
+						<td>{{data.sell_date}}</td>
+						<td>{{data.sell_price|floatformat:2}}</td>
+						<td>{{data.pnl|floatformat:2}}</td>
+						<td>{{data.quantity}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			  </table>
+		</div>	
+	</div>
 </div>
 <script async src="https://www.gateway-tt.in/assets/embed.js">
 </script>
@@ -2472,7 +2534,7 @@
 <div class="ui placeholder segment">
 	<div class="ui icon fluid header">
 		<i class='icon bx bx-error-circle'></i>
-		No stock is found named {{stock_name}}.	
+		No stock is found named {{stock_name}}.
 	</div>
 	<button id="searchOther" class="ui secondary button">Search For Other Stocks</button>
 </div>
@@ -2482,7 +2544,7 @@
 	</div>
 </div>
 <script>
-	function showSuggestions(){
+	function showSuggestions() {
 		const suggestions = document.querySelector("#suggestions");
 		const searchUrl = `/search/?query={{stock_name}}`
 		const stock_name = "{{stock_name}}";
@@ -2491,10 +2553,10 @@
 			if (this.readyState == 4 && this.status == 200) {
 				const resp = JSON.parse(this.responseText);
 				var inserthtml = `<h2>Maybe you were searching for</h2>`;
-				if(resp.results.length == 0){
+				if (resp.results.length == 0) {
 					inserthtml = `<h2>Stock Named ${stock_name} does not exist</h2>`;
 				}
-				for(var i=0;i<resp.results.length; i++){
+				for (var i = 0; i < resp.results.length; i++) {
 					var url = resp.results[i].url;
 					var name = resp.results[i].name;
 					var string = `<p><a href="${url}/">${name}</a></p>`;

@@ -9,6 +9,122 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from datetime import datetime, timedelta
 import requests
+import backtrader as bt
+class TestFeed(bt.feeds.PandasData):
+	lines = ('scores', )
+	params = (('scores', 23),)
+
+class TestStrategy(bt.Strategy):
+
+	def log(self, txt, dt=None):
+		''' Logging function for this strategy'''
+		dt = dt or self.datas[0].datetime.date(0)
+		print('%s, %s' % (dt.isoformat(), txt))
+
+	def __init__(self):
+		# Keep a reference to the "close" line in the data[0] dataseries
+		self.dataclose = self.datas[0].close
+		self.order = None
+		self.buyprice = None
+		self.buycomm = None
+		self.scores = self.datas[0].scores
+		self.trades = None
+		self.size = 10
+	def notify_order(self, order):
+		if order.status in [order.Submitted, order.Accepted]:
+			# Buy/Sell order submitted/accepted to/by broker - Nothing to do
+			return
+
+		# Check if an order has been completed
+		# Attention: broker could reject order if not enough cash
+		if order.status in [order.Completed]:
+			if order.isbuy():
+				self.buyprice = order.executed.price
+				self.buycomm = order.executed.comm	
+			self.bar_executed = len(self)
+
+
+		# Write down: no pending order
+		self.order = None
+	def notify_trade(self, trade):
+		if not trade.isclosed:
+			return
+		
+
+	def next(self):
+		# Simply log the closing price of the series from the reference
+		if self.order:
+			return
+		# Check if we are in the market
+		if not self.position:
+			# Not yet ... we MIGHT BUY if ...
+			if self.scores[0] > 14:
+					# Keep track of the created order to avoid a 2nd order
+					self.order = self.buy()
+		else:
+			# Already in the market ... we might sell
+			if len(self) >= (self.bar_executed + 7):
+				if self.scores[0] <= 7 and self.scores >= 4:
+					self.order = self.sell()
+				
+class trade_list(bt.Analyzer):
+
+	def get_analysis(self):
+
+		return self.trades
+
+
+	def __init__(self):
+
+		self.trades = []
+		self.cumprofit = 0.0
+
+
+	def notify_trade(self, trade):
+
+		if trade.isclosed:
+
+			brokervalue = self.strategy.broker.getvalue()
+
+			dir = 'short'
+			if trade.history[0].event.size > 0: dir = 'long'
+
+			pricein = trade.history[len(trade.history)-1].status.price
+			priceout = trade.history[len(trade.history)-1].event.price
+			datein = bt.num2date(trade.history[0].status.dt)
+			dateout = bt.num2date(trade.history[len(trade.history)-1].status.dt)
+			if trade.data._timeframe >= bt.TimeFrame.Days:
+				datein = datein.date()
+				dateout = dateout.date()
+
+			pcntchange = 100 * priceout / pricein - 100
+			pnl = trade.history[len(trade.history)-1].status.pnlcomm
+			pnlpcnt = 100 * pnl / brokervalue
+			barlen = trade.history[len(trade.history)-1].status.barlen
+			pbar = pnl / barlen
+			self.cumprofit += pnl
+
+			size = value = 0.0
+			for record in trade.history:
+				if abs(size) < abs(record.status.size):
+					size = record.status.size
+					value = record.status.value
+
+			highest_in_trade = max(trade.data.high.get(ago=0, size=barlen+1))
+			lowest_in_trade = min(trade.data.low.get(ago=0, size=barlen+1))
+			hp = 100 * (highest_in_trade - pricein) / pricein
+			lp = 100 * (lowest_in_trade - pricein) / pricein
+			if dir == 'long':
+				mfe = hp
+				mae = lp
+			if dir == 'short':
+				mfe = -lp
+				mae = -hp
+			self.trades.append({'id': trade.ref, 'ticker': trade.data._name, 'Entry Type': dir,
+				 'buy_date': datein, 'buy_price': pricein, 'sell_date': dateout, 'sell_price': priceout,
+				 'change_pct': round(pcntchange, 2), 'pnl': pnl, 'pnl_pct': round(pnlpcnt, 2),
+				 'quantity': size, 'num_days': barlen})
+
 class StockClassifier:
 	ticker = None
 	model = LinearRegression()
@@ -169,15 +285,9 @@ class StockClassifier:
 		return None
 
 	def train(self, test=False):
-		if test:
-			result = {}
-			result['price'] = 1800
-			buying_factors = {'rsi_buy':0, 'macd_buy':1, 'ema_buy':1, 'volume_buy':1}
-			selling_factors = {'rsi_sell':0, 'macd_sell':0, 'ema_sell':0, 'volume_sell':0}
-			result['buying_factors'] = buying_factors
-			result['selling_factors'] = selling_factors
-			return result
 		if self.ticker != None:
+			start = (datetime.now() - timedelta(days=2500)).date()
+			end = datetime.now().date()
 			data = yf.Ticker(self.ticker+'.NS').history(period='max',actions=False)
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
@@ -212,10 +322,18 @@ class StockClassifier:
 				scoresL.append(scores)
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
-			df = data
-			df.drop
-			df.to_csv(f'output/{self.ticker}.csv')
-			print(f"Trained {self.ticker}")
+			cerebro = bt.Cerebro()
+			cerebro.addstrategy(TestStrategy)
+			trade_data = data.dropna()
+			trade_data = TestFeed(dataname=trade_data)
+			cerebro.adddata(trade_data)
+			cerebro.broker.setcash(100000.0)
+			cerebro.broker.setcommission(commission=0.002)
+			cerebro.addsizer(bt.sizers.SizerFix, stake=50)
+			cerebro.addanalyzer(trade_list, _name='trade_list')
+			strats = cerebro.run(tradehistory=True)
+			tl = strats[0].analyzers.trade_list.get_analysis()
+			data = data.iloc[-100:,:]
 			data['dates'] = data.index.values
 			data['dates'] = data['dates'].apply(lambda x: str(x.date()).split('-')[2])
 			scoresX = data.iloc[:,-2:-1]
@@ -240,7 +358,7 @@ class StockClassifier:
 			selling_factors = {'rsi_sell':rsi_sell, 'macd_sell':macd_sell, 'ema_sell':ema_sell, 'volume_sell':volume_sell}
 			result['buying_factors'] = buying_factors
 			result['selling_factors'] = selling_factors
+			result['backtest_start'] = start
+			result['backtest_end'] = end
+			result['backtest_results'] = tl
 			return result
-
-s = StockClassifier('TECHM')
-s.train()
