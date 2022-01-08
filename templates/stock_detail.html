@@ -2479,11 +2479,10 @@
 			letter-spacing: -0.86px;
 			line-height: 1.2;
 			max-width: 530px;
-			font-family: Graphik, sans-serif !important;
 			font-weight: 600;
 			"
 			>We have rigorously tested our score strategy and
-				it is {{backtest_accuracy}}% accurate on {{stock_name}}</h2>
+				it is {{backtest_accuracy|floatformat:2}}% accurate on {{stock_name}}</h2>
 			<p style="max-width: 650px;">Historical
 				observation says that when the score reaches&nbsp;
 				<span
@@ -2499,7 +2498,7 @@
 			<button style="width: fit-content;
 			padding: 9px 12px;
 			" class="ui button secondary">Download History</button>
-			<table class="ui unstackable table">
+			<table class="ui unstackable table" style="overflow-x: scroll;">
 				<thead>
 				  <tr>
 					<th>ID</th>
