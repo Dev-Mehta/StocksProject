@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 import requests, json
 import pandas as pd
 from model.model import StockClassifier
+from io import BytesIO
+from django.http import StreamingHttpResponse
 class HomePage(TemplateView):
 	template_name = 'index.html'
 
@@ -152,3 +154,24 @@ class AddToWatchlist(View):
 			watchlist.stocks.add(stockObj)
 			watchlist.save()
 		return JsonResponse({"success":True, "message":message})
+
+def download(request):
+	ticker = request.GET.get('ticker')
+	if ticker != None:
+		sio = BytesIO()
+		s = Stock.objects.filter(name=ticker)
+		if s.exists():
+			s = s[0]
+			data = json.loads(s.backtest_result)
+			print(data)
+			PandasDataFrame = pd.DataFrame()
+			PandasWriter = pd.ExcelWriter(sio, engine='xlsxwriter')
+			PandasDataFrame.to_excel(PandasWriter, sheet_name=f'{ticker}_results.csv')
+			PandasWriter.save()
+			filename = f'{ticker}_results.csv'
+			sio.seek(0)
+			workbook = sio.getvalue()
+
+			response = StreamingHttpResponse(workbook, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+			response['Content-Disposition'] = 'attachment; filename=%s' % filename
+			return response

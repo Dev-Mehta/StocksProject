@@ -2109,7 +2109,13 @@
 	strong {
 		font-weight: bolder !important;
 	}
-</style>
+	@media screen and (max-width: 500px) {
+		.ui.table{
+			display: block;
+			overflow-x: scroll;
+		}
+	}
+	</style>
 {% endblock %}
 {% block content %}
 {% if stock_exists %}
@@ -2498,35 +2504,40 @@
 			<button style="width: fit-content;
 			padding: 9px 12px;
 			" class="ui button secondary">Download History</button>
-			<table class="ui unstackable table" style="overflow-x: scroll;">
-				<thead>
-				  <tr>
-					<th>ID</th>
-					<th>Buy Date</th>
-					<th>Buy Price</th>
-					<th>Sell Date</th>
-					<th>Sell Price</th>
-					<th>P&L</th>
-					<th>Quantity</th>
-				  </tr>
-				</thead>
-				<tbody>
-					{% for data in trade_list %}
-					<tr>
-						<td>{{forloop.counter}}</td>
-						<td>{{data.buy_date}}</td>
-						<td>{{data.buy_price|floatformat:2}}</td>
-						<td>{{data.sell_date}}</td>
-						<td>{{data.sell_price|floatformat:2}}</td>
-						<td>{{data.pnl|floatformat:2}}</td>
-						<td>{{data.quantity}}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			  </table>
 		</div>	
 	</div>
 </div>
+<p>&nbsp;</p>
+<table class="ui unstackable table">
+	<thead>
+	  <tr>
+		<th>ID</th>
+		<th>Buy Date</th>
+		<th>Buy Price</th>
+		<th>Sell Date</th>
+		<th>Sell Price</th>
+		<th>P&L</th>
+		<th>Quantity</th>
+	  </tr>
+	</thead>
+	<tbody>
+		{% for data in trade_list %}
+		<tr>
+			<td>{{forloop.counter}}</td>
+			<td>{{data.buy_date}}</td>
+			<td>{{data.buy_price|floatformat:2}}</td>
+			<td>{{data.sell_date}}</td>
+			<td>{{data.sell_price|floatformat:2}}</td>
+			{% if data.pnl > 0 %}
+			<td class="text-green">{{data.pnl|floatformat:2}}</td>
+			{% else %}
+			<td class="text-red">{{data.pnl|floatformat:2}}</td>
+			{% endif %}
+			<td>{{data.quantity}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+  </table>
 <script async src="https://www.gateway-tt.in/assets/embed.js">
 </script>
 {% else %}
@@ -2608,7 +2619,7 @@
 	}
 	function updatePrice() {
 		let currentTime = new Date();
-		if (currentTime.getHours() >= 9 && currentTime.getHours() <= 16 && (currentTime.getDay() !== 6 && currentTime.getDay() !== 7)) {
+		if ((currentTime.getHours() >= 9 && currentTime.getHours() <= 16) && (currentTime.getDay() !== 6 && currentTime.getDay() !== 0)) {
 			var xmlHttp = new XMLHttpRequest();
 			if (window.XMLHttpRequest) {
 				// code for modern browsers
@@ -2624,13 +2635,13 @@
 					document.querySelector("#currentPriceChange").innerHTML = obj.change;
 					document.querySelector("#currentPriceChangePercent").innerHTML = obj.percentageChange.toFixed(2);
 					if (obj.change > 0) {
-						var elements = document.querySelectorAll(".text-red");
+						var elements = document.querySelectorAll(".text-red").slic;
 						let down = document.querySelector(".icon-caret_down");
 						if (down !== null) {
 							down.classList.remove("icon-caret_down");
 							down.classList.add('icon-caret_up');
 						}
-						for (let i = 0; i < elements.length; i++) {
+						for (let i = 0; i < 3; i++) {
 							let element = elements[i];
 							element.classList.remove("text-red");
 							element.classList.add("text-green");
@@ -2643,7 +2654,7 @@
 							down.classList.remove("icon-caret_up");
 							down.classList.add('icon-caret_down');
 						}
-						for (let i = 0; i < elements.length; i++) {
+						for (let i = 0; i < 3; i++) {
 							let element = elements[i];
 							element.classList.remove("text-green");
 							element.classList.add("text-red");

@@ -6,12 +6,12 @@ from pandas.core.algorithms import mode
 class WatchList(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	stocks = models.ManyToManyField('Stock')
-
 	def __str__(self) -> str:
 		return self.user.username
 
 class Stock(models.Model):
 	name = models.CharField(max_length=200)
+	backtest_result = models.TextField(blank=True, null=True)
 
 	def __str__(self) -> str:
 		return self.name

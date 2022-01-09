@@ -1,5 +1,3 @@
-import re
-from numpy.lib import average
 from pandas.core.frame import DataFrame
 import yfinance as yf
 import pandas as pd
@@ -8,8 +6,10 @@ import talib as ta
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from datetime import datetime, timedelta
-import requests
+import requests, json
 import backtrader as bt
+from watchlist.models import Stock
+
 class TestFeed(bt.feeds.PandasData):
 	lines = ('scores', )
 	params = (('scores', 23),)
@@ -333,6 +333,11 @@ class StockClassifier:
 			cerebro.addanalyzer(trade_list, _name='trade_list')
 			strats = cerebro.run(tradehistory=True)
 			tl = strats[0].analyzers.trade_list.get_analysis()
+			s, created = Stock.objects.get_or_create(name=self.ticker)
+
+			if created:
+				s.backtest_result = str(json.dumps(tl))
+				s.save()
 			data = data.iloc[-100:,:]
 			data['dates'] = data.index.values
 			data['dates'] = data['dates'].apply(lambda x: str(x.date()).split('-')[2])
@@ -362,3 +367,4 @@ class StockClassifier:
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
 			return result
+
