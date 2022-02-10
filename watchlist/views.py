@@ -45,6 +45,14 @@ class StockDetail(View):
 			result = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			pnl = backtest_result['pnl']
+			profit = pnl.sum()
+			avg_pl = profit / len(pnl)
+			avg_profit = pnl[pnl > 0].mean()
+			avg_loss = pnl[pnl < 0].mean()
+			max_profit = pnl.max()
+			max_loss = pnl.min()
+			ending_value = result['ending_value']
+			returns = ((ending_value - 100000) / 100000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			records = result['backtest_results']
 			buying_factors = result['buying_factors']
@@ -83,7 +91,16 @@ class StockDetail(View):
 			"backtest_end":result['backtest_end'],
 			"backtest_result":backtest_result,
 			"backtest_accuracy":accuracy,
+			"backtest_profit": profit,
 			"trade_list":records,
+			"total_trades":len(records),
+			"avg_pl":avg_pl,
+			"avg_profit":avg_profit,
+			"avg_loss":avg_loss,
+			"max_profit":max_profit,
+			"max_loss":max_loss,
+			"ending_value": ending_value,
+			"returns":returns,
 			}
 			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 			if watchlist.exists():
@@ -96,6 +113,7 @@ class StockDetail(View):
 		except TypeError:
 			stock_name = kwargs['stock_name']
 			return render(self.request, "stock_detail.html", {"stock_name":stock_name})
+		
 		
 
 def requestSearch(request):

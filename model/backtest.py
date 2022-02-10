@@ -24,6 +24,8 @@ class TestStrategy(bt.Strategy):
 		self.scores = self.datas[0].scores
 		self.trades = None
 		self.size = 10
+		self.stop_loss = 0.1
+		self.trailing = True
 	def notify_order(self, order):
 		if order.status in [order.Submitted, order.Accepted]:
 			# Buy/Sell order submitted/accepted to/by broker - Nothing to do
@@ -70,12 +72,13 @@ class TestStrategy(bt.Strategy):
 					self.log('BUY CREATE, %.2f' % self.dataclose[0])
 					# Keep track of the created order to avoid a 2nd order
 					self.order = self.buy()
+		if not self.trailing:
+			stop_price = self.order.executed.price * (1 - self.stop_loss)
+			self.sell(exectype=bt.Order.Stop, price=stop_price)
+			self.log("SL Placed " + stop_price)
 		else:
-			# Already in the market ... we might sell
-			if len(self) >= (self.bar_executed + 5):
-				if self.scores[0] <= 7 and self.scores >= 4:
-					self.log('SELL CREATE, %.2f' % self.dataclose[0])
-					self.order = self.sell()
+			self.sell(exectype=bt.Order.StopTrail, trailpercent=self.stop_loss)
+			self.log("Trailing SL Placed ")
 				
 class trade_list(bt.Analyzer):
 

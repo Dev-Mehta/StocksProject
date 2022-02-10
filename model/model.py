@@ -1,3 +1,6 @@
+from functools import reduce
+from itertools import islice
+from time import time
 from pandas.core.frame import DataFrame
 import yfinance as yf
 import pandas as pd
@@ -58,15 +61,18 @@ class TestStrategy(bt.Strategy):
 		# Check if we are in the market
 		if not self.position:
 			# Not yet ... we MIGHT BUY if ...
-			if self.scores[0] > 14:
+			if self.scores[0] >= 16:
 					# Keep track of the created order to avoid a 2nd order
-					self.order = self.buy()
-		else:
-			# Already in the market ... we might sell
-			if len(self) >= (self.bar_executed + 7):
-				if self.scores[0] <= 9 and self.scores >= 4:
-					self.order = self.sell()
-				
+					cmprice = self.dataclose[0]
+					sl = cmprice - 25
+					target = cmprice + 75
+					mainside = self.buy(price=cmprice, exectype=bt.Order.Limit, transmit=False)
+					lowside  = self.sell(price=sl, size=50, exectype=bt.Order.StopTrailLimit,
+										transmit=False, trailpercent=0.01, parent=mainside)
+					highside = self.sell(price=target, size=50, exectype=bt.Order.Limit,
+										transmit=True, parent=mainside)
+					self.order = mainside
+			
 class trade_list(bt.Analyzer):
 
 	def get_analysis(self):
@@ -193,7 +199,7 @@ class StockClassifier:
 				If any given condition is not matched we simply return the score value of 0.
 			"""
 			try:
-				rsiValue = df.rsi.head(1).values[0]
+				rsiValue = df[4][8]
 				if rsiValue in range(60,70):
 					return 5
 				elif rsiValue in range(70,80):
@@ -226,69 +232,99 @@ class StockClassifier:
 				buy signal has.
 		"""
 		if indicator == 'MACD' and entry_type == 'long':
-			macd = df.macd_crossover
+			macd = [
+				df[4][12],
+				df[3][12],
+				df[2][12],
+				df[1][12],
+				df[0][12],
+			]
 			try:
-				date = macd.iloc[list(np.where(df["macd_crossover"] == 1)[0])].index.values[0]
-				date = pd.to_datetime(date)
-				dates = df.index.values
-				for i in range(0,len(dates)):
-					if pd.to_datetime(dates[i]).date() == date:
-						return 5 - i
-				return 0
+				date = macd.index(1)
+				return 5 - date
 			except IndexError:
 				return 0
-		if indicator == 'MACD_BUY' and entry_type == 'long':
-			macd = df.macd_buy
-			try:
-				date = macd.iloc[list(np.where(df["macd_buy"] == 1)[0])].index.values[0]
-				date = pd.to_datetime(date)
-				dates = df.index.values
-				for i in range(0,len(dates)):
-					if pd.to_datetime(dates[i]).date() == date:
-						return 5 - i
+			except ValueError:
 				return 0
+		if indicator == 'MACD_BUY' and entry_type == 'long':
+			macd = [
+				df[4][16],
+				df[3][16],
+				df[2][16],
+				df[1][16],
+				df[0][16],
+			]
+			try:
+				date = 1 in macd
+				if date:
+					return 5
+				else:
+					return 0
 			except IndexError:
 				return 0
 		if indicator == 'EMA_BUY' and entry_type == 'long':
+			ema = [
+				df[4][18],
+				df[3][18],
+				df[2][18],
+				df[1][18],
+				df[0][18],
+			]
 			try:
-				date = df.ema_buy.iloc[list(np.where(df["ema_buy"] == 1)[0])].index.values[0]
-				date = pd.to_datetime(date)
-				dates = df.index.values
-				for i in range(0,len(dates)):
-					if pd.to_datetime(dates[i]).date() == date:
-						return 5 - i
-				return 0
+				date = 1 in ema
+				if date:
+					return 5
+				else:
+					return 0
 			except IndexError:
 				return 0
 		if indicator == 'EMA' and entry_type == 'long':
+			ema_crossover = [
+				df[4][14],
+				df[3][14],
+				df[2][14],
+				df[1][14],
+				df[0][14],
+			]
 			try:
-				date = df.ema_crossover.iloc[list(np.where(df["ema_crossover"] == 1)[0])].index.values[0]
-				date = pd.to_datetime(date)
-				dates = df.index.values
-				for i in range(0,len(dates)):
-					if pd.to_datetime(dates[i]).date() == date:
-						return 5 - i
-				return 0
+				date = ema_crossover.index(1)
+				return 5 - date
 			except IndexError:
+				return 0
+			except ValueError:
 				return 0
 		if indicator == 'VOLUME' and entry_type == 'long':
+			volume_buy = [
+				df[4][22],
+				df[3][22],
+				df[2][22],
+				df[1][22],
+				df[0][22],
+			]
 			try:
-				date = df.volume_buy.iloc[list(np.where(df["volume_buy"] == 1)[0])].index.values[0]
-				date = pd.to_datetime(date)
-				dates = df.index.values
-				for i in range(0,len(dates)):
-					if pd.to_datetime(dates[i]).date() == date:
-						return 5 - i
-				return 0
+				date = volume_buy.index(1)
+				return 5 - date
 			except IndexError:
 				return 0
+			except ValueError:
+				return 0
 		return None
+
+	def window(self, seq, n=5):
+		it = iter(seq)
+		result = tuple(islice(it, n))
+		if len(result) == n:
+			yield result
+		for elem in it:
+			result = result[1:] + (elem,)
+			yield result
 
 	def train(self, test=False):
 		if self.ticker != None:
 			start = (datetime.now() - timedelta(days=2500)).date()
 			end = datetime.now().date()
-			data = yf.Ticker(self.ticker+'.NS').history(period='max',actions=False)
+			data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
+
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -308,10 +344,13 @@ class StockClassifier:
 
 			data['volume_buy'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close > data.Close.shift(1)), 1, 0)
 			data['volume_sell'] = np.where((data.Volume > data.Volume.ewm(span=5).mean()) & (data.Close < data.Close.shift(1)), 1, 0)
-			
+
 			scoresL = [0,0,0,0,0]
-			for i in range(len(data.index.values)-5):
-				df = data[i:i+5]
+			dataf = data.to_numpy()
+			len_data = len(data.index.values)-5
+			start = time()
+			for i in range(len_data):
+				df = dataf[i:i+5]
 				rsiScore = self.get_score(df, indicator='rsi')
 				macdScore = self.get_score(df, indicator='macd')
 				emaScore = self.get_score(df, indicator='ema')
@@ -320,8 +359,12 @@ class StockClassifier:
 				emaBuyScore = self.get_score(df, indicator='ema_buy', entry_type='long')
 				scores = rsiScore + macdScore + emaScore + volumeScore + macdBuyScore + emaBuyScore
 				scoresL.append(scores)
+			print(f"Time: {time() - start}")
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
+			# data.to_csv('output/TATASTEEL.csv')
+			# data.Date = pd.to_datetime(data.Date)
+			# data.index = data.Date
 			cerebro = bt.Cerebro()
 			cerebro.addstrategy(TestStrategy)
 			trade_data = data.dropna()
@@ -366,5 +409,6 @@ class StockClassifier:
 			result['backtest_start'] = start
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
+			result['ending_value'] = cerebro.broker.get_value()
 			return result
 

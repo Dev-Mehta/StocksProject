@@ -7,7 +7,9 @@
 	.ui.search .action:hover {
 		background: transparent !important;
 	}
-
+	.bold{
+		font-weight: bold;
+	}
 	.tv-error-card {
 		align-items: center;
 		color: #131722;
@@ -2479,16 +2481,15 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center; font-family: Graphik, Arial, Helvetica,Roboto, sans-serif !important;">
-			<h2 
+			<h3 
 			style="margin: 0px auto 4px;
-			font-size: 34px;
+			font-size: 24px;
 			letter-spacing: -0.86px;
 			line-height: 1.2;
 			max-width: 530px;
 			font-weight: 600;
 			"
-			>We have rigorously tested our score strategy and
-				it is {{backtest_accuracy|floatformat:2}}% accurate on {{stock_name}}</h2>
+			>You would have made Rs. {{backtest_profit|floatformat:2}} by trading with our given signals on {{stock_name}}</h2>
 			<p style="max-width: 650px;">Historical
 				observation says that when the score reaches&nbsp;
 				<span
@@ -2536,6 +2537,43 @@
 			<td>{{data.quantity}}</td>
 		</tr>
 		{% endfor %}
+	</tbody>
+  </table>
+  <table class="ui unstackable table">
+	<tbody>
+		<tr>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">Rs. 1,00,000</b></td>
+			<td>Ending Portfolio Value - <b style="font-weight: bold">Rs. {{ending_value|floatformat:2}}</b></td>
+			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2}}</b></td>
+		</tr>
+		<tr>
+			<td class="bold">Net Profit</td>
+			<td>Rs. {{backtest_profit|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Total Closed Trades</td>
+			<td>{{total_trades}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Avg. Trade P/L</td>
+			<td>{{avg_pl|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Avg. Profit</td>
+			<td class="text-green">{{avg_profit|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Avg. Loss</td>
+			<td class="text-red">{{avg_loss|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Largest Winning Trade</td>
+			<td class="text-green">{{max_profit|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td class="bold">Largest Losing Trade</td>
+			<td class="text-red">{{max_loss|floatformat:2}}</td>
+		</tr>
 	</tbody>
   </table>
 <script async src="https://www.gateway-tt.in/assets/embed.js">
