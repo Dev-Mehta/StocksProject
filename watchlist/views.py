@@ -36,11 +36,12 @@ class StockDetail(View):
 		stock = kwargs['stock_name']
 		stock = stock.upper()
 		try:
-			stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
-			stock_data = stock_data['data']
-			sid = stock_data['sid']
-			stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
-			stock_price = stock_price['data'][0]
+			# stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
+			# stock_data = stock_data['data']
+			# sid = stock_data['sid']
+			# stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
+			# stock_price = stock_price['data'][0]
+			stock_data, stock_price = None, None
 			model = StockClassifier(ticker=stock)
 			result = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
@@ -52,7 +53,7 @@ class StockDetail(View):
 			max_profit = pnl.max()
 			max_loss = pnl.min()
 			ending_value = result['ending_value']
-			returns = ((ending_value - 100000) / 100000) * 100
+			returns = ((ending_value - 1000000) / 1000000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			records = result['backtest_results']
 			buying_factors = result['buying_factors']

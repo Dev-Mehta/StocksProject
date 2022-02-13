@@ -15,7 +15,7 @@ from watchlist.models import Stock
 
 class TestFeed(bt.feeds.PandasData):
 	lines = ('scores', )
-	params = (('scores', 23),)
+	params = (('scores', 24),)
 
 class TestStrategy(bt.Strategy):
 
@@ -61,18 +61,13 @@ class TestStrategy(bt.Strategy):
 		# Check if we are in the market
 		if not self.position:
 			# Not yet ... we MIGHT BUY if ...
-			if self.scores[0] >= 16:
-					# Keep track of the created order to avoid a 2nd order
-					cmprice = self.dataclose[0]
-					sl = cmprice - 25
-					target = cmprice + 75
-					mainside = self.buy(price=cmprice, exectype=bt.Order.Limit, transmit=False)
-					lowside  = self.sell(price=sl, size=50, exectype=bt.Order.StopTrailLimit,
-										transmit=False, trailpercent=0.01, parent=mainside)
-					highside = self.sell(price=target, size=50, exectype=bt.Order.Limit,
-										transmit=True, parent=mainside)
-					self.order = mainside
-			
+			if self.scores[0] >= 15:
+				# Keep track of the created order to avoid a 2nd order
+				self.size = 500000 // self.dataclose[0]
+				self.order = self.buy(size=self.size)
+		else:		
+			if self.scores[0] <= 14:
+				self.order = self.sell(size=self.size)
 class trade_list(bt.Analyzer):
 
 	def get_analysis(self):
@@ -323,8 +318,8 @@ class StockClassifier:
 		if self.ticker != None:
 			start = (datetime.now() - timedelta(days=2500)).date()
 			end = datetime.now().date()
-			data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
-
+			# data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
+			data = pd.read_csv('model/data/TATASTEEL.csv')
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -363,19 +358,20 @@ class StockClassifier:
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
 			# data.to_csv('output/TATASTEEL.csv')
-			# data.Date = pd.to_datetime(data.Date)
-			# data.index = data.Date
+			data.Date = pd.to_datetime(data.Date)
+			data.index = data.Date
 			cerebro = bt.Cerebro()
 			cerebro.addstrategy(TestStrategy)
 			trade_data = data.dropna()
 			trade_data = TestFeed(dataname=trade_data)
 			cerebro.adddata(trade_data)
-			cerebro.broker.setcash(100000.0)
+			cerebro.broker.setcash(1000000.0)
 			cerebro.broker.setcommission(commission=0.002)
-			cerebro.addsizer(bt.sizers.SizerFix, stake=50)
 			cerebro.addanalyzer(trade_list, _name='trade_list')
 			strats = cerebro.run(tradehistory=True)
 			tl = strats[0].analyzers.trade_list.get_analysis()
+			cumprofit = strats[0].analyzers.trade_list.cumprofit
+			print(cumprofit)
 			s, created = Stock.objects.get_or_create(name=self.ticker)
 
 			if created:
@@ -409,6 +405,6 @@ class StockClassifier:
 			result['backtest_start'] = start
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
-			result['ending_value'] = cerebro.broker.get_value()
+			result['ending_value'] = 1000000 + cumprofit
 			return result
 

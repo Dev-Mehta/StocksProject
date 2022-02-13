@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block title %} Search Results for "{{stock_name}}" {% endblock %}
 {% block extraCss %}
 <link rel="stylesheet" href="{% static 'stockDetail.css' %}">
@@ -2542,37 +2543,37 @@
   <table class="ui unstackable table">
 	<tbody>
 		<tr>
-			<td>Initial Portfolio Value - <b style="font-weight: bold">Rs. 1,00,000</b></td>
-			<td>Ending Portfolio Value - <b style="font-weight: bold">Rs. {{ending_value|floatformat:2}}</b></td>
-			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2}}</b></td>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">Rs. 1,000,000</b></td>
+			<td>Ending Portfolio Value - <b style="font-weight: bold">Rs. {{ending_value|floatformat:2|intcomma}}</b></td>
+			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2|intcomma}}</b></td>
 		</tr>
 		<tr>
 			<td class="bold">Net Profit</td>
-			<td>Rs. {{backtest_profit|floatformat:2}}</td>
+			<td>Rs. {{backtest_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Total Closed Trades</td>
-			<td>{{total_trades}}</td>
+			<td>{{total_trades|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Trade P/L</td>
-			<td>{{avg_pl|floatformat:2}}</td>
+			<td>{{avg_pl|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Profit</td>
-			<td class="text-green">{{avg_profit|floatformat:2}}</td>
+			<td class="text-green">{{avg_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Loss</td>
-			<td class="text-red">{{avg_loss|floatformat:2}}</td>
+			<td class="text-red">{{avg_loss|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Winning Trade</td>
-			<td class="text-green">{{max_profit|floatformat:2}}</td>
+			<td class="text-green">{{max_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Losing Trade</td>
-			<td class="text-red">{{max_loss|floatformat:2}}</td>
+			<td class="text-red">{{max_loss|floatformat:2|intcomma}}</td>
 		</tr>
 	</tbody>
   </table>
