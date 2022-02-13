@@ -15,7 +15,7 @@ from watchlist.models import Stock
 
 class TestFeed(bt.feeds.PandasData):
 	lines = ('scores', )
-	params = (('scores', 24),)
+	params = (('scores', 23),)
 
 class TestStrategy(bt.Strategy):
 
@@ -61,12 +61,12 @@ class TestStrategy(bt.Strategy):
 		# Check if we are in the market
 		if not self.position:
 			# Not yet ... we MIGHT BUY if ...
-			if self.scores[0] >= 15:
+			if self.scores[0] >= 90:
 				# Keep track of the created order to avoid a 2nd order
 				self.size = 500000 // self.dataclose[0]
 				self.order = self.buy(size=self.size)
 		else:		
-			if self.scores[0] <= 14:
+			if self.scores[0] <= 80:
 				self.order = self.sell(size=self.size)
 class trade_list(bt.Analyzer):
 
@@ -318,8 +318,8 @@ class StockClassifier:
 		if self.ticker != None:
 			start = (datetime.now() - timedelta(days=2500)).date()
 			end = datetime.now().date()
-			# data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
-			data = pd.read_csv('model/data/TATASTEEL.csv')
+			data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
+			# data = pd.read_csv('model/data/TATASTEEL.csv')
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -357,9 +357,10 @@ class StockClassifier:
 			print(f"Time: {time() - start}")
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
+			data['scores'] = data['scores'] * 20
 			# data.to_csv('output/TATASTEEL.csv')
-			data.Date = pd.to_datetime(data.Date)
-			data.index = data.Date
+			# data.Date = pd.to_datetime(data.Date)
+			# data.index = data.Date
 			cerebro = bt.Cerebro()
 			cerebro.addstrategy(TestStrategy)
 			trade_data = data.dropna()

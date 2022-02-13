@@ -2490,8 +2490,9 @@
 			max-width: 530px;
 			font-weight: 600;
 			"
-			>You would have made Rs. {{backtest_profit|floatformat:2}} by trading with our given signals on {{stock_name}}</h2>
-			<p style="max-width: 650px;">Historical
+			>You would have made ₹{{backtest_profit|floatformat:2|intcomma}} by trading with our given signals on {{stock_name}}</h2>
+			<p>&nbsp;</p>
+			<p style="max-width: 650px; font-size: 17px;">Historical
 				observation says that when the score reaches&nbsp;
 				<span
 					class="text-green" style="font-weight: 500;">
@@ -2499,9 +2500,13 @@
 					<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
 						class="jsx-2716488132">
 				</span>&nbsp;&amp; when the score reaches&nbsp;<span
-					class="text-red" style="font-weight: 500;">7, you can look for exiting the current trade taken with strategy&nbsp;
+					class="text-red" style="font-weight: 500;">10, you can look for exiting the current trade taken with strategy&nbsp;
 					<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out" class="jsx-2716488132">
 				</span>
+			</p>
+			<p>&nbsp;</p>
+			<p class="help-text" style="color: #4e4e4e;">
+				Returns are calculated by taking every trade virtually with given signals and initial capital of ₹10 Lacs.
 			</p>
 			<button style="width: fit-content;
 			padding: 9px 12px;
@@ -2543,13 +2548,13 @@
   <table class="ui unstackable table">
 	<tbody>
 		<tr>
-			<td>Initial Portfolio Value - <b style="font-weight: bold">Rs. 1,000,000</b></td>
-			<td>Ending Portfolio Value - <b style="font-weight: bold">Rs. {{ending_value|floatformat:2|intcomma}}</b></td>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">₹1,000,000</b></td>
+			<td>Ending Portfolio Value - <b style="font-weight: bold">₹{{ending_value|floatformat:2|intcomma}}</b></td>
 			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2|intcomma}}</b></td>
 		</tr>
 		<tr>
 			<td class="bold">Net Profit</td>
-			<td>Rs. {{backtest_profit|floatformat:2|intcomma}}</td>
+			<td>₹{{backtest_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Total Closed Trades</td>

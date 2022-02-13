@@ -36,12 +36,12 @@ class StockDetail(View):
 		stock = kwargs['stock_name']
 		stock = stock.upper()
 		try:
-			# stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
-			# stock_data = stock_data['data']
-			# sid = stock_data['sid']
-			# stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
-			# stock_price = stock_price['data'][0]
-			stock_data, stock_price = None, None
+			stock_data = requests.get(f"https://api.tickertape.in/external/oembed/{stock}").json()
+			stock_data = stock_data['data']
+			sid = stock_data['sid']
+			stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
+			stock_price = stock_price['data'][0]
+			# stock_data, stock_price = None, None
 			model = StockClassifier(ticker=stock)
 			result = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
