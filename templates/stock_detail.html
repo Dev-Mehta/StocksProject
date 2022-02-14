@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_tags %}
 {% load humanize %}
 {% block title %} Search Results for "{{stock_name}}" {% endblock %}
 {% block extraCss %}
@@ -2554,7 +2555,7 @@
 		</tr>
 		<tr>
 			<td class="bold">Net Profit</td>
-			<td>₹{{backtest_profit|floatformat:2|intcomma}}</td>
+			<td>₹{{backtest_profit|format_indian}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Total Closed Trades</td>
@@ -2562,23 +2563,23 @@
 		</tr>
 		<tr>
 			<td class="bold">Avg. Trade P/L</td>
-			<td>{{avg_pl|floatformat:2|intcomma}}</td>
+			<td>{{avg_pl|format_indian}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Profit</td>
-			<td class="text-green">{{avg_profit|floatformat:2|intcomma}}</td>
+			<td class="text-green">{{avg_profit|format_indian}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Loss</td>
-			<td class="text-red">{{avg_loss|floatformat:2|intcomma}}</td>
+			<td class="text-red">{{avg_loss|format_indian}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Winning Trade</td>
-			<td class="text-green">{{max_profit|floatformat:2|intcomma}}</td>
+			<td class="text-green">{{max_profit|format_indian}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Losing Trade</td>
-			<td class="text-red">{{max_loss|floatformat:2|intcomma}}</td>
+			<td class="text-red">{{max_loss|format_indian}}</td>
 		</tr>
 	</tbody>
   </table>
