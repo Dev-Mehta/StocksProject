@@ -11,8 +11,6 @@ from sklearn.ensemble import RandomForestRegressor
 from datetime import datetime, timedelta
 import requests, json
 import backtrader as bt
-from watchlist.models import Stock
-
 class TestFeed(bt.feeds.PandasData):
 	lines = ('scores', )
 	params = (('scores', 23),)
@@ -323,6 +321,31 @@ class StockClassifier:
 		for elem in it:
 			result = result[1:] + (elem,)
 			yield result
+	def format_indian(self, t):
+		dic = {
+			4:'Thousand',
+			5:'Lakh',
+			6:'Lakh',
+			7:'Crore',
+			8:'Crore',
+			9:'Arab'
+		}
+		y = 10
+		len_of_number = len(str(t))
+		save = t
+		z=y
+		while(t!=0):
+			t=int(t/y)
+			z*=10
+
+		zeros = len(str(z)) - 3
+		if zeros>3:
+			if zeros%2!=0:
+				string = str(save)+": "+str(save/(z/100))[0:4]+" "+dic[zeros]
+			else:   
+				string = str(save)+": "+str(save/(z/1000))[0:4]+" "+dic[zeros]
+			return string
+		return str(save)+": "+str(save)
 
 	def train(self, test=False):
 		if self.ticker != None:
@@ -364,7 +387,6 @@ class StockClassifier:
 				emaBuyScore = self.get_score(df, indicator='ema_buy', entry_type='long')
 				scores = rsiScore + macdScore + emaScore + volumeScore + macdBuyScore + emaBuyScore
 				scoresL.append(scores)
-			print(f"Time: {time() - start}")
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
 			data['scores'] = data['scores'] * 5
@@ -382,12 +404,7 @@ class StockClassifier:
 			strats = cerebro.run(tradehistory=True)
 			tl = strats[0].analyzers.trade_list.get_analysis()
 			cumprofit = strats[0].analyzers.trade_list.cumprofit
-			print(cumprofit)
-			s, created = Stock.objects.get_or_create(name=self.ticker)
-
-			if created:
-				s.backtest_result = str(json.dumps(tl))
-				s.save()
+			
 			data = data.iloc[-100:,:]
 			data['dates'] = data.index.values
 			data['dates'] = data['dates'].apply(lambda x: str(x.date()).split('-')[2])
@@ -410,7 +427,7 @@ class StockClassifier:
 			ema_sell = last_row['ema_crossunder']
 			volume_sell = last_row['volume_sell']
 			result['score'] = last_row['scores']
-			print(last_row)
+			
 			buying_factors = {'rsi_buy':rsi_buy, 'macd_buy':macd_buy, 'ema_buy':ema_buy, 'volume_buy':volume_buy}
 			selling_factors = {'rsi_sell':rsi_sell, 'macd_sell':macd_sell, 'ema_sell':ema_sell, 'volume_sell':volume_sell}
 			result['buying_factors'] = buying_factors
@@ -419,5 +436,30 @@ class StockClassifier:
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
 			result['ending_value'] = 100000 + cumprofit
-			return result
+			backtest_result = pd.DataFrame(result['backtest_results'])
+			ending_value = result['ending_value']
+			pnl = backtest_result['pnl']
+			returns = ((ending_value - 100000) / 100000) * 100
+			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
+			
+			profit = pnl.sum()
+			avg_pl = profit / len(pnl)
+			avg_profit = pnl[pnl > 0].mean()
+			avg_loss = pnl[pnl < 0].mean()
+			max_profit = pnl.max()
+			max_loss = pnl.min()
+			dataframe = {}
+			dataframe['stock'] = self.ticker
+			dataframe['initial_capital'] = 100000
+			dataframe['ending_value'] = self.format_indian(ending_value)
+			dataframe['returns'] = returns
+			dataframe['accuracy'] = accuracy
+			dataframe['profit'] = profit
+			dataframe['avg_pl'] = avg_pl
+			dataframe['avg_profit'] = avg_profit
+			dataframe['avg_loss'] = avg_loss
+			dataframe['max_profit'] = max_profit
+			dataframe['max_loss'] = max_loss
+			dataframe['trade_list'] = json.dumps(str(tl))
+			return result, dataframe
 

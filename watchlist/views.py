@@ -43,7 +43,7 @@ class StockDetail(View):
 			stock_price = stock_price['data'][0]
 			# stock_data, stock_price = None, None
 			model = StockClassifier(ticker=stock)
-			result = model.train()
+			result, df = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			pnl = backtest_result['pnl']
 			profit = pnl.sum()
@@ -53,6 +53,7 @@ class StockDetail(View):
 			max_profit = pnl.max()
 			max_loss = pnl.min()
 			ending_value = result['ending_value']
+			print(format_indian(ending_value))
 			returns = ((ending_value - 100000) / 100000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			records = result['backtest_results']
@@ -100,7 +101,7 @@ class StockDetail(View):
 			"avg_loss":avg_loss,
 			"max_profit":max_profit,
 			"max_loss":max_loss,
-			"ending_value": ending_value,
+			"ending_value": format_indian(ending_value),
 			"returns":returns,
 			"score":result['score'],
 			}
@@ -174,7 +175,31 @@ class AddToWatchlist(View):
 			watchlist.stocks.add(stockObj)
 			watchlist.save()
 		return JsonResponse({"success":True, "message":message})
+def format_indian(t):
+	dic = {
+		4:'Thousand',
+		5:'Lakh',
+		6:'Lakh',
+		7:'Crore',
+		8:'Crore',
+		9:'Arab'
+	}
+	y = 10
+	len_of_number = len(str(t))
+	save = t
+	z=y
+	while(t!=0):
+		t=int(t/y)
+		z*=10
 
+	zeros = len(str(z)) - 3
+	if zeros>3:
+		if zeros%2!=0:
+			string = str(save/(z/100))[0:4]+" "+dic[zeros]
+		else:   
+			string = str(save/(z/1000))[0:4]+" "+dic[zeros]
+		return string
+	return str(save)
 def download(request):
 	ticker = request.GET.get('ticker')
 	if ticker != None:
