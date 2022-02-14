@@ -2163,12 +2163,12 @@
 												style="font-size: 11px; color: rgb(89, 91, 98); line-height: 1.45; margin-bottom: 6px; white-space: normal; font-family: &quot;Graphik Web Regular&quot;, sans-serif;">
 												{{stock_data.info.description}}</p>
 											<div class="price">
-												<h2 class="mb4"><span class="font-medium text-red">₹&nbsp;<span
+												<h2 class="mb4"><span class="font-medium text-red colorChange">₹&nbsp;<span
 															id="currentPrice">{{stock_price.price}}</span></span><span
-														class="price-change font-medium text-red"><i
+														class="price-change font-medium text-red colorChange"><i
 															class="icon-caret_down text-14 icon-caret"></i><span
 															id="currentPriceChange">{{stock_price.change}}</span></span><span
-														class="label font-medium text-red">&nbsp;(<span
+														class="label font-medium text-red colorChange">&nbsp;(<span
 															id="currentPriceChangePercent">-0.71</span>%)</span></h2>
 											</div>
 										</div>
@@ -2402,7 +2402,7 @@
 	<div class="ui very relaxed list">
 		<div class="content">
 			<div class="header">
-				Price Prediction for <strong>{{stock_name}}</strong>: <strong>{{price|floatformat:2}}</strong>
+				Current Score for <strong>{{stock_name}}</strong>: <strong>{{score|floatformat:2}}</strong>
 			</div>
 		</div>
 	</div>
@@ -2496,17 +2496,17 @@
 				observation says that when the score reaches&nbsp;
 				<span
 					class="text-green" style="font-weight: 500;">
-					15, you can look for a buying opportunity&nbsp;
+					30, you can look for a buying opportunity&nbsp;
 					<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
 						class="jsx-2716488132">
 				</span>&nbsp;&amp; when the score reaches&nbsp;<span
-					class="text-red" style="font-weight: 500;">10, you can look for exiting the current trade taken with strategy&nbsp;
+					class="text-red" style="font-weight: 500;">20, you can look for exiting the current trade taken with strategy&nbsp;
 					<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out" class="jsx-2716488132">
 				</span>
 			</p>
 			<p>&nbsp;</p>
 			<p class="help-text" style="color: #4e4e4e;">
-				Returns are calculated by taking every trade virtually with given signals and initial capital of ₹10 Lacs.
+				Returns are calculated by taking every trade virtually with given signals and initial capital of ₹1 Lac.
 			</p>
 			<button style="width: fit-content;
 			padding: 9px 12px;
@@ -2548,7 +2548,7 @@
   <table class="ui unstackable table">
 	<tbody>
 		<tr>
-			<td>Initial Portfolio Value - <b style="font-weight: bold">₹1,000,000</b></td>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">₹100,000</b></td>
 			<td>Ending Portfolio Value - <b style="font-weight: bold">₹{{ending_value|floatformat:2|intcomma}}</b></td>
 			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2|intcomma}}</b></td>
 		</tr>
@@ -2679,7 +2679,7 @@
 					document.querySelector("#currentPriceChange").innerHTML = obj.change;
 					document.querySelector("#currentPriceChangePercent").innerHTML = obj.percentageChange.toFixed(2);
 					if (obj.change > 0) {
-						var elements = document.querySelectorAll(".text-red").slic;
+						var elements = document.querySelectorAll(".colorChange");
 						let down = document.querySelector(".icon-caret_down");
 						if (down !== null) {
 							down.classList.remove("icon-caret_down");
@@ -2692,7 +2692,7 @@
 						}
 					}
 					else {
-						var elements = document.querySelectorAll(".text-green");
+						var elements = document.querySelectorAll(".colorChange");
 						let down = document.querySelector(".icon-caret_up");
 						if (down !== null) {
 							down.classList.remove("icon-caret_up");

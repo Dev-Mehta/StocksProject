@@ -16,6 +16,7 @@ from watchlist.models import Stock
 class TestFeed(bt.feeds.PandasData):
 	lines = ('scores', )
 	params = (('scores', 23),)
+	# params = (('scores', 24),)
 
 class TestStrategy(bt.Strategy):
 
@@ -33,6 +34,8 @@ class TestStrategy(bt.Strategy):
 		self.scores = self.datas[0].scores
 		self.trades = None
 		self.size = 10
+		self.cash_value = 100000
+		self.cumprofit = 0.0
 	def notify_order(self, order):
 		if order.status in [order.Submitted, order.Accepted]:
 			# Buy/Sell order submitted/accepted to/by broker - Nothing to do
@@ -52,8 +55,14 @@ class TestStrategy(bt.Strategy):
 	def notify_trade(self, trade):
 		if not trade.isclosed:
 			return
-		
-
+		self.cumprofit += trade.pnlcomm
+		if trade.pnlcomm > 0:
+			self.cash_value += int(trade.pnlcomm)
+			if self.cumprofit > 0:
+				if self.cumprofit < trade.pnlcomm:
+					self.broker.add_cash(int(self.cumprofit))	
+				else:
+					self.broker.add_cash(int(trade.pnlcomm))
 	def next(self):
 		# Simply log the closing price of the series from the reference
 		if self.order:
@@ -61,12 +70,13 @@ class TestStrategy(bt.Strategy):
 		# Check if we are in the market
 		if not self.position:
 			# Not yet ... we MIGHT BUY if ...
-			if self.scores[0] >= 90:
+			if self.scores[0] >= 30:
 				# Keep track of the created order to avoid a 2nd order
-				self.size = 500000 // self.dataclose[0]
-				self.order = self.buy(size=self.size)
+				self.size = int(int((self.cash_value*0.5)) // self.dataclose[0])
+				self.size = self.size - (self.size%50)
+				self.order = self.buy(size=self.size, exectype=bt.Order.StopTrail, trailpercent=0.1)
 		else:		
-			if self.scores[0] <= 80:
+			if self.scores[0] <= 20:
 				self.order = self.sell(size=self.size)
 class trade_list(bt.Analyzer):
 
@@ -319,7 +329,7 @@ class StockClassifier:
 			start = (datetime.now() - timedelta(days=2500)).date()
 			end = datetime.now().date()
 			data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
-			# data = pd.read_csv('model/data/TATASTEEL.csv')
+			# data = pd.read_csv('model/data/RELIANCE.csv')
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -357,7 +367,7 @@ class StockClassifier:
 			print(f"Time: {time() - start}")
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
-			data['scores'] = data['scores'] * 20
+			data['scores'] = data['scores'] * 5
 			# data.to_csv('output/TATASTEEL.csv')
 			# data.Date = pd.to_datetime(data.Date)
 			# data.index = data.Date
@@ -366,7 +376,7 @@ class StockClassifier:
 			trade_data = data.dropna()
 			trade_data = TestFeed(dataname=trade_data)
 			cerebro.adddata(trade_data)
-			cerebro.broker.setcash(1000000.0)
+			cerebro.broker.setcash(100000.0)
 			cerebro.broker.setcommission(commission=0.002)
 			cerebro.addanalyzer(trade_list, _name='trade_list')
 			strats = cerebro.run(tradehistory=True)
@@ -399,6 +409,8 @@ class StockClassifier:
 			macd_sell = last_row['macd_crossunder']
 			ema_sell = last_row['ema_crossunder']
 			volume_sell = last_row['volume_sell']
+			result['score'] = last_row['scores']
+			print(last_row)
 			buying_factors = {'rsi_buy':rsi_buy, 'macd_buy':macd_buy, 'ema_buy':ema_buy, 'volume_buy':volume_buy}
 			selling_factors = {'rsi_sell':rsi_sell, 'macd_sell':macd_sell, 'ema_sell':ema_sell, 'volume_sell':volume_sell}
 			result['buying_factors'] = buying_factors
@@ -406,6 +418,6 @@ class StockClassifier:
 			result['backtest_start'] = start
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
-			result['ending_value'] = 1000000 + cumprofit
+			result['ending_value'] = 100000 + cumprofit
 			return result
 

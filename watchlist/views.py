@@ -53,7 +53,7 @@ class StockDetail(View):
 			max_profit = pnl.max()
 			max_loss = pnl.min()
 			ending_value = result['ending_value']
-			returns = ((ending_value - 1000000) / 1000000) * 100
+			returns = ((ending_value - 100000) / 100000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			records = result['backtest_results']
 			buying_factors = result['buying_factors']
@@ -102,6 +102,7 @@ class StockDetail(View):
 			"max_loss":max_loss,
 			"ending_value": ending_value,
 			"returns":returns,
+			"score":result['score'],
 			}
 			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 			if watchlist.exists():
