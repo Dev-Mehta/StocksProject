@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %} {% block body %}
+<div id="content">
+    <section class="single-module">
+        <div class="row">
+            <div class="twelve columns">
+                <header>
+                <span class="module-tag" style="background-color: #64daff;">
+					Tag</span>
+                    <h1 class="large"><span style="color: #035c78">#&nbsp;</span>{{tag.title.lower}}</h1>
+                </header>
+                <div class="chapter-list">
+                    <ul class="noul">
+                        {% for post in posts %}
+                        <li class="item">
+                            <h4 class="title"><a href="{{post.get_absolute_url}}">
+									{{post.title}}</a>
+                            </h4>
+                            <div class="excerpt">
+                                <p>{{post.description}}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

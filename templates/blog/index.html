@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %} 
+{% load static %}
+{% block body %}
+<div id="homepage">
+	<section class="row intro">
+		<div class="five columns">
+			<img src="{% static 'images/atomic-dreaming-of-money.png' %}" style="max-height: 300px;">
+		</div>
+		<div class="seven columns">
+			<h1 class="large">Free and open for all stock market and financial education</h1>
+			<p class="subtitle">This blog is an extensive and in-depth collection of stock market and financial lessons. It is openly accessible to everyone and is aiming to be one of the best financial education resources on the web.</p>
+		</div>
+	</section>
+
+
+	<section class="modules">
+		<h2>Modules</h2>
+		<ul class="noul row">
+			{% for module in modules %}
+			<li class="module" style="border-color: {{module.color}};">
+				<h4 class="title">
+					<span class="number">{{forloop.counter}}</span>.
+					<a href="/blog/module/{{module.slug}}">{{module.title}}</a>
+				</h4>
+				<span class="chapters text-tiny">{{module.chapters_count}} chapters</span>
+				<div class="description text-tiny">
+					{{module.description}}
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</section>
+
+
+
+</div>
+
+<div class="clear"> </div>
+{% endblock %}

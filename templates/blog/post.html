@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %} {% block body %}
+<style>
+	.chapter-body a{
+		font-weight: bold;
+	}
+</style>
+<section class="single-chapter">
+    <header>
+        <p>
+            <span class="module-tag" style="background-color: {{module.color}}">
+				<strong><a href="/blog/module/{{module.slug}}/">{{module.title}}</a></strong>	
+			</span> &nbsp;
+			→ <strong>{{post.title}}</strong>
+        </p>
+        <h1 class="large">{{post.title}}</h1>
+    </header>
+
+    <section class="chapter-body visible">
+        <a href="#" class="chapter-toggle">View Similar Posts →</a>
+
+        <div class="row">
+            <div class="four columns chapter-sidebar">
+                <a href="#" class="hide">← Hide</a>
+                <ol class="noul chapter-list">
+                    {% for p in posts %} {% ifequal p.title post.title %}
+                    <li class="selected">
+                        <a href="/blog/module/{{module.slug}}/post/{{p.slug}}">
+							{{p.title}} </a>
+							<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;">
+						</li>
+                    {% else %}
+                    <li class="">
+                        <a href="/blog/module/{{module.slug}}/post/{{p.slug}}">
+							{{p.title}} </a>
+						<hr style="margin-top: 0.5rem;margin-bottom: 0.5rem;">
+
+                    </li>
+                    {% endifequal %} {% endfor %}
+                </ol>
+            </div>
+
+            <div class="eight columns">
+                <div class="bigpic"></div>
+                <div class="post">
+                    <div id="attachment_125" style="width: 610px" class="wp-caption aligncenter">
+                        <img aria-describedby="caption-attachment-125" loading="lazy" class="wp-image-125 size-full" src="{{post.feature_image.url}}" alt="{{post.title}}" style="max-height: 350px;">
+                        <p id="caption-attachment-125" class="wp-caption-text">- Published On {{ post.upload_on.date }}</p>
+					</div>
+                    {{post.content | safe}}
+                </div>
+				<div class="tags" style="display: flex; flex-wrap: wrap;">
+					{% for t in post.tags.all %}
+					<span
+					style="padding: 4px 9px;"
+					>
+						<a style="color: #035c78;" href="/tag/{{t.slug}}/">#{{t}}</a>
+					</span>
+					{% endfor %}
+				</div>
+            </div>
+        </div>
+		<p>&nbsp;</p>
+		<div class="row">
+			<div class="twelve columns">
+				<div class="next_post" style="background-color: #79daff;color: black; padding: 9px 16px; border-radius: 8px">
+					Read Next Post on <a href="{{posts.1.get_absolute_url}}">{{posts.1.title}}</a><span>&nbsp;&rarr;</span>
+				</div>
+			</div>
+		</div>
+    </section>
+</section>
+<script type="text/javascript">
+    function toggleChapterList() {
+        var el = document.querySelector(".chapter-body");
+        if (el.classList.contains("visible")) {
+            el.classList.remove("visible");
+            el.classList.add("hidden");
+        } else {
+            el.classList.add("visible");
+            el.classList.remove("hidden");
+        }
+        return false;
+    }
+
+    (function() {
+        document.querySelector(".chapter-toggle").onclick = toggleChapterList;
+        document.querySelector(".chapter-sidebar .hide").onclick = toggleChapterList;
+
+        // On mobile, hide the chapter by default.
+        if (screen.width <= 700) {
+            toggleChapterList();
+        }
+    })();
+</script>
+
+
+<div class="clear"> </div>
+
+{% endblock %}

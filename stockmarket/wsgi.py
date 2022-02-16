@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
-
+import sys
+sys.path.append("D:\Projects\StocksProject")
+sys.path.append("D:\Projects\StockBlog")
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stockmarket.settings')
 
 application = get_wsgi_application()

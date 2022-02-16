@@ -1,0 +1,147 @@
+{% load static %} {% load pwa %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="medium" content="blog">
+    <meta name="google-site-verification" content="ZNwixuDtQKdslqKqN85o6wpUdeykbw7-mmJLPrAjFJI" />
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,500,700" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="stylesheet" href="{% static 'css/skeleton.css' %}" type="text/css" media="screen">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen"> {% progressive_web_app_meta %} 
+	{% if post %}
+    <title>Blog @ StocksApp – {{post.title}}.</title>
+    <meta name="description" content="{{post.description}}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Blog @ StocksApp - {{post.title}}">
+    <meta property="og:description" content="{{post.description}}">
+    <meta property="og:site_name" content="Blog @ StocksApp">
+    <meta property="og:image" content="{% static 'images/favicon.png' %}">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="350"> {% else %} {% if module %}
+    <title>Blog @ StocksApp – {{module.title}}</title>
+    <meta name="description" content="{{module.description}}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{module.title}}">
+    <meta property="og:description" content="{{module.description}}">
+    <meta property="og:site_name" content="Blog @ StocksApp">
+    <meta property="og:image" content="{% static 'images/favicon.png' %}">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="350"> {% else %}
+	{% if tag %}
+    <title>Blog @ StocksApp – Read Posts Related to #{{tag.title}}</title>
+    <meta name="description" content="{{module.description}}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Blog @ StocksApp - Read Posts Related to #{{tag.title}}">
+    <meta property="og:description" content="Blog @ StocksApp - Markets, Trading, and Investing Simplified.">
+    <meta property="og:site_name" content="Blog @ StocksApp">
+    <meta property="og:image" content="{% static 'images/favicon.png' %}">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="350">
+	{% else %}
+    <title>Blog @ StocksApp – Markets, Trading, and Investing Simplified.</title>
+    <meta name="description" content="Markets, Trading, and Investing Simplified.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Blog @ StocksApp">
+    <meta property="og:description" content="Blog @ StocksApp - Markets, Trading, and Investing Simplified.">
+    <meta property="og:site_name" content="Blog @ StocksApp">
+    <meta property="og:image" content="{% static 'images/favicon.png' %}">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="350">{% endif %} {% endif %} {% endif %}
+    <link rel="stylesheet" id="wp-block-library-css" href="{% static 'css/style.min.css' %}" type="text/css" media="all">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-813HXQJWS0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-813HXQJWS0');
+    </script>
+</head>
+
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="six columns">
+                    <a class="logo-full" href="/blog/">
+                        <span style="font-size: 1.8rem;font-weight: bolder">Blog @ StocksApp</span>
+                    </a>
+                    <a class="logo-small" href="/blog/">
+                        <span style="font-size: 1.2rem;font-weight: bolder">Blog @ StocksApp</span>
+                    </a>
+                </div>
+                <!-- logo //-->
+
+                <div class="five columns">
+
+                </div>
+            </div>
+            <nav class="one column">
+                <div class="menu">
+                    <a href="#" class="burger" id="show-module-nav">≡</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- header //-->
+
+    <div class="container">
+        <div id="wrap">
+            <div id="main">
+                {% block body %} {% endblock %}
+            </div>
+            <!-- main //-->
+        </div>
+        <!-- wrap //-->
+    </div>
+    <!-- footer //-->
+    </div>
+    <!-- container //-->
+
+    <div id="module-nav">
+        <div class="module-nav-content">
+            <div class="modules-list">
+                <a href="#" class="button button-primary close">Close</a>
+                <h2>Modules</h2>
+                <ul class="noul row">
+                    {% for module in modules %}
+                    <li class="module" style="border-color: {{module.color}}">
+                        <h4 class="title"><a href="/blog/module/{{module.slug}}">{{forloop.counter}}.
+								{{module.title}}</a></h4>
+                        <span class="chapters text-tiny">{{module.chapters_count}} chapters</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            document.querySelector("#show-module-nav").onclick = function() {
+                var d = document.querySelector("#module-nav").style.display = 'block';
+                return false;
+            };
+
+            document.querySelector("#module-nav .close").onclick = function() {
+                var d = document.querySelector("#module-nav").style.display = 'none';
+                return false;
+            };
+        })();
+    </script>
+</body>
+
+</html>

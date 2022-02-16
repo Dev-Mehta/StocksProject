@@ -32,7 +32,7 @@ class TestStrategy(bt.Strategy):
 		self.scores = self.datas[0].scores
 		self.trades = None
 		self.size = 10
-		self.cash_value = 100000
+		self.cash_value = 10000
 		self.cumprofit = 0.0
 	def notify_order(self, order):
 		if order.status in [order.Submitted, order.Accepted]:
@@ -58,9 +58,9 @@ class TestStrategy(bt.Strategy):
 			self.cash_value += int(trade.pnlcomm)
 			if self.cumprofit > 0:
 				if self.cumprofit < trade.pnlcomm:
-					self.broker.add_cash(int(self.cumprofit))	
+					self.broker.add_cash(int(self.cumprofit // 2))	
 				else:
-					self.broker.add_cash(int(trade.pnlcomm))
+					self.broker.add_cash(int(trade.pnlcomm // 2))
 	def next(self):
 		# Simply log the closing price of the series from the reference
 		if self.order:
@@ -68,13 +68,13 @@ class TestStrategy(bt.Strategy):
 		# Check if we are in the market
 		if not self.position:
 			# Not yet ... we MIGHT BUY if ...
-			if self.scores[0] >= 30:
+			if self.scores[0] <= 30:
 				# Keep track of the created order to avoid a 2nd order
 				self.size = int(int((self.cash_value*0.5)) // self.dataclose[0])
 				self.size = self.size - (self.size%50)
 				self.order = self.buy(size=self.size, exectype=bt.Order.StopTrail, trailpercent=0.1)
 		else:		
-			if self.scores[0] <= 20:
+			if self.scores[0] >= 70:
 				self.order = self.sell(size=self.size)
 class trade_list(bt.Analyzer):
 
@@ -343,7 +343,7 @@ class StockClassifier:
 			if zeros%2!=0:
 				string = str(save)+": "+str(save/(z/100))[0:4]+" "+dic[zeros]
 			else:   
-				string = str(save)+": "+str(save/(z/1000))[0:4]+" "+dic[zeros]
+				string = str(save)+": "+str(save/(z/10000))[0:4]+" "+dic[zeros]
 			return string
 		return str(save)+": "+str(save)
 
@@ -398,7 +398,7 @@ class StockClassifier:
 			trade_data = data.dropna()
 			trade_data = TestFeed(dataname=trade_data)
 			cerebro.adddata(trade_data)
-			cerebro.broker.setcash(100000.0)
+			cerebro.broker.setcash(10000.0)
 			cerebro.broker.setcommission(commission=0.002)
 			cerebro.addanalyzer(trade_list, _name='trade_list')
 			strats = cerebro.run(tradehistory=True)
@@ -435,11 +435,11 @@ class StockClassifier:
 			result['backtest_start'] = start
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
-			result['ending_value'] = 100000 + cumprofit
+			result['ending_value'] = 10000 + cumprofit
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			ending_value = result['ending_value']
 			pnl = backtest_result['pnl']
-			returns = ((ending_value - 100000) / 100000) * 100
+			returns = ((ending_value - 10000) / 10000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			
 			profit = pnl.sum()
@@ -450,7 +450,7 @@ class StockClassifier:
 			max_loss = pnl.min()
 			dataframe = {}
 			dataframe['stock'] = self.ticker
-			dataframe['initial_capital'] = 100000
+			dataframe['initial_capital'] = 10000
 			dataframe['ending_value'] = self.format_indian(ending_value)
 			dataframe['returns'] = returns
 			dataframe['accuracy'] = accuracy
