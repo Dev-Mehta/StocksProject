@@ -2404,6 +2404,15 @@
 		<div class="content">
 			<div class="header">
 				Current Score for <strong>{{stock_name}}</strong>: <strong>{{score|floatformat:2}}</strong>
+				{% if buy_today %}
+				<h3 class="text-green">Strategy Recommendation: Buy Call Found</h3>
+				{% else %}
+					{% if sell_today %}
+					<h3 class="text-red">Strategy Recommendation: Sell if you are holding based on our strategy</h3>
+					{%  else%}
+					<h3>Strategy Recommendation: Neutral</h3>
+					{% endif %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -2476,6 +2485,10 @@
 		</div>
 	</div>
 	<p>&nbsp;</p>
+	<div class="ui container" style="text-align: center;display: flex;justify-content: center;
+	align-items: center;">
+		<div id="curve_chart" style="width: 70vw; height: calc(70vw*3/4);"></div>
+	</div>
 	<div class="ui container">
 		<div id="score-accuracy" style="
 			display: flex;
@@ -2549,37 +2562,37 @@
   <table class="ui unstackable table">
 	<tbody>
 		<tr>
-			<td>Initial Portfolio Value - <b style="font-weight: bold">₹100,000</b></td>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">₹10,000</b></td>
 			<td>Ending Portfolio Value - <b style="font-weight: bold">₹{{ending_value}}</b></td>
 			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2|intcomma}}</b></td>
 		</tr>
 		<tr>
 			<td class="bold">Net Profit</td>
-			<td>₹{{backtest_profit|format_indian}}</td>
+			<td>₹{{backtest_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Total Closed Trades</td>
-			<td>{{total_trades|intcomma}}</td>
+			<td>{{total_trades}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Trade P/L</td>
-			<td>{{avg_pl|format_indian}}</td>
+			<td>{{avg_pl|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Profit</td>
-			<td class="text-green">{{avg_profit|format_indian}}</td>
+			<td class="text-green">{{avg_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Avg. Loss</td>
-			<td class="text-red">{{avg_loss|format_indian}}</td>
+			<td class="text-red">{{avg_loss|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Winning Trade</td>
-			<td class="text-green">{{max_profit|format_indian}}</td>
+			<td class="text-green">{{max_profit|floatformat:2|intcomma}}</td>
 		</tr>
 		<tr>
 			<td class="bold">Largest Losing Trade</td>
-			<td class="text-red">{{max_loss|format_indian}}</td>
+			<td class="text-red">{{max_loss|floatformat:2|intcomma}}</td>
 		</tr>
 	</tbody>
   </table>
@@ -2628,6 +2641,38 @@
 {% endif %}
 {% endblock %}
 {% block footerjs %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+	  var data = google.visualization.arrayToDataTable([
+		['Year', 'Account Value'],
+		{% for data in profit_list %}
+		[new Date({{data.date.year}}, parseInt({{data.date.month}} - 1), {{data.date.day}}), {{data.profit}}],
+		{% endfor %}
+	  ]);
+
+	  var options = {
+		title: 'Equity Curve',
+		legend: 'none',
+		hAxis: {
+			title: 'Date',
+			format: 'yyyy'
+		},
+		curveType: 'none',
+		legend: { position: 'bottom' }
+	  };
+
+	  var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+	  chart.draw(data, options);
+	}
+	$(window).resize(function(){
+		drawChart();
+	});
+  </script>
 <script async src="https://www.gateway-tt.in/assets/embed.js"></script>
 <script>
 	$('.ui.styled.accordion').accordion();

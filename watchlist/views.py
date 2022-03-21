@@ -43,7 +43,7 @@ class StockDetail(View):
 			stock_price = stock_price['data'][0]
 			# stock_data, stock_price = None, None
 			model = StockClassifier(ticker=stock)
-			result, df = model.train()
+			result, df, initial_year = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			pnl = backtest_result['pnl']
 			profit = pnl.sum()
@@ -77,6 +77,10 @@ class StockDetail(View):
 				message = "Sell"
 			if strong_sell:
 				message = "Strong Sell"
+			tl = df['trade_list']
+			profit_list = [{'date':initial_year, 'profit':10000}]
+			for i in tl:
+				profit_list.append({'date':i['sell_date'], 'profit':i['account_value']})
 			context = {"stock_name":stock,
 			"stock_data":stock_data,
 			"stock_price":stock_price,
@@ -104,6 +108,9 @@ class StockDetail(View):
 			"ending_value": format_indian(ending_value),
 			"returns":returns,
 			"score":result['score'],
+			"profit_list":profit_list,
+			"buy_today":result['buy_call'],
+			"sell_today":result['sell_call'],
 			}
 			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 			if watchlist.exists():

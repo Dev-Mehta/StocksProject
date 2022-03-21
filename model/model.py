@@ -132,7 +132,7 @@ class trade_list(bt.Analyzer):
 			self.trades.append({'id': trade.ref, 'ticker': trade.data._name, 'Entry Type': dir,
 				 'buy_date': datein, 'buy_price': pricein, 'sell_date': dateout, 'sell_price': priceout,
 				 'change_pct': round(pcntchange, 2), 'pnl': pnl, 'pnl_pct': round(pnlpcnt, 2),
-				 'quantity': size, 'num_days': barlen})
+				 'quantity': size, 'num_days': barlen, 'account_value':10000 + self.cumprofit})
 
 class StockClassifier:
 	ticker = None
@@ -351,8 +351,9 @@ class StockClassifier:
 		if self.ticker != None:
 			start = (datetime.now() - timedelta(days=2500)).date()
 			end = datetime.now().date()
+			
 			data = yf.Ticker(self.ticker + '.NS').history(period='max', actions=False)
-			# data = pd.read_csv('model/data/RELIANCE.csv')
+			initial_year = data.index[0]
 			data['5EMA'] = pd.Series.ewm(data['Close'], span=5).mean()
 			data['26EMA'] = pd.Series.ewm(data['Close'], span=26).mean()
 			data['rsi'] = ta.RSI(data['Close'].values, timeperiod=14)
@@ -390,6 +391,8 @@ class StockClassifier:
 			data['scores'] = scoresL
 			data['scores'] = data.scores.ewm(span=5).mean()
 			data['scores'] = data['scores'] * 5
+			data['buy_today'] = np.where(data.scores <= 30, 1, 0)
+			data['sell_today'] = np.where(data.scores >= 70, 1, 0)
 			# data.to_csv('output/TATASTEEL.csv')
 			# data.Date = pd.to_datetime(data.Date)
 			# data.index = data.Date
@@ -436,9 +439,15 @@ class StockClassifier:
 			result['backtest_end'] = end
 			result['backtest_results'] = tl
 			result['ending_value'] = 10000 + cumprofit
+			result['buy_call'] = data.buy_today[-1]
+			result['sell_call'] = data.sell_today[-1]
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			ending_value = result['ending_value']
-			pnl = backtest_result['pnl']
+			pnl = None
+			try:
+				pnl = backtest_result['pnl']
+			except KeyError:
+				pass
 			returns = ((ending_value - 10000) / 10000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			
@@ -460,6 +469,6 @@ class StockClassifier:
 			dataframe['avg_loss'] = avg_loss
 			dataframe['max_profit'] = max_profit
 			dataframe['max_loss'] = max_loss
-			dataframe['trade_list'] = json.dumps(str(tl))
-			return result, dataframe
+			dataframe['trade_list'] = tl
+			return result, dataframe, initial_year
 
