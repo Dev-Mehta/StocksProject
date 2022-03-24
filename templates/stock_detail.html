@@ -9,9 +9,11 @@
 	.ui.search .action:hover {
 		background: transparent !important;
 	}
-	.bold{
+
+	.bold {
 		font-weight: bold;
 	}
+
 	.tv-error-card {
 		align-items: center;
 		color: #131722;
@@ -2113,13 +2115,14 @@
 	strong {
 		font-weight: bolder !important;
 	}
+
 	@media screen and (max-width: 500px) {
-		.ui.table{
+		.ui.table {
 			display: block;
 			overflow-x: scroll;
 		}
 	}
-	</style>
+</style>
 {% endblock %}
 {% block content %}
 {% if stock_exists %}
@@ -2164,7 +2167,8 @@
 												style="font-size: 11px; color: rgb(89, 91, 98); line-height: 1.45; margin-bottom: 6px; white-space: normal; font-family: &quot;Graphik Web Regular&quot;, sans-serif;">
 												{{stock_data.info.description}}</p>
 											<div class="price">
-												<h2 class="mb4"><span class="font-medium text-red colorChange">₹&nbsp;<span
+												<h2 class="mb4"><span
+														class="font-medium text-red colorChange">₹&nbsp;<span
 															id="currentPrice">{{stock_price.price}}</span></span><span
 														class="price-change font-medium text-red colorChange"><i
 															class="icon-caret_down text-14 icon-caret"></i><span
@@ -2400,19 +2404,26 @@
 <div class="ui container">
 	<p>&nbsp;</p>
 	<h2>Predicted Price for {{stock_name}}</h2>
+	{% if buy_today %}
+	<div class="header" style="background: #19af55; padding: 16px 9px; border-radius: 8px;">
+				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Buy Call Found</h3>
+	</div>
+				{% else %}
+				<div class="header" style="background: #d82f44; padding: 16px 9px; border-radius: 8px;">
+				{% if sell_today %}
+				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Sell if you are holding based on our strategy</h3>
+				</div>
+				{% else%}
+				<div class="header" style="background: #1f1f1f; padding: 16px 9px; border-radius: 8px;">
+				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Neutral</h3>
+				{% endif %}
+				</div>
+				{% endif %}
+	
 	<div class="ui very relaxed list">
 		<div class="content">
 			<div class="header">
 				Current Score for <strong>{{stock_name}}</strong>: <strong>{{score|floatformat:2}}</strong>
-				{% if buy_today %}
-				<h3 class="text-green">Strategy Recommendation: Buy Call Found</h3>
-				{% else %}
-					{% if sell_today %}
-					<h3 class="text-red">Strategy Recommendation: Sell if you are holding based on our strategy</h3>
-					{%  else%}
-					<h3>Strategy Recommendation: Neutral</h3>
-					{% endif %}
-				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -2496,50 +2507,50 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center; font-family: Graphik, Arial, Helvetica,Roboto, sans-serif !important;">
-			<h3 
-			style="margin: 0px auto 4px;
+			<h3 style="margin: 0px auto 4px;
 			font-size: 24px;
 			letter-spacing: -0.86px;
 			line-height: 1.2;
 			max-width: 530px;
 			font-weight: 600;
-			"
-			>₹10,000 traded with our signals in {{stock_name}} since its inception, would've turned to ₹{{ending_value}} today!!</h2>
-			<p>&nbsp;</p>
-			<p style="max-width: 650px; font-size: 17px;">Historical
-				observation says that when the score reaches&nbsp;
-				<span
-					class="text-green" style="font-weight: 500;">
-					30, you can look for a buying opportunity&nbsp;
-					<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
-						class="jsx-2716488132">
-				</span>&nbsp;&amp; when the score reaches&nbsp;<span
-					class="text-red" style="font-weight: 500;">20, you can look for exiting the current trade taken with strategy&nbsp;
-					<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out" class="jsx-2716488132">
-				</span>
-			</p>
-			<p>&nbsp;</p>
-			<p class="help-text" style="color: #4e4e4e;">
-				Returns are calculated by taking every trade virtually with given signals and initial capital of ₹1 Lac.
-			</p>
-			<button style="width: fit-content;
+			">₹10,000 traded with our signals in {{stock_name}} since its inception, would've turned to ₹{{ending_value}}
+				today!!</h2>
+				<p>&nbsp;</p>
+				<p style="max-width: 650px; font-size: 17px;">Historical
+					observation says that when the score reaches&nbsp;
+					<span class="text-green" style="font-weight: 500;">
+						30, you can look for a buying opportunity&nbsp;
+						<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
+							class="jsx-2716488132">
+					</span>&nbsp;&amp; when the score reaches&nbsp;<span class="text-red" style="font-weight: 500;">20,
+						you can look for exiting the current trade taken with strategy&nbsp;
+						<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out"
+							class="jsx-2716488132">
+					</span>
+				</p>
+				<p>&nbsp;</p>
+				<p class="help-text" style="color: #4e4e4e;">
+					Returns are calculated by taking every trade virtually with given signals and initial capital of ₹1
+					Lac.
+				</p>
+				<button style="width: fit-content;
 			padding: 9px 12px;
 			" class="ui button secondary">Download History</button>
-		</div>	
+		</div>
 	</div>
 </div>
 <p>&nbsp;</p>
 <table class="ui unstackable table">
 	<thead>
-	  <tr>
-		<th>ID</th>
-		<th>Buy Date</th>
-		<th>Buy Price</th>
-		<th>Sell Date</th>
-		<th>Sell Price</th>
-		<th>P&L</th>
-		<th>Quantity</th>
-	  </tr>
+		<tr>
+			<th>ID</th>
+			<th>Buy Date</th>
+			<th>Buy Price</th>
+			<th>Sell Date</th>
+			<th>Sell Price</th>
+			<th>P&L</th>
+			<th>Quantity</th>
+		</tr>
 	</thead>
 	<tbody>
 		{% for data in trade_list %}
@@ -2558,8 +2569,8 @@
 		</tr>
 		{% endfor %}
 	</tbody>
-  </table>
-  <table class="ui unstackable table">
+</table>
+<table class="ui unstackable table">
 	<tbody>
 		<tr>
 			<td>Initial Portfolio Value - <b style="font-weight: bold">₹10,000</b></td>
@@ -2595,7 +2606,7 @@
 			<td class="text-red">{{max_loss|floatformat:2|intcomma}}</td>
 		</tr>
 	</tbody>
-  </table>
+</table>
 <script async src="https://www.gateway-tt.in/assets/embed.js">
 </script>
 {% else %}
@@ -2643,18 +2654,18 @@
 {% block footerjs %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	google.charts.load('current', {'packages':['corechart']});
+	google.charts.load('current', { 'packages': ['corechart'] });
 	google.charts.setOnLoadCallback(drawChart);
 
 	function drawChart() {
-	  var data = google.visualization.arrayToDataTable([
-		['Year', 'Account Value'],
-		{% for data in profit_list %}
-		[new Date({{data.date.year}}, parseInt({{data.date.month}} - 1), {{data.date.day}}), {{data.profit}}],
+		var data = google.visualization.arrayToDataTable([
+			['Year', 'Account Value'],
+			{% for data in profit_list %}
+	[new Date({{ data.date.year }}, parseInt({{ data.date.month }} - 1), {{ data.date.day }}), {{ data.profit }}],
 		{% endfor %}
 	  ]);
 
-	  var options = {
+	var options = {
 		title: 'Equity Curve',
 		legend: 'none',
 		hAxis: {
@@ -2663,16 +2674,16 @@
 		},
 		curveType: 'none',
 		legend: { position: 'bottom' }
-	  };
+	};
 
-	  var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+	var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
-	  chart.draw(data, options);
+	chart.draw(data, options);
 	}
-	$(window).resize(function(){
+	$(window).resize(function () {
 		drawChart();
 	});
-  </script>
+</script>
 <script async src="https://www.gateway-tt.in/assets/embed.js"></script>
 <script>
 	$('.ui.styled.accordion').accordion();
