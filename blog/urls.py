@@ -16,7 +16,7 @@ class StaticViewSitemap(Sitemap):
 	changefreq = 'daily'
 
 	def items(self):
-		return ['home']
+		return ['bloghome']
 
 	def location(self, item):
 		return reverse(item)
@@ -38,7 +38,7 @@ class PostFeed(Feed):
 		return item.get_absolute_url()
 
 urlpatterns = [
-	path('', HomePage.as_view(), name='home'),
+	path('', HomePage.as_view(), name='bloghome'),
 	path('module/<slug:module_title>/', ModulePage.as_view()),
 	path('module/<slug:module_title>/post/<slug:post_title>/', PostPage.as_view()),
 	path('tag/<slug:tag_title>/', TagDetail.as_view()),

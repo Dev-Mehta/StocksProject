@@ -2403,22 +2403,23 @@
 </div>
 <div class="ui container">
 	<p>&nbsp;</p>
-	<h2>Predicted Price for {{stock_name}}</h2>
+	<h2>Prediction for {{stock_name}}</h2>
+	<h3>Tomorrow the score maybe around: {{price|floatformat:2}}</h3>
 	{% if buy_today %}
 	<div class="header" style="background: #19af55; padding: 16px 9px; border-radius: 8px;">
 				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Buy Call Found</h3>
 	</div>
-				{% else %}
+	{% else %}
+			{% if sell_today %}
 				<div class="header" style="background: #d82f44; padding: 16px 9px; border-radius: 8px;">
-				{% if sell_today %}
 				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Sell if you are holding based on our strategy</h3>
 				</div>
 				{% else%}
 				<div class="header" style="background: #1f1f1f; padding: 16px 9px; border-radius: 8px;">
 				<h3 style="color: white; padding-left: 12px; font-size: 1rem; font-weight: bold;">Strategy Recommendation: Neutral</h3>
-				{% endif %}
 				</div>
-				{% endif %}
+			{% endif %}	
+		{% endif %}
 	
 	<div class="ui very relaxed list">
 		<div class="content">
@@ -2513,7 +2514,7 @@
 			line-height: 1.2;
 			max-width: 530px;
 			font-weight: 600;
-			">₹10,000 traded with our signals in {{stock_name}} since its inception, would've turned to ₹{{ending_value}}
+			">₹5,00,000 traded with our signals in {{stock_name}} since its inception, would've turned to ₹{{ending_value}}
 				today!!</h2>
 				<p>&nbsp;</p>
 				<p style="max-width: 650px; font-size: 17px;">Historical
@@ -2522,7 +2523,7 @@
 						30, you can look for a buying opportunity&nbsp;
 						<img src="https://www.tickertape.in/images/svg/mmi/bottoms-out.svg" alt="Bottoms out"
 							class="jsx-2716488132">
-					</span>&nbsp;&amp; when the score reaches&nbsp;<span class="text-red" style="font-weight: 500;">20,
+					</span>&nbsp;&amp; when the score reaches&nbsp;<span class="text-red" style="font-weight: 500;">70,
 						you can look for exiting the current trade taken with strategy&nbsp;
 						<img src="https://www.tickertape.in/images/svg/mmi/tops-out.svg" alt="Tops out"
 							class="jsx-2716488132">
@@ -2530,12 +2531,9 @@
 				</p>
 				<p>&nbsp;</p>
 				<p class="help-text" style="color: #4e4e4e;">
-					Returns are calculated by taking every trade virtually with given signals and initial capital of ₹1
-					Lac.
+					Returns are calculated by taking every trade virtually with given signals and initial capital of ₹5,00,000.
 				</p>
-				<button style="width: fit-content;
-			padding: 9px 12px;
-			" class="ui button secondary">Download History</button>
+				<p>&nbsp;</p>
 		</div>
 	</div>
 </div>
@@ -2568,12 +2566,27 @@
 			<td>{{data.quantity}}</td>
 		</tr>
 		{% endfor %}
+		{% if last_order %}
+		<tr>
+			<td><strong>Current Holding</strong></td>
+			<td>{{last_order.date}}</td>
+			<td>{{last_order.price|floatformat:2}}</td>
+			<td>Current Price: </td>
+			<td id="currentholdingprice">{{stock_price.price}}</td>
+			{% if last_order.pnl > 0 %}
+			<td class="text-green">{{last_order.pnl|format_indian}}</td>
+			{% else %}
+			<td class="text-red">{{last_order.pnl|format_indian}}</td>
+			{% endif %}
+			<td>{{last_order.size}}</td>
+		</tr>
+		{% endif %}
 	</tbody>
 </table>
 <table class="ui unstackable table">
 	<tbody>
 		<tr>
-			<td>Initial Portfolio Value - <b style="font-weight: bold">₹10,000</b></td>
+			<td>Initial Portfolio Value - <b style="font-weight: bold">₹5,00,000</b></td>
 			<td>Ending Portfolio Value - <b style="font-weight: bold">₹{{ending_value}}</b></td>
 			<td>Returns (in %) - <b style="font-weight: bold">{{returns|floatformat:2|intcomma}}</b></td>
 		</tr>

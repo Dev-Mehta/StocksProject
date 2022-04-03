@@ -4,17 +4,17 @@ sys.path.append("D:\Projects\StockBlog")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "stockmarket.settings")
 django.setup()
 
-from model.model import StockClassifier
-
-m = StockClassifier('RELIANCE')
-result, df, initial_date = m.train()
-
-# tl = df['trade_list']
-if result['buy_call']:
-    print("BUY CALL TODAY UPADO UPADO")
-else:
-    print("HAMNA KHAMO")
-# profit_list = [{'date':i['sell_date'].year, 'profit':10000}]
-# for i in tl:
-#     profit_list.append({'date':i['sell_date'].year, 'profit':i['account_value']})
-# print(profit_list)
+from model.model import StockScreener
+import pandas as pd
+import time
+df = pd.read_csv('nifty100.csv')
+tickers = df.Symbol.values.tolist()
+start = time.time()
+buy_calls = []
+for ticker in tickers:
+	model = StockScreener(ticker=ticker)
+	result = model.train()
+	if result['buy_call']:
+		buy_calls.append(ticker)
+print(buy_calls)
+print(time.time() - start)

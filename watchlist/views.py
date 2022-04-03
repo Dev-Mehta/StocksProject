@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import requests, json
 import pandas as pd
-from model.model import StockClassifier
+from model.model import StockModel
 from io import BytesIO
 from django.http import StreamingHttpResponse
 class HomePage(TemplateView):
@@ -42,7 +42,7 @@ class StockDetail(View):
 			stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
 			stock_price = stock_price['data'][0]
 			# stock_data, stock_price = None, None
-			model = StockClassifier(ticker=stock)
+			model = StockModel(ticker=stock)
 			result, df, initial_year = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])
 			pnl = backtest_result['pnl']
@@ -54,7 +54,7 @@ class StockDetail(View):
 			max_loss = pnl.min()
 			ending_value = result['ending_value']
 			print(format_indian(ending_value))
-			returns = ((ending_value - 100000) / 100000) * 100
+			returns = ((ending_value - 500000) / 500000) * 100
 			accuracy = (pnl[pnl > 0].count() / pnl.count()) * 100
 			records = result['backtest_results']
 			buying_factors = result['buying_factors']
@@ -78,9 +78,13 @@ class StockDetail(View):
 			if strong_sell:
 				message = "Strong Sell"
 			tl = df['trade_list']
-			profit_list = [{'date':initial_year, 'profit':10000}]
+			profit_list = [{'date':initial_year, 'profit':500000}]
 			for i in tl:
 				profit_list.append({'date':i['sell_date'], 'profit':i['account_value']})
+			last_order = result['last_order']
+			if last_order != None:
+				last_order['pnl'] = (stock_price['price'] - last_order['price']) * last_order['size']
+			
 			context = {"stock_name":stock,
 			"stock_data":stock_data,
 			"stock_price":stock_price,
@@ -111,6 +115,7 @@ class StockDetail(View):
 			"profit_list":profit_list,
 			"buy_today":result['buy_call'],
 			"sell_today":result['sell_call'],
+			"last_order":last_order,
 			}
 			watchlist = WatchList.objects.filter(user=User.objects.get(username=request.user.username))
 			if watchlist.exists():
@@ -120,15 +125,18 @@ class StockDetail(View):
 				else:
 					context['stockAdded'] = False
 			return render(self.request,"stock_detail.html", context)
+		# except IndexError:
+		# 	stock_name = kwargs['stock_name']
+		# 	return render(self.request, "stock_detail.html", {"stock_name":stock_name})
 		except TypeError:
 			stock_name = kwargs['stock_name']
 			return render(self.request, "stock_detail.html", {"stock_name":stock_name})
 		
-		
 
 def requestSearch(request):
 	ticker = request.GET.get('query')
-	req = requests.get(f"https://api.tickertape.in/search?text={ticker}&types=stock,etf&exchanges=NSE")
+	url = f"https://api.tickertape.in/search?text={ticker}&types=stock,brands,index,etf,mutualfund&exchanges=NSE"
+	req = requests.get(url)
 	jsreq = req.json()
 	resp = jsreq['data']['stocks']
 	result = {}
@@ -207,6 +215,7 @@ def format_indian(t):
 			string = str(save/(z/1000))[0:4]+" "+dic[zeros]
 		return string
 	return str(save)
+	
 def download(request):
 	ticker = request.GET.get('ticker')
 	if ticker != None:

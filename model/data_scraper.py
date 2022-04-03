@@ -1,15 +1,15 @@
-from . import model as md
+from .model import StockScreener
 import yfinance as yf
 import pandas as pd
 from datetime import timedelta, datetime
-
+import time
 df = pd.read_csv('nifty100.csv')
 tickers = df.Symbol.values.tolist()
-big_data = pd.DataFrame()
+start = time.time()
 for ticker in tickers:
-	model = md.StockClassifier(ticker=ticker)
-	result, df = model.train()
-	big_data['{}'.format(ticker)] = df
-	
+	model = StockScreener(ticker=ticker)
+	result = model.train()
 	print('Done for {}'.format(ticker))
-big_data.to_csv('backtest_results.csv')
+	if result['buy_call']:
+		print(f"Buy call found in {ticker}")
+print(time.time() - start)
