@@ -16,3 +16,4 @@ rake-nltk==1.0.6
 requests==2.25.1
 scikit-learn==1.0.1
 yfinance==0.1.63
+Pillow
