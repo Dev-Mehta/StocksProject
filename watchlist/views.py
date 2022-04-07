@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import requests, json
 import pandas as pd
-from model.model import StockModel
+from model.model import StockModel, StockScreener
 from io import BytesIO
 from django.http import StreamingHttpResponse
 class HomePage(TemplateView):
@@ -163,6 +163,21 @@ class PlaceOrder(View):
 		stock = kwargs['stock_name']
 		stock = stock.upper()
 		return render(self.request,"stock_place_order.html", {"stock_name":stock})
+
+class Nifty100Screener(View):
+	def get(self, request, *args, **kwargs):
+		df = pd.read_csv('https://www1.nseindia.com/content/indices/ind_nifty100list.csv/')
+		tickers = df.Symbol.to_numpy()
+		tickers.sort()
+		buy_calls = []
+		for i in range(len(tickers)):
+			try:
+				buy_call = StockScreener(tickers[i]).train()['buy_call']
+				if buy_call:
+					buy_calls.append(tickers[i])
+			except:
+				pass
+		return render(self.request,"nifty_screener.html", {"buy_calls":buy_calls})
 
 class AddToWatchlist(View):
 	@method_decorator(csrf_exempt)

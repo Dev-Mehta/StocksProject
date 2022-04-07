@@ -7,14 +7,17 @@ django.setup()
 from model.model import StockScreener
 import pandas as pd
 import time
-df = pd.read_csv('nifty100.csv')
-tickers = df.Symbol.values.tolist()
+df = pd.read_csv('nifty5.csv')
+tickers = df.Symbol.to_numpy()
+tickers.sort()
 start = time.time()
 buy_calls = []
-for ticker in tickers:
-	model = StockScreener(ticker=ticker)
-	result = model.train()
-	if result['buy_call']:
-		buy_calls.append(ticker)
+for i in range(len(tickers)):
+	try:
+		buy_call = StockScreener(tickers[i]).train()['buy_call']
+		if buy_call:
+			buy_calls.append(tickers[i])
+	except:
+		pass
 print(buy_calls)
-print(time.time() - start)
+print("Time taken for 5 stocks: ", time.time() - start)

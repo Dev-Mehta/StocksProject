@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %} Nifty 100 Screener {% endblock %}
+{% block content %}
+<h1>Screener Results for Nifty 100 Index</h1>
+{% for key in buy_calls %}
+<style>
+	.text-red {
+		color: #d82f44;
+	}
+
+	.text-red:before {
+		color: #d82f44;
+	}
+
+	.text-green {
+		color: #19af55;
+	}
+
+	.text-green:before {
+		color: #19af55;
+	}
+
+	.font-medium {
+		font-style: normal;
+		font-stretch: normal;
+		font-weight: normal;
+	}
+
+	.price-change {
+		font-size: 11px
+	}
+
+	.label {
+		font-size: 11px;
+		margin-bottom: 6px
+	}
+
+	.icon-caret {
+		position: relative;
+		top: -4px;
+		margin-right: 4px
+	}
+
+	.icon-caret_down:before {
+		content: "\e905" !important;
+		color: #d82f44 !important;
+	}
+
+	.icon-caret_up:before {
+		content: "\e906" !important;
+		color: #19af55 !important;
+	}
+</style>
+<div class="ui message"
+	style="display: flex;flex-direction: revert; align-items: flex-end;justify-content: space-between;">
+	<div class="stockName"><a href="/stock/{{key}}/"><b>{{key}}</b></a></div>
+</div>
+{% empty %}
+<div class="ui message">
+	<div class="header">No buy call found in nifty 100 index.</div>
+</div>
+{% endfor %}
+{% endblock %}
