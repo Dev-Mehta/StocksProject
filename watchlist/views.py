@@ -13,6 +13,12 @@ from django.http import StreamingHttpResponse
 class HomePage(TemplateView):
 	template_name = 'index.html'
 
+	def get(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return render(request, 'landing_page.html')
+		context = self.get_context_data(*args, **kwargs)
+		return render(request, self.template_name, context)
+
 	def get_context_data(self, *args,**kwargs):
 		context = super().get_context_data(**kwargs)
 		watchlist = WatchList.objects.filter(user=User.objects.get(username=self.request.user.username))
@@ -42,6 +48,8 @@ class StockDetail(View):
 			stock_price = requests.get(f"https://quotes-api.tickertape.in/quotes?sids={sid}").json()
 			stock_price = stock_price['data'][0]
 			# stock_data, stock_price = None, None
+			if not request.user.is_authenticated:
+				return render(request, 'stock_page_locked.html', {'stock_data':stock_data, 'stock_name':stock,'price':stock_price, "stock_exists":True})
 			model = StockModel(ticker=stock)
 			result, df, initial_year = model.train()
 			backtest_result = pd.DataFrame(result['backtest_results'])

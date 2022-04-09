@@ -1,0 +1,481 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tickers</title>
+	<link rel="stylesheet" href="{% static 'semantic/semantic.css' %}">
+	<link rel="stylesheet" href="{% static 'semantic/components/accordion.min.css' %}">
+	<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+	<style>
+		:root {
+			--white: #ffffff;
+			--font_primary: #535B62;
+			--font_dark: #2f363f;
+			--font_light: #81878c;
+			--font_blue: #0088ea;
+			--font_lighter: #a2a8ae;
+			--brand_primary: #151e28;
+			--brand_success: #28c39a;
+			--brand_danger: #d93741;
+			--brand_warn: #fbe283;
+			--brand_bg: #f9f9f9;
+			--brand_border: #d1d5d8;
+			--brand_hover: #f7f7f7;
+			--brand_gray: #acacac;
+			--brand_light_gray: #e1e1e1;
+			--purple_dark: #5311e9;
+			--purple_light: #7656ff;
+			--premium_dark: #624bff;
+			--item_hover_bg: #373f48;
+			--toast_error: #e8d075;
+			--toast_error_bg: #fffae6;
+			--toast_info: #a7c9de;
+			--toast_info_bg: #effbff;
+			--font_family_regular: 'Graphik', Helvetica, Arial, sans-serif;
+			--font_family_medium: 'Graphik', Helvetica, Arial, sans-serif;
+			--font_family_semibold: 'Graphik', Helvetica, Arial, sans-serif;
+			--font_family_light: 'Graphik', Arial, sans-serif;
+			--font_family_number: 'Verdana', Arial, sans-serif;
+			--font_size_base: 0.875rem;
+			--font_size_large: 1rem;
+			--font_size_small: 0.8125rem;
+			--font_size_h1: 24px;
+			--font_size_h2: 20px;
+			--font_size_h3: 18px;
+			--font_size_h4: 16px;
+			--font_size_h5: 0.875rem;
+			--font_size_h6: 12px;
+			--headings_font_weight: normal;
+			--headings_line_height: 1;
+			--line_height_base: 1.5;
+			--border_radius_base: 4px;
+			--border_radius_large: 6px;
+			--border_radius_small: 2px;
+			--zindex_navbar: 1000;
+			--zindex_dropdown: 1000;
+			--zindex_popover: 1060;
+			--zindex_tooltip: 1070;
+			--zindex_navbar_fixed: 1030;
+			--zindex_modal_background: 1040;
+			--zindex_modal: 1050;
+			--zindex_fullpage_loader: 1080;
+			--color_yellow: #fad33e;
+			--color_up: #19af55;
+			--color_down: #d82f44;
+			--color_blue: #1f7ae0;
+			--button_shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.07);
+			--button_hover_shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.12);
+			--modal_shadow: 0 12px 25px 0px rgba(0, 0, 0, 0.1);
+			--overflow_shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.09), 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 0 1px 0 rgba(0, 0, 0, 0.2);
+			--heavy_bottom_shadow: 0px 1px 5px 0px rgba(50, 0, 0, 0.09);
+			--medium_elevation_shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.05);
+			--light_elevation_shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+			--medium_shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3);
+			--light_shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+			--light_bottom_shadow: 0px 10px 32px 0px rgba(255, 255, 255, 0.20);
+			--box_shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+			--card_shadow_light: 0 3.5px 6px -10px rgba(0, 0, 0, 0.06), 0 11.6px 20.1px -10px rgba(0, 0, 0, 0.1), 0 52px 90px -10px rgba(0, 0, 0, 0.14);
+			--base_border: solid 1px #d1d5d8;
+			--light_border: solid 1px #F9FAFC;
+			--error_border: solid 1px #d93741;
+			--loader_width: 45px;
+			--loader_color_one: #164a74;
+			--loader_color_two: #31738B;
+			--loader_color_three: #009ddc;
+			--loader_color_four: #17c490;
+			--brand_background_dark: #232d38;
+			--brand_background_light: #F9FAFC;
+			--brand_white: #FFFFFF;
+			--brand_hover_dark: #373F48;
+			--brand_hover_light: #F7F7F7;
+			--brand_border_dark: #BDC3CB;
+			--brand_border_light: #E7E7E7;
+			--brand_premium_dark: #624BFF;
+			--brand_premium_light: #F0EFFF;
+			--brand_link: #1f7ae0;
+			--brand_success_green: #27BC94;
+			--brand_danger_red: #D93741;
+			--brand_warning: #FBE283;
+			--font_normal: #525B62;
+			--font_price_green: #19AF55;
+			--font_price_red: #D82F44;
+			--font_red: #D82F44;
+			--brand_price_green_light: rgba(25, 175, 85, 0.11);
+			--brand_price_red_light: rgba(216, 47, 68, 0.11);
+			--transition_fast: 0.15s ease-out;
+			--transition_normal: 0.3s ease-out;
+			--transition_slow: 0.6s ease-out;
+			--tt_ldNeutral: hsla(212, 13%, 25%, 1);
+			--tt_dlNeutral: hsla(214, 12%, 77%, 1);
+			--colors_text_primary: #2f363f;
+			--colors_text_secondary: #535b62;
+			--colors_text_brand: #151e28;
+			--colors_text_white: #ffffff;
+			--colors_text_alert: #d82f44;
+			--colors_text_button_link: #0088ea;
+			--colors_text_button_primary_active: #ffffff;
+			--colors_text_button_primary_disabled: #bdc3cb;
+			--colors_text_button_secondary_active: #151e28;
+			--colors_text_button_secondary_disabled: #bdc3cb;
+			--colors_text_button_pro_purple: #624bff;
+			--colors_text_button_pro_white: #ffffff;
+			--colors_text_tab_selected: #0088ea;
+			--colors_text_tab_default: #151e28;
+			--colors_text_tab_hover: #0088ea;
+			--colors_text_falling: #d82f44;
+			--colors_text_rising: #19af55;
+			--colors_text_input_placeholder: #81878c;
+			--colors_text_input_disabled: #bdc3cb;
+			--colors_text_input_focus: #2f363f;
+			--colors_text_segmentedControl_default: #2f363f;
+			--colors_text_segmentedControl_selected: #ffffff;
+			--colors_text_filterTags_default: #2f363f;
+			--colors_text_filterTags_selected: #ffffff;
+			--colors_text_tertiary: #81878c;
+			--colors_text_selected: #0088ea;
+			--colors_text_list: #535b62;
+			--colors_icon_primary: #2f363f;
+			--colors_icon_link: #0088ea;
+			--colors_icon_pro: #624bff;
+			--colors_icon_disabled: #bdc3cb;
+			--colors_icon_white: #ffffff;
+			--colors_icon_input: #81878c;
+			--colors_icon_secondary: #535b62;
+			--colors_icon_tertiary: #81878c;
+			--colors_icon_list: #535b62;
+			--colors_icon_alert: #d82f44;
+			--colors_background_white: #ffffff;
+			--colors_background_toast: #ffffff;
+			--colors_background_pageHeader: #151e28;
+			--colors_background_hoverOnLight: rgba(0, 137, 235, 0.05);
+			--colors_background_hoverOnDark: #373f48;
+			--colors_background_lightGrey: #f9fafc;
+			--colors_background_button_secondary: #ffffff;
+			--colors_background_button_primary_active: #151e28;
+			--colors_background_button_primary_disabled: #e2e5e9;
+			--colors_background_button_pro_purple: #624bff;
+			--colors_background_button_pro_white: #ffffff;
+			--colors_background_button_alert: #d82f44;
+			--colors_background_tooltip_dark: #151e28;
+			--colors_background_tooltip_light: #ffffff;
+			--colors_background_segmentedControl_unselected: #ffffff;
+			--colors_background_segmentedControl_selected: #151e28;
+			--colors_background_segmentedControl_hover: #f9fafc;
+			--colors_background_accordion_closed: #ffffff;
+			--colors_background_accordion_active: #f9fafc;
+			--colors_background_table_header: #f9fafc;
+			--colors_background_filterTags_unselected: #ffffff;
+			--colors_background_filterTags_selected: #151e28;
+			--colors_background_filterTags_hover: #f9fafc;
+			--colors_background_checkBox_unselected: #ffffff;
+			--colors_background_checkBox_selected: #151e28;
+			--colors_background_selected: rgba(0, 137, 235, 0.05);
+			--colors_background_input: #ffffff;
+			--colors_background_darkGrey: #F1F4F8;
+			--colors_border_segmentedControl: #d1d5db;
+			--colors_border_filterTags: #d1d5db;
+			--colors_border_checkBox: #d1d5db;
+			--colors_border_toast: #d1d5db;
+			--colors_border_alert: #efa9b1;
+			--colors_border_warning: #fdf2c4;
+			--colors_border_success: #82edad;
+			--colors_border_container: #d1d5db;
+			--colors_border_button_secondary_active: #d1d5db;
+			--colors_border_button_secondary_disabled: #e2e5e9;
+			--colors_border_input_default: #d1d5db;
+			--colors_border_input_focus: #151e28;
+			--colors_border_separator_light: #e2e5e9;
+			--colors_border_separator_dark: #373f48;
+			--colors_neutral_5: #151e28;
+			--colors_neutral_10: #1e2834;
+			--colors_neutral_20: #2f363f;
+			--colors_neutral_30: #373f48;
+			--colors_neutral_40: #535b62;
+			--colors_neutral_50: #81878c;
+			--colors_neutral_60: #bdc3cb;
+			--colors_neutral_70: #d1d5db;
+			--colors_neutral_80: #e2e5e9;
+			--colors_neutral_85: #F1F4F8;
+			--colors_neutral_90: #f9fafc;
+			--colors_neutral_100: #ffffff;
+			--colors_purple_darker: #13008f;
+			--colors_purple_default: #624bff;
+			--colors_purple_light: #8370ff;
+			--colors_purple_lighter: #a799ff;
+			--colors_purple_lightest: #edebff;
+			--colors_blue_dark: #00477a;
+			--colors_blue_default: #0088ea;
+			--colors_blue_light: #47b3ff;
+			--colors_blue_lighter: #70c3ff;
+			--colors_blue_lightest: #ebf6ff;
+			--colors_blue_translucent: rgba(0, 137, 235, 0.05);
+			--colors_red_dark: #781722;
+			--colors_red_default: #d82f44;
+			--colors_red_light: #e26573;
+			--colors_red_lighter: #efa9b1;
+			--colors_red_Llightest: #fceeef;
+			--colors_green_dark: #0f6b34;
+			--colors_green_default: #19af55;
+			--colors_green_light: #3be37e;
+			--colors_green_lighter: #82edad;
+			--colors_green_lightest: #edfcf4;
+			--colors_yellow_dark: #8a6f05;
+			--colors_yellow_default: #fbe283;
+			--colors_yellow_light: #fce99c;
+			--colors_yellow_lighter: #fdf2c4;
+			--colors_yellow_lightest: #fefaeb;
+			--colors_chart_1: #61a1e7;
+			--colors_chart_2: #98dfea;
+			--colors_chart_3: #fa6d92;
+			--colors_chart_4: #f9b72f;
+			--colors_chart_5: #8398af;
+			--colors_chart_6: #fee666;
+			--colors_mmi_extFear: #12be57;
+			--colors_mmi_fear: #ff9923;
+			--colors_mmi_greed: #f57011;
+			--colors_mmi_extGreed: #e23d3d;
+			--fontFamilies_graphikRegular: 'graphik-regular';
+			--fontFamilies_graphikMedium: 'graphik-medium';
+			--fontFamilies_graphikSemiBold: 'graphik-semiBold';
+			--lineHeights_heading: 120%;
+			--lineHeights_text: 140%;
+			--lineHeights_normal: 100%;
+			--fontWeights_semibold: 600;
+			--fontWeights_regular: 400;
+			--fontWeights_medium: 500;
+			--fontSizes_10: 10px;
+			--fontSizes_12: 12px;
+			--fontSizes_13: 13px;
+			--fontSizes_14: 14px;
+			--fontSizes_15: 15px;
+			--fontSizes_16: 16px;
+			--fontSizes_18: 18px;
+			--fontSizes_20: 20px;
+			--fontSizes_21: 21px;
+			--fontSizes_24: 24px;
+			--fontSizes_28: 28px;
+			--fontSizes_34: 34px;
+			--fontSizes_49: 49px;
+			--letterSpacing_tighter: -0.02px;
+			--letterSpacing_tight: -0.05px;
+			--letterSpacing_normal: 0px;
+			--spacing_1by8x: 2px;
+			--spacing_1by4x: 4px;
+			--spacing_1by2x: 8px;
+			--spacing_3by4x: 12px;
+			--spacing_1x: 16px;
+			--spacing_11by2x: 24px;
+			--spacing_2x: 32px;
+			--spacing_21by2x: 40px;
+			--spacing_3x: 48px;
+			--spacing_4x: 64px;
+			--spacing_5x: 80px;
+			--spacing_6x: 96px;
+			--borderRadius_s: 2px;
+			--borderRadius_m: 4px;
+			--borderRadius_l: 6px;
+			--borderRadius_xl: 8px;
+			--boxShadow_flat: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+			--boxShadow_raised: 0 3px 12px 0 rgba(0, 0, 0, 0.06);
+			--boxShadow_overlay: 0 6px 12px 0 rgba(0, 0, 0, 0.06);
+			--boxShadow_nav: 0 8px 16px 0 rgba(0, 0, 0, 0.06);
+			--boxShadow_popup: 0 12px 24px 0 rgba(0, 0, 0, 0.06);
+			--_1px: 1px;
+		}
+	</style>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			font-size: 14px;
+			line-height: 1.2;
+			font-family: 'Graphik';
+			color: var(--font_primary);
+			background-color: var(--colors_background_pageHeader);
+			overflow-x: hidden;
+			height: 100vh;
+			z-index: 0 !important;
+		}
+		
+		.hero-wrapper {
+			width: 100%;
+			height: 294px;
+			background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--mob.svg") no-repeat !important;
+			background-size: contain !important;
+			background-position-y: top !important;
+			background-position-x: 100% !important;
+			position: relative !important;
+			margin-bottom: 48px !important;
+			padding: 0 16px !important;
+		}
+
+		.hero-subtitle {
+			color: rgb(165,180,197);
+			font-size: 16px;
+			font-weight: normal;
+			line-height: 25px;
+			width: 69vw;
+		}
+
+		.hero-section {
+			position: absolute;
+			bottom: 0px !important;
+		}
+		.hero-header {
+			color: rgb(255,255,255);
+			font-size: 30px;
+			font-weight: 500;
+			line-height: 32px;
+			width: 281px;
+			margin-bottom: 16px;
+		}
+		header {
+			background: var(--colors_background_pageHeader);
+		}
+		@media (min-width: 650px) and (max-width: 990px){
+			.hero-wrapper {
+				position: relative;
+				background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--desktop.svg") no-repeat !important;
+				background-size: cover !important;
+				height: 460px !important;
+				background-position-y: 0px !important;
+				background-position-x: 69% !important;
+			}
+			.hero-section{
+				bottom: 0px !important;
+			}
+			.hero-header {
+				width: 60vw;
+				font-size: 32px;
+			}
+			.hero-subtitle{
+				width: 60vw;
+			}
+		}
+		@media (min-width: 992px){
+			.hero-wrapper {
+				margin: 0 auto;
+				max-width: 1133px;
+				background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--desktop.svg") no-repeat !important;
+				background-size: cover !important;
+				height: 460px !important;
+				background-position-y: 0px !important;
+				background-position-x: 45% !important;
+				padding: 0px;
+			}
+			.hero-header {
+				width: 100%;
+				font-size: 42px;
+				margin-bottom: 24px;
+			}
+			.hero-subtitle {
+				color: rgb(165,180,197);
+				font-size: 24px;
+				line-height: 38px;	
+				max-width: 689px;
+			}
+		}
+		@media screen and (max-width: 1160px) {
+			.hero-wrapper{
+				margin: auto 24px !important;
+			}			
+			.header-logo a, .header-logo a p{
+				font-size: 16px !important;
+				line-height: 0px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<div class="header"
+			style="display: flex;justify-content: space-evenly;align-items: center;flex-direction: row; padding-top: 24px;">
+			<div class="header-logo" style="align-self: center;">
+				<a href="/"
+					style="text-decoration: none; color: var(--colors_background_darkGrey);font-weight: 600;font-size: 1.2rem;">
+					StocksApp
+				</a>
+			</div>
+			<div class="ui search" style="width: 40%;">
+				<div id="stockSearchWidget" class="stock-search-widget"
+					style="height: 30px; display: flex; justify-content: center; align-items: center;">
+					<div class="icon-search" style="margin-right: -24px;margin-top: 3px;">
+						<i class='bx bx-search' id="searchIcon" style="font-size: 16px;"></i>
+					</div>
+					<input type="text" value="" autocomplete="off" class="prompt"
+						placeholder="Search for stocks, indices, mutual funds or ETFs" maxlength="80"
+						id="search-stock-input"
+						style="width: 200%;height: 30px;padding: 5px 40px 5px 32px;background: #ffffff33;border: none;border-radius: var(--borderRadius_m);font-family: 'Graphik', sans-serif;transition: ease-in-out 0.4s;font-size: var(--fontSizes_14);outline: none;">
+				</div>
+				<div class="results"></div>
+			</div>
+			<div class="action">
+				<a style="background: var(--colors_background_button_secondary);
+				color: var(--colors_text_brand);
+				padding: 9px 12px;
+				font-size: var(--fontSizes_13);
+				font-family: inherit;
+				font-weight: var(--fontWeights_medium);
+				outline: none;
+				border-radius: 4px;
+				border: none;
+				text-decoration: none;
+				" href="/accounts/login/">Login</a>
+			</div>
+		</div>
+		<div class="hero-wrapper">
+			<div class="hero-section">
+				<div class="hero-header font-medium">
+					Guide your portfolio to the stars
+				</div>
+				<p class="hero-subtitle">
+					The correct tools you need to make wise investment decisions.
+				</p>
+			</div>
+		</div>
+	</header>
+	<main>
+
+	</main>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="{% static 'semantic/semantic.min.js' %}"></script>
+<script src="{% static 'semantic/components/accordion.min.js' %}"></script>
+<script>
+	const searchBox = document.querySelector('#search-stock-input');
+	const searchIcon = document.querySelector("#searchIcon");
+	$('.ui.search').search({
+		apiSettings: {
+			url: '/search/?query={query}'
+		},
+		fields: {
+			results: 'results',
+			title: 'name',
+			action: 'url',
+		},
+		minCharacters: 3
+	});
+	searchBox.onfocus = () => {
+		searchBox.style.background = '#ffffff';
+		searchBox.style.color = 'var(--colors_text_primary)';
+		searchIcon.style.color = '#000000';
+	}
+	searchBox.onblur = () => {
+		searchBox.style.background = '#ffffff33';
+		searchBox.style.color = '#ffffff';
+		if (searchBox.value != '') {
+			searchIcon.style.color = '#ffffff';
+		}
+		else {
+			searchIcon.style.color = '#ffffff33';
+		}
+	}
+
+</script>
+
+</html>
