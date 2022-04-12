@@ -6,9 +6,12 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tickers</title>
+	<title>StocksApp - All the Correct Tools you need to make wise investment decisions</title>
 	<link rel="stylesheet" href="{% static 'semantic/semantic.css' %}">
 	<link rel="stylesheet" href="{% static 'semantic/components/accordion.min.css' %}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 	<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 	<style>
 		:root {
@@ -35,10 +38,10 @@
 			--toast_error_bg: #fffae6;
 			--toast_info: #a7c9de;
 			--toast_info_bg: #effbff;
-			--font_family_regular: 'Graphik', Helvetica, Arial, sans-serif;
-			--font_family_medium: 'Graphik', Helvetica, Arial, sans-serif;
-			--font_family_semibold: 'Graphik', Helvetica, Arial, sans-serif;
-			--font_family_light: 'Graphik', Arial, sans-serif;
+			--font_family_regular: 'Nunito Sans', Helvetica, Arial, sans-serif;
+			--font_family_medium: 'Nunito Sans', Helvetica, Arial, sans-serif;
+			--font_family_semibold: 'Nunito Sans', Helvetica, Arial, sans-serif;
+			--font_family_light: 'Nunito Sans', Arial, sans-serif;
 			--font_family_number: 'Verdana', Arial, sans-serif;
 			--font_size_base: 0.875rem;
 			--font_size_large: 1rem;
@@ -238,9 +241,9 @@
 			--colors_mmi_fear: #ff9923;
 			--colors_mmi_greed: #f57011;
 			--colors_mmi_extGreed: #e23d3d;
-			--fontFamilies_graphikRegular: 'graphik-regular';
-			--fontFamilies_graphikMedium: 'graphik-medium';
-			--fontFamilies_graphikSemiBold: 'graphik-semiBold';
+			--fontFamilies_Nunito_SansRegular: 'Nunito Sans';
+			--fontFamilies_Nunito_SansMedium: 'Nunito Sans';
+			--fontFamilies_Nunito_SansSemiBold: 'Nunito Sans';
 			--lineHeights_heading: 120%;
 			--lineHeights_text: 140%;
 			--lineHeights_normal: 100%;
@@ -293,18 +296,34 @@
 			margin: 0;
 			font-size: 14px;
 			line-height: 1.2;
-			font-family: 'Graphik';
-			color: var(--font_primary);
-			background-color: var(--colors_background_pageHeader);
+			font-family: 'Nunito Sans', sans-serif;
+			color: #1f1f1f;
+			background-color: var(--brand_premium_light);
 			overflow-x: hidden;
 			height: 100vh;
 			z-index: 0 !important;
+		}
+		.cta{
+			background: var(--brand_background_dark);
+			color: var(--colors_text_button_pro_white);
+			padding: 4.19px 18px;
+			height: 30px;
+			font-size: 16px;
+			font-family: inherit;
+			font-weight: var(--fontWeights_medium);
+			outline: none;
+			border-radius: 4px;
+			border: none;
+			text-decoration: none;
+		}
+		.cta:hover{
+			color: var(--colors_text_button_pro_white);
 		}
 		
 		.hero-wrapper {
 			width: 100%;
 			height: 294px;
-			background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--mob.svg") no-repeat !important;
+			background: url("{% static '/images/header_landing.png' %}") no-repeat !important;
 			background-size: contain !important;
 			background-position-y: top !important;
 			background-position-x: 100% !important;
@@ -314,11 +333,12 @@
 		}
 
 		.hero-subtitle {
-			color: rgb(165,180,197);
+			color: var(--colors_neutral_40);
 			font-size: 16px;
 			font-weight: normal;
 			line-height: 25px;
 			width: 69vw;
+			font-weight: 700;
 		}
 
 		.hero-section {
@@ -326,24 +346,76 @@
 			bottom: 0px !important;
 		}
 		.hero-header {
-			color: rgb(255,255,255);
+			color: var(--brand_background_dark);
 			font-size: 30px;
 			font-weight: 500;
 			line-height: 32px;
 			width: 281px;
 			margin-bottom: 16px;
+			font-weight: 900;
 		}
 		header {
-			background: var(--colors_background_pageHeader);
+			background: var(--brand_premium_light);
+		}
+		.font-weight-900{
+			font-weight: 900;
+		}
+		.title{
+			font-size: 24px;
+		}
+		.subtitle{
+			font-size: 20px;
+		}
+		.slider{
+			display: flex;
+		}
+		.slider-items{
+			display: flex;
+			flex-direction: column;
+			width: fit-content;
+		}
+		.slider-item{
+			display: flex;
+			flex-direction: row;
+			padding: 8px;
+			width: 200px;
+			border-radius: var(--border_radius_large);
+			margin: 8px 0px;
+		}
+		.slider-item .content{
+			align-self: center;
+			margin-left: 12px;
+		}
+		.slider-item.active{
+			background: #00000033;
+		}
+		.slider-item.active .icon{
+			background: #1f1f1f;
+		}
+		.slider-img{
+			margin-top: 7px;
+			margin-left: 24px;
+			border-radius: var(--border_radius_large);
+		}
+		.icon{
+			font-size: 24px;
+			margin: 8px 4px;
+			padding: 8px;
+			background: #1f1f1faa;
+			color: white;
+			border-radius: 50%;
+		}
+		.icon i{
+			margin: 3px 4px 0px 4px;
 		}
 		@media (min-width: 650px) and (max-width: 990px){
 			.hero-wrapper {
 				position: relative;
-				background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--desktop.svg") no-repeat !important;
-				background-size: cover !important;
-				height: 460px !important;
-				background-position-y: 0px !important;
-				background-position-x: 69% !important;
+				background: url("{% static 'images/header_landing.png' %}") no-repeat !important;
+				background-size: contain !important;
+				height: 340px !important;
+				background-position-y: 24px !important;
+				background-position-x: 100% !important;
 			}
 			.hero-section{
 				bottom: 0px !important;
@@ -360,12 +432,15 @@
 			.hero-wrapper {
 				margin: 0 auto;
 				max-width: 1133px;
-				background: url("https://www.tickertape.in/landingResources/backgrounds/hero-illustration--desktop.svg") no-repeat !important;
-				background-size: cover !important;
-				height: 460px !important;
-				background-position-y: 0px !important;
-				background-position-x: 45% !important;
+				background: url("{% static 'images/header_landing.png' %}") no-repeat !important;
+				background-size: contain !important;
+				height: 500px !important;
+				background-position-y: 20px !important;
+				background-position-x: 90% !important;
 				padding: 0px;
+			}
+			.cta{
+				padding: 4.19px 36px;
 			}
 			.hero-header {
 				width: 100%;
@@ -373,31 +448,21 @@
 				margin-bottom: 24px;
 			}
 			.hero-subtitle {
-				color: rgb(165,180,197);
 				font-size: 24px;
 				line-height: 38px;	
 				max-width: 689px;
-			}
-		}
-		@media screen and (max-width: 1160px) {
-			.hero-wrapper{
-				margin: auto 24px !important;
-			}			
-			.header-logo a, .header-logo a p{
-				font-size: 16px !important;
-				line-height: 0px;
 			}
 		}
 	</style>
 </head>
 
 <body>
-	<header>
+	<header style="min-height: 100vh;">
 		<div class="header"
 			style="display: flex;justify-content: space-evenly;align-items: center;flex-direction: row; padding-top: 24px;">
 			<div class="header-logo" style="align-self: center;">
 				<a href="/"
-					style="text-decoration: none; color: var(--colors_background_darkGrey);font-weight: 600;font-size: 1.2rem;">
+					style="text-decoration: none; color: var(--brand_background_dark);font-weight: 600;font-size: 1.2rem;">
 					StocksApp
 				</a>
 			</div>
@@ -410,28 +475,28 @@
 					<input type="text" value="" autocomplete="off" class="prompt"
 						placeholder="Search for stocks, indices, mutual funds or ETFs" maxlength="80"
 						id="search-stock-input"
-						style="width: 200%;height: 30px;padding: 5px 40px 5px 32px;background: #ffffff33;border: none;border-radius: var(--borderRadius_m);font-family: 'Graphik', sans-serif;transition: ease-in-out 0.4s;font-size: var(--fontSizes_14);outline: none;">
+						style="width: 200%;
+						height: 30px;
+						padding: 5px 40px 5px 32px;
+						background: #00000033;
+						border: none;border-radius: var(--borderRadius_m);
+						font-family: 'Nunito Sans', sans-serif;
+						transition: ease-in-out 0.4s;
+						font-size: var(--fontSizes_14);
+						outline: none;">
 				</div>
 				<div class="results"></div>
 			</div>
 			<div class="action">
-				<a style="background: var(--colors_background_button_secondary);
-				color: var(--colors_text_brand);
-				padding: 9px 12px;
-				font-size: var(--fontSizes_13);
-				font-family: inherit;
-				font-weight: var(--fontWeights_medium);
-				outline: none;
-				border-radius: 4px;
-				border: none;
-				text-decoration: none;
-				" href="/accounts/login/">Login</a>
+				<a style="
+				" href="/accounts/login/"
+				class="cta">Login</a>
 			</div>
 		</div>
 		<div class="hero-wrapper">
 			<div class="hero-section">
 				<div class="hero-header font-medium">
-					Guide your portfolio to the stars
+					Set your portfolio on fire
 				</div>
 				<p class="hero-subtitle">
 					The correct tools you need to make wise investment decisions.
@@ -440,7 +505,31 @@
 		</div>
 	</header>
 	<main>
-
+		<div class="ui container">
+			<hr>
+			<p class="title font-weight-900">Crisp Analysis on the Go</p>
+			<p class="subtitle" id="featureDescription">Find Analysis of Stocks on the Go</p>
+			<div class="slider">
+				<div class="slider-items">
+					<div class="slider-item active">
+						<div class="icon"><i class='bx bxs-rocket'></i></div>
+						<div class="content">Quick View</div>
+					</div>
+					<div class="slider-item">
+						<div class="icon"><i class='bx bxs-book-content'></i></div>
+						<div class="content">Crisp Analysis</div>
+					</div>
+					<div class="slider-item">
+						<div class="icon"><i class='bx bx-line-chart'></i></div>
+						<div class="content">Backtested Data</div>
+					</div>
+				</div>
+				<div class="slider-img">
+					<img src="{% static 'images/features/quick_view.png' %}" style="border-radius: var(--border_radius_large);" height="260">
+				</div>
+			</div>
+		</div>
+		<p>&nbsp;</p>
 	</main>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -461,18 +550,18 @@
 		minCharacters: 3
 	});
 	searchBox.onfocus = () => {
-		searchBox.style.background = '#ffffff';
-		searchBox.style.color = 'var(--colors_text_primary)';
-		searchIcon.style.color = '#000000';
+		searchBox.style.background = '#000000cc';
+		searchBox.style.color = '#ffffff';
+		searchIcon.style.color = '#ffffff';
 	}
 	searchBox.onblur = () => {
-		searchBox.style.background = '#ffffff33';
-		searchBox.style.color = '#ffffff';
+		searchBox.style.background = '#00000033';
+		searchBox.style.color = '#000000';
 		if (searchBox.value != '') {
-			searchIcon.style.color = '#ffffff';
+			searchIcon.style.color = '#000000';
 		}
 		else {
-			searchIcon.style.color = '#ffffff33';
+			searchIcon.style.color = '#00000033';
 		}
 	}
 

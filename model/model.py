@@ -59,13 +59,14 @@ class TestStrategy(bt.Strategy):
 		if not trade.isclosed:
 			return
 		self.cumprofit += trade.pnlcomm
-		if trade.pnlcomm > 0:
-			self.cash_value += int(trade.pnlcomm)
-			if self.cumprofit > 0:
-				if self.cumprofit < trade.pnlcomm:
-					self.broker.add_cash(int(self.cumprofit // 2))	
-				else:
-					self.broker.add_cash(int(trade.pnlcomm // 2))
+		self.cash_value += int(trade.pnlcomm)
+		# if trade.pnlcomm > 0:
+		# 	self.cash_value += int(trade.pnlcomm)
+		# 	if self.cumprofit > 0:
+		# 		if self.cumprofit < trade.pnlcomm:
+		# 			self.broker.add_cash(int(self.cumprofit // 2))	
+		# 		else:
+		# 			self.broker.add_cash(int(trade.pnlcomm // 2))
 	def next(self):
 		# Simply log the closing price of the series from the reference
 		if self.order:
@@ -75,9 +76,9 @@ class TestStrategy(bt.Strategy):
 			# Not yet ... we MIGHT BUY if ...
 			if self.scores[0] <= 40:
 				# Keep track of the created order to avoid a 2nd order
-				self.size = int(int((self.cash_value*0.5)) // self.dataclose[0])
+				self.size = int(int((self.cash_value*0.4)) // self.dataclose[0])
 				self.size = self.size - (self.size%50)
-				self.order = self.buy(size=self.size, exectype=bt.Order.StopTrail, trailpercent=0.1)
+				self.order = self.buy(size=self.size, exectype=bt.Order.StopTrail, trailpercent=0.08)
 				orders.append({"size":self.size, "price":self.dataclose[0], "date":self.datas[0].datetime.date(0)})
 		else:		
 			if self.scores[0] >= 60:
